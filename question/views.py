@@ -48,6 +48,8 @@ def question_delete(request, pk):
     return redirect('question:question_list')
 
 
+# 답글댓글
+
 def comment_create(request):
     if request.method == 'POST':
         form = CommentForm(request.POST)
