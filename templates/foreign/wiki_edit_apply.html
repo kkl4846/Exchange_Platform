@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    </div>
+    <div>
+        <div>
+        1.파견로의 지원방법
+        <form action="" method="POST" enctype="multipart/form-data" class="table">
+            {% csrf_token %}
+            <table class="table table-bordered">
+                {{form.away_apply}}
+            
+                
+            </table>
+            <input type="submit" value="저장하기" />
+        </form>
+        <div>
+        2.필요 어학 점수
+        {{univ.language_score}}
+    </div>
+    <div>
+        3.수강신청방법
+        {{univ.course_enroll}}
+    </div>
+    <div>
+        4.기숙사 정보
+        {{univ.accommodation}}
+    </div>
+    <div>
+        5.학교 분위기
+        {{univ.atmosphere}}
+    </div>
+    <div>
+        6.동아리
+        {{univ.club}}
+    </div>
+    <div>
+        7.장학금
+        {{univ.away_scholarship}}
+    </div>
+    </div>
+</body>
+</html>
