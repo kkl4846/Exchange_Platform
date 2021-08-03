@@ -61,12 +61,14 @@ def comment_create(request,pk):
             return redirect('question:question_detail', pk=comment.question.pk)
     else:
         form = CommentForm(instance=comment)
-        ctx = {'form': form}
+        ctx = {'form': form,
+        'question':question}
         return render(request, template_name='question/comment_form.html', context=ctx)
 
 
 def comment_edit(request, pk):
     comment = get_object_or_404(Comment, id=pk)
+    question=comment.question
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
@@ -74,7 +76,8 @@ def comment_edit(request, pk):
             return redirect('question:question_detail', pk=comment.question.pk)
     else:
         form = CommentForm(instance=comment)
-        ctx = {'form': form}
+        ctx = {'form': form,
+        'question':question}
         return render(request, template_name='question/comment_form.html', context=ctx)
 
 

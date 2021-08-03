@@ -19,9 +19,8 @@ class Question(models.Model):
 
 class Comment(models.Model):
     comment_author = models.ForeignKey(
-        to='login.User', on_delete=models.CASCADE,null=True)
-    question = models.ForeignKey(
-        'Question', on_delete=models.CASCADE)
+        to='login.User', on_delete=models.CASCADE, null=True)
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, null=True )
     comment_content = models.TextField(null=True)
-    created_at = models.DateTimeField(auto_now_add=True,null=True)
-    updated_at = models.DateTimeField(auto_now=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
