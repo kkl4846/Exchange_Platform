@@ -78,5 +78,6 @@ def comment_edit(request, pk):
 
 def comment_delete(request, pk):
     comment = Comment.objects.get(id=pk)
+    question = comment.question
     comment.delete()
-    return redirect('question:question_detail')
+    return redirect('question:question_detail', pk=question.pk)

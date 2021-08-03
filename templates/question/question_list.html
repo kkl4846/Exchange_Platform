@@ -6,7 +6,7 @@
 {%for question in questions %}
 <div>
     <a href="{% url 'question:question_detail' question.pk%}">{{ question.question_title }}</a>
-    <span >{{ question.created_at}}</span>
+    <span>{{ question.created_at}}</span>
 </div>
 {% endfor %}
 

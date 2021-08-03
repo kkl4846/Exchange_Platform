@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 {% block content %}
 <span>{{ question.home_university }}</span><span>QnA</span>
 <h2>{{ question.question_title }}</h2>
@@ -15,14 +14,13 @@
 </div>
 <button onclick="location.href='{% url "question:comment_create" %}'">답변 달기</button>
 {% for comment in comments %}
-<div>
-    {{ comment.comment_author }}
-    {{ comment.comment_content }}
-    {{ comment.created_at }}
-    <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
-    <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
-</div>
-
+    <div>
+        {{ comment.comment_author }}
+        {{ comment.comment_content }}
+        {{ comment.created_at }}
+        <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
+        <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
+    </div>
 {% endfor %}
 
 {% endblock %}
