@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-<<<<<<< Updated upstream
 
 class Question(models.Model):
     author = models.ForeignKey(to='login.User', on_delete=models.CASCADE)
