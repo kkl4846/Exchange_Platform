@@ -4,8 +4,10 @@
 <span>{{question.home_university}}</span><span>QnA</span>
 <button onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
 {%for question in questions %}
+<div>
     <a href="{% url 'question:question_detail' question.pk%}">{{ question.question_title }}</a>
     <span >{{ question.created_at}}</span>
+</div>
 {% endfor %}
 
 {% endblock %}

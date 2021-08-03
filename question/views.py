@@ -13,7 +13,8 @@ def question_list(request):
 
 def question_detail(request, pk):
     question = Question.objects.get(id=pk)
-    ctx = {'question': question}
+    comments = question.comment_set.all()
+    ctx = {'question': question, 'comments': comments}
     return render(request, template_name='question/question_detail.html', context=ctx)
 
 
@@ -54,8 +55,8 @@ def comment_create(request):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            post = form.save()
-            return redirect('question:question_detail', pk=post.pk)
+            comment = form.save()
+            return redirect('question:question_detail', pk=comment.question.pk)
     else:
         form = CommentForm()
         ctx = {'form': form}
@@ -68,7 +69,7 @@ def comment_edit(request, pk):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect('question:question_detail', pk)
+            return redirect('question:question_detail', pk=comment.question.pk)
     else:
         form = CommentForm(instance=comment)
         ctx = {'form': form}
