@@ -19,57 +19,109 @@ def wiki_edit_apply(request,pk):
     foreign=get_object_or_404(models.Foreign,pk=pk)
     if request.method=='POST':
         form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
-        form.language_score=foreign.language_score              
-        # form.course_enroll=foreign.course_enroll
-        # form.accommodation=foreign.accommodation
-        # form.atmosphere=foreign.atmosphere
-        # form.club=foreign.club
-        # form.away_scholarship=foreign.away_scholarship
         if form.is_valid():
-            foreign.language_score=form.language_score
-            foreign.save()
-            # foreign=form.save()                                 #왜 save하면 위에 form.language_score...이 저장이 안될까... 클린코드해보자..
-            # foreign.language_score=form.language_score
-            # foreign.course_enroll=form.course_enroll
-            # foreign.accommodation=form.accommodation
-            # foreign.atmosphere=form.atmosphere
-            # foreign.club=form.club
-            # foreign.away_scholarship=form.away_scholarship
-            # foreign.save()
-            # print(foreign.language_score)
+            foreign=form.save()
             return redirect('foreign:wiki',foreign.pk)
     else:
         form=forms.ForeignForm(instance=foreign)
-    return render(request,'foreign/wiki_edit_apply.html',{
+    return render(request,'foreign/wiki_edit.html',{
         'form':form,
         'univ':foreign,
+        'btn':1,
     })
 
 def wiki_edit_language_score(request,pk):
     foreign=get_object_or_404(models.Foreign,pk=pk)
     if request.method=='POST':
         form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
-        form.away_apply=foreign.away_apply
-        # form.course_enroll=foreign.course_enroll
-        # form.accommodation=foreign.accommodation
-        # form.atmosphere=foreign.atmosphere
-        # form.club=foreign.club
-        # form.away_scholarship=foreign.away_scholarship
-        if form.is_valid():
-            foreign.away_apply=form.away_apply
+        if form.is_valid():   
             foreign.save()
-            # foreign.away_apply=form.away_apply
-            # foreign.course_enroll=form.course_enroll
-            # foreign.accommodation=form.accommodation
-            # foreign.atmosphere=form.atmosphere
-            # foreign.club=form.club
-            # foreign.away_scholarship=form.away_scholarship
-            # foreign.save()
             return redirect('foreign:wiki',foreign.pk)
     else:
         form=forms.ForeignForm(instance=foreign)
-    return render(request,'foreign/wiki_edit_language_score.html',{
+    return render(request,'foreign/wiki_edit.html',{
         'form':form,
         'univ':foreign,
+        'btn':2,
     })
+
+def wiki_edit_course_enroll(request,pk):
+    foreign=get_object_or_404(models.Foreign,pk=pk)
+    if request.method=='POST':
+        form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
+        if form.is_valid():   
+            foreign.save()
+            return redirect('foreign:wiki',foreign.pk)
+    else:
+        form=forms.ForeignForm(instance=foreign)
+    return render(request,'foreign/wiki_edit.html',{
+        'form':form,
+        'univ':foreign,
+        'btn':3,
+    })
+
+
+def wiki_edit_accommodation(request,pk):
+    foreign=get_object_or_404(models.Foreign,pk=pk)
+    if request.method=='POST':
+        form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
+        if form.is_valid():   
+            foreign.save()
+            return redirect('foreign:wiki',foreign.pk)
+    else:
+        form=forms.ForeignForm(instance=foreign)
+    return render(request,'foreign/wiki_edit.html',{
+        'form':form,
+        'univ':foreign,
+        'btn':4,
+    })
+
+
+def wiki_edit_atmosphere(request,pk):
+    foreign=get_object_or_404(models.Foreign,pk=pk)
+    if request.method=='POST':
+        form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
+        if form.is_valid():   
+            foreign.save()
+            return redirect('foreign:wiki',foreign.pk)
+    else:
+        form=forms.ForeignForm(instance=foreign)
+    return render(request,'foreign/wiki_edit.html',{
+        'form':form,
+        'univ':foreign,
+        'btn':5,
+    })
+
+
+def wiki_edit_club(request,pk):
+    foreign=get_object_or_404(models.Foreign,pk=pk)
+    if request.method=='POST':
+        form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
+        if form.is_valid():   
+            foreign.save()
+            return redirect('foreign:wiki',foreign.pk)
+    else:
+        form=forms.ForeignForm(instance=foreign)
+    return render(request,'foreign/wiki_edit.html',{
+        'form':form,
+        'univ':foreign,
+        'btn':6,
+    })
+
+
+def wiki_edit_away_scholarship(request,pk):
+    foreign=get_object_or_404(models.Foreign,pk=pk)
+    if request.method=='POST':
+        form=forms.ForeignForm(request.POST,request.FILES,instance=foreign)
+        if form.is_valid():   
+            foreign.save()
+            return redirect('foreign:wiki',foreign.pk)
+    else:
+        form=forms.ForeignForm(instance=foreign)
+    return render(request,'foreign/wiki_edit.html',{
+        'form':form,
+        'univ':foreign,
+        'btn':7,
+    })
+
 
