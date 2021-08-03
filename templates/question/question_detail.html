@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h2>{{ question.question_title }}</h2>
+
+<p>작성자: {{ question.author}} 작성 시간: {{question.created_at}}</p>
+<p>
+학교: {{question.home_university}}
+파견교: {{question.away_university}}
+파견 국가: {{question.country}}
+</p>
+<p>
+{{question.question_content}}
+</p>
+<div>
+    <button onclick="location.href='{% url "question:question_delete" question.pk %}'"> 삭제 </button>
+    <button onclick="location.href='{% url "question:question_edit" question.pk %}'"> 수정 </button>
+    <button onclick="location.href='{% url "question:question_list" %}'"> 목록 </button>
+</div>
+<button onclick="location.href='{% url "question:comment_create" %}'">답변 달기</button>
+
+{% endblock %}
