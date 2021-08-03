@@ -53,14 +53,16 @@ def question_delete(request, pk):
 
 def comment_create(request,pk):
     question = Question.objects.get(id=pk)
-    comment = Comment.objects.create(question=question)
+    # comment = Comment.objects.create(question=question)
     if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment)
+        form = CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save()
-            return redirect('question:question_detail', pk=comment.question.pk)
+            comment = form.save(commit=False)
+            comment.question=question
+            comment.save()
+            return redirect('question:question_detail', pk)
     else:
-        form = CommentForm(instance=comment)
+        form = CommentForm()
         ctx = {'form': form,
         'question':question}
         return render(request, template_name='question/comment_form.html', context=ctx)
@@ -68,7 +70,6 @@ def comment_create(request,pk):
 
 def comment_edit(request, pk):
     comment = get_object_or_404(Comment, id=pk)
-    question=comment.question
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
@@ -76,8 +77,7 @@ def comment_edit(request, pk):
             return redirect('question:question_detail', pk=comment.question.pk)
     else:
         form = CommentForm(instance=comment)
-        ctx = {'form': form,
-        'question':question}
+        ctx = {'form': form,'question':question}
         return render(request, template_name='question/comment_form.html', context=ctx)
 
 

@@ -15,10 +15,10 @@
 <button onclick="location.href='{% url "question:comment_create" question.pk %}'">답변 달기</button>
 <form action ="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    작성자: {{form.comment_author}}
+    <!-- 작성자: {{form.comment_author}}
     글: {{form.question}}
-    내용: {{form.comment_content}}
-
+    내용: {{form.comment_content}} -->
+    {{form.as_p}}
     <input type="submit" value="저장하기"/>
 </form>
 {% endblock %}
