@@ -9,4 +9,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     university = models.ForeignKey(
         'domestic.Domestic', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='소속 대학')
     user_email = models.EmailField(blank=True, verbose_name='이메일', unique=True)
+    school_certificate = models.BooleanField(
+        verbose_name='학교 인증 여부', default=False)
     USERNAME_FIELD = 'username'
