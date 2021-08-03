@@ -16,11 +16,11 @@
     <p>1.파견로의 지원방법</p>
     {{univ.away_apply}}
     <div><a href="{% url "foreign:wiki_edit_apply" univ.pk %}">수정</a></div>
-    </p>
     <div>
     <p>
     2.필요 어학 점수</p>
     {{univ.language_score}}
+    <div><a href="{% url "foreign:wiki_edit_language_score" univ.pk %}">수정</a></div>
 </div>
 <div>
     <p>

@@ -12,18 +12,18 @@
     <div>
         <div>
         <p>1.파견로의 지원방법</p>
+        {{univ.away_apply}}
+        <div>
+        <p>2.필요 어학 점수</p>
         <form action="" method="POST" enctype="multipart/form-data" class="table">
             {% csrf_token %}
             <table class="table table-bordered">
-                {{form.away_apply}}>
+                {{form.language_score}}
             
                 
             </table>
             <input type="submit" value="저장하기" />
         </form>
-        <div>
-        <p>2.필요 어학 점수</p>
-        {{univ.language_score}}
     </div>
     <div>
         <p>3.수강신청방법</p>
