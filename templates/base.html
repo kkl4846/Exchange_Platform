@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div>
+            {% if not user.is_authenticated %}
+            <div>
+                <a href="{% url 'login:signup' %}"><span>회원가입</span></a>
+                <a href="{% url 'login:login' %}?next={{ request.path }}"><span>로그인</span></a>
+            </div>
+            {% else %}
+            <div>
+                <a href="{% url 'login:logout' %}"><span>로그아웃</span></a>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
