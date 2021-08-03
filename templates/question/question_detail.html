@@ -12,7 +12,7 @@
     <button onclick="location.href='{% url "question:question_edit" question.pk %}'"> 수정 </button>
     <button onclick="location.href='{% url "question:question_list" %}'"> 목록 </button>
 </div>
-<button onclick="location.href='{% url "question:comment_create" %}'">답변 달기</button>
+<button onclick="location.href='{% url "question:comment_create" question.pk %}'">답변 달기</button>
 {% for comment in comments %}
     <div>
         {{ comment.comment_author }}

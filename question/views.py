@@ -51,14 +51,16 @@ def question_delete(request, pk):
 
 # 답글댓글
 
-def comment_create(request):
+def comment_create(request,pk):
+    question = Question.objects.get(id=pk)
+    comment = Comment.objects.create(question=question)
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
             return redirect('question:question_detail', pk=comment.question.pk)
     else:
-        form = CommentForm()
+        form = CommentForm(instance=comment)
         ctx = {'form': form}
         return render(request, template_name='question/comment_form.html', context=ctx)
 
