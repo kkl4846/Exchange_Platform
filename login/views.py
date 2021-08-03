@@ -14,21 +14,16 @@ def user_main(request):
 
 
 def signup(request):
-    if request.method == 'POST':
-        if request.POST['password1'] == request.POST['password2']:
-            user = models.User.objects.create_user(
+    if request.method == "POST":
+        form = forms.SignupForm(request.POST)
+        if form.is_valid():
+            new_user = models.User.objects.create_user(
                 username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
-            auth.login(request, user)
+            auth.login(request, new_user)
             return redirect('login:user_main')
-        return render(request, 'login/signup.html')
-
-    return render(request, 'login/signup.html')
-
-# class AccountCreateView(CreateView):
-#     model = models.User
-#     form_class = forms.UserCustomForm
-#     success_url = reverse_lazy('login:user_main')
-#     template_name = 'login/signup.html'
+    else:
+        form = forms.SignupForm()
+        return render(request, 'login/signup.html', {'form': form})
 
 
 @login_required
