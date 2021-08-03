@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 
-# Create your models here.
-app_name = 'user'
-
 
 class User(AbstractBaseUser):
     nickname = models.CharField(max_length=20, verbose_name='닉네임')
