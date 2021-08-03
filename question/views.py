@@ -55,11 +55,11 @@ def comment_create(request):
         form = CommentForm(request.POST)
         if form.is_valid():
             post = form.save()
-            return redirect('comment:comment_detail', pk=post.pk)
+            return redirect('question:question_detail', pk=post.pk)
     else:
         form = CommentForm()
         ctx = {'form': form}
-        return render(request, template_name='comment/comment_form.html', context=ctx)
+        return render(request, template_name='question/comment_form.html', context=ctx)
 
 
 def comment_edit(request, pk):
@@ -68,14 +68,14 @@ def comment_edit(request, pk):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect('comment:comment_detail', pk)
+            return redirect('question:question_detail', pk)
     else:
         form = CommentForm(instance=comment)
         ctx = {'form': form}
-        return render(request, template_name='comment/comment_form.html', context=ctx)
+        return render(request, template_name='question/comment_form.html', context=ctx)
 
 
 def comment_delete(request, pk):
     comment = Comment.objects.get(id=pk)
     comment.delete()
-    return redirect('comment:comment_list')
+    return redirect('question:question_detail')
