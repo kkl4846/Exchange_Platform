@@ -1,0 +1,18 @@
+
+
+
+{% block content %}
+{% autoescape off %}
+{% for key, val in countries_dict.items %}
+    <ul>
+        <h3>{{ key }}</h3>
+        {% for country in val %}
+            <li>
+                {{ country }}
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+{% endfor %}
+{% endautoescape %}
+{% endblock %}
