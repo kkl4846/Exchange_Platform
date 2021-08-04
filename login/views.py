@@ -79,7 +79,45 @@ def certificate(request):
 
     school_names = []
     school_domains = []
-    for university in file:
-        pass
+    for university_dicts in file:
+        for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'ko-name' in key):
+            school_names.append(university_name)
+        for key in university_dicts.keys():
+            if 'ko-name' in key:
+                school_domains.append(university_dicts.get('domains')[0])
 
-    return render(request, 'login/certificate.html')
+    school = dict(zip(school_names, school_domains))
+
+    ctx = {
+        'school_names': school_names,
+        'school_domains': school_domains,
+        'school': school,
+    }
+
+    return render(request, 'login/certificate.html', context=ctx)
+
+
+@csrf_exempt
+def school_search(request):
+    req = json.loads(request.body)
+    school_name = req['school_name']
+
+    f = open('config/univ.json', 'r')
+    file = json.load(f)
+
+    school_names = []
+    school_domains = []
+    for university_dicts in file:
+        for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'ko-name' in key):
+            school_names.append(university_name)
+        for key in university_dicts.keys():
+            if 'ko-name' in key:
+                school_domains.append(university_dicts.get('domains')[0])
+
+    school = dict(zip(school_names, school_domains))
+
+    if key in school:
+        if school_name in key:
+            domain = school[school_name]
+
+    return JsonResponse({'domain': domain})
