@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<p>작성자:{{review.post_author}}</p>
+<p>제목: {{review.title}}</p>
+<p>내용: {{review.content}}</p>
+<p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
+<p>날짜: {{review.created_at}}</p>
+{% if request.user == review.post_author %}
+<a href="{% url "foreign:review_delete" foreign_id review.pk%}">삭제</a>
+<a href="{% url "foreign:review_update" foreign_id review.pk%}">수정</a>
+{% endif %}
+</body>
+</html>
