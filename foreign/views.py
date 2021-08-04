@@ -154,7 +154,6 @@ def wiki_edit_away_scholarship(request, pk):
 def review_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     all_review = foreign.reviews.all()
-    print(all_review)
     ctx = {
         'all_review': all_review,
         'foreign_id': foreign_id,
@@ -165,12 +164,14 @@ def review_list(request, foreign_id):
 
 def review_detail(request, pk, foreign_id):
     review = get_object_or_404(Post, pk=pk)
+    all_comment = review.post_comment.all()
     foreign = get_object_or_404(
         Foreign, pk=foreign_id)  # 외국 대학과 국가 넘겨주기위해 받음
     ctx = {
         'review': review,
         'foreign_id': foreign_id,
         'univ': foreign,
+        'all_comment': all_comment,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
@@ -214,3 +215,26 @@ def review_delete(request, pk, foreign_id):
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
     return review_create(request, foreign_id, post)
+
+
+# 댓글달기
+
+@method_decorator(csrf_exempt, name="dispatch")
+def comment_create(request, foreign_id, pk):
+    req = json.loads(request.body)
+    Post_id = req['post_id']
+    post = Post.objects.get(id=Post_id)
+    content = req['comment_content']
+    new_comment = Comment(comment_author=request.user,
+                          comment_content=content, post=post)
+    new_comment.save()
+
+    return JsonResponse({'post_id': Post_id, 'comment_content': content, 'comment_id': new_comment.id})
+
+
+def comment_delete(request):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
+    return JsonResponse({'comment_id': comment_id})
