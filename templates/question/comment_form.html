@@ -40,11 +40,12 @@
             {% for comment in question.comment_set.all %}
                 <div class="d-flex justify-content-between">
                     <div>
-                        작성자: {{ comment.comment_author }}
-                        내용: {{ comment.comment_content }}
-                        날짜: {{ comment.created_at }}
+                        <h5>{{ comment.comment_author }}</h5> 
+                        {{ comment.comment_content }}
+                        
                     </div>
                     <div>
+                        {{ comment.created_at }}
                         <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
                         <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
                     </div>
