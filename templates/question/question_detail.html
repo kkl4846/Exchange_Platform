@@ -40,9 +40,9 @@
             {% for comment in comments %}
                 <div class="d-flex justify-content-between">
                     <div>
-                        {{ comment.comment_author }}
-                        {{ comment.comment_content }}
-                        {{ comment.created_at }}
+                        작성자: {{ comment.comment_author }}
+                        내용: {{ comment.comment_content }}
+                        날짜: {{ comment.created_at }}
                     </div>
                     <div>
                         <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
