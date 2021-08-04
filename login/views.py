@@ -74,4 +74,12 @@ def rename(request):
 
 
 def certificate(request):
+    f = open('config/univ.json', 'r')
+    file = json.load(f)
+
+    school_names = []
+    school_domains = []
+    for university in file:
+        pass
+
     return render(request, 'login/certificate.html')
