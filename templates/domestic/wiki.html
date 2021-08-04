@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{%block content%}
+    <div>
+        <div>
+            <p>1.지원 방법</p>
+            <pre>{{univ.home_apply}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
+            <div><a href="{% url "domestic:wiki_edit_apply" univ.pk %}">수정</a></div>
+            <div>
+                <p>2.필요 서류</p>
+                <pre>{{univ.home_document}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_document" univ.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>3.수학 가능 학기</p>
+                <pre>{{univ.semester}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_semester" univ.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>4.교내 장학금 정보</p>
+                <pre>{{univ.home_scholarship}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_scholarship" univ.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>5.유학생 보험 준비</p>
+                <pre>{{univ.insurance}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_insurance" univ.pk %}">수정</a></div>
+            </div>
+        </div>
+    </div>
+
+{%endblock%}

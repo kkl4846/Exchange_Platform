@@ -14,6 +14,21 @@ def wiki(request, pk):
     }
     return render(request, 'domestic/wiki.html', ctx)
 
+def wiki_edit_apply(request, pk):
+    foreign = get_object_or_404(models.Domestic, pk=pk)
+    if request.method == 'POST':
+        form = forms.DomesticForm(request.POST, request.FILES, instance=foreign)
+        if form.is_valid():
+            foreign = form.save()
+            return redirect('foreign:wiki', foreign.pk)
+    else:
+        form = forms.ForeignForm(instance=foreign)
+    return render(request, 'foreign/wiki_edit.html', {
+        'form': form,
+        'univ': foreign,
+        'btn': 1,
+    })
+
 def wiki_edit_document(request, pk):
     foreign = get_object_or_404(models.Domestic, pk=pk)
     if request.method == 'POST':
@@ -23,25 +38,10 @@ def wiki_edit_document(request, pk):
             return redirect('domestic:wiki', foreign.pk)
     else:
         form = forms.ForeignForm(instance=foreign)
-    return render(request, 'domestic/wiki_edit_apply.html', {
+    return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': foreign,
         'btn': 1,
-    })
-
-def wiki_edit_document(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
-    if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = forms.ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit_document.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 2,
     })
 
 def wiki_edit_semester(request, pk):
@@ -59,7 +59,22 @@ def wiki_edit_semester(request, pk):
         'btn': 3,
     })
 
-def wiki_edit_accommodation(request, pk):
+def wiki_edit_scholarship(request, pk):
+    foreign = get_object_or_404(models.Foreign, pk=pk)
+    if request.method == 'POST':
+        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        if form.is_valid():
+            foreign.save()
+            return redirect('foreign:wiki', foreign.pk)
+    else:
+        form = forms.ForeignForm(instance=foreign)
+    return render(request, 'foreign/wiki_edit.html', {
+        'form': form,
+        'univ': foreign,
+        'btn': 2,
+    })
+
+def wiki_edit_insurance(request, pk):
     foreign = get_object_or_404(models.Foreign, pk=pk)
     if request.method == 'POST':
         form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
@@ -72,22 +87,6 @@ def wiki_edit_accommodation(request, pk):
         'form': form,
         'univ': foreign,
         'btn': 4,
-    })
-
-
-def wiki_edit_atmosphere(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
-    if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = forms.ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 5,
     })
 
 def question_list(request):
@@ -162,7 +161,7 @@ def comment_edit(request, pk):
     else:
         form = DCommentForm(instance=comment)
         ctx = {'form': form,'question':comment.question}
-        return render(request, template_name='domestid/comment_form.html', context=ctx)
+        return render(request, template_name='domestic/comment_form.html', context=ctx)
 
 
 def comment_delete(request, pk):
@@ -170,3 +169,21 @@ def comment_delete(request, pk):
     question = comment.question
     comment.delete()
     return redirect('domestic:question_detail', pk=question.pk)
+
+
+def sister_list(request):
+    return render(request, template_name='domestic/sister_list.html')
+
+def credit_list(request):
+    return render(request,template_name='domestic/credit_list.html')
+
+def credit_create(request):
+    if request.method == 'POST':
+        form = DQuestionForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            return redirect('domestic:credit_list', pk=post.pk)
+    else:
+        form = DQuestionForm()
+        ctx = {'form': form}
+        return render(request, template_name='domestic/credit_form.html', context=ctx)

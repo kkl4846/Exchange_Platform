@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+        <form action="" method="POST" enctype="multipart/form-data" class="table">
+            {% csrf_token %}
+            {% for field in form %}
+
+            {%if field.name == 'away_apply'%} <p>1.지원 방법</p>  {%endif%}
+            {%if field.name == 'language_score'%}<p>2.필요 서류</p>   {%endif%}
+            {%if field.name == 'course_enroll'%} <p>3.수학 가능 학기</p>  {%endif%}
+            {%if field.name == 'accommodation'%} <p> 4.교내 장학금 정보</p> {%endif%}
+            {%if field.name == 'atmosphere'%} <p>5.유학생 보험 준비</p> {%endif%}
+            
+            {% if btn == forloop.counter%}
+            <div class="form-group">
+                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
+            </div>
+            <input type="submit" value="저장하기" />
+            {% else %}
+            <div class="form-group">
+                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly cols = "100" rows="20" >{{field.value}}</textarea>
+            </div>
+            {%endif%}
+            {% endfor %}
+        </form>
+{% endblock %}
