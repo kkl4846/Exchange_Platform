@@ -38,13 +38,16 @@
                 <button onclick="location.href='{% url "question:comment_create" question.pk %}'">답변 달기</button>
             </div>
             {% for comment in comments %}
-                <div>
-                    
-                    {{ comment.comment_author }}
-                    {{ comment.comment_content }}
-                    {{ comment.created_at }}
-                    <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
-                    <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        {{ comment.comment_author }}
+                        {{ comment.comment_content }}
+                        {{ comment.created_at }}
+                    </div>
+                    <div>
+                        <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
+                        <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
+                    </div>
                 </div>
             {% endfor %}
             </div>

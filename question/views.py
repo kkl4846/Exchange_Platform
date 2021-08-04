@@ -77,7 +77,7 @@ def comment_edit(request, pk):
             return redirect('question:question_detail', pk=comment.question.pk)
     else:
         form = CommentForm(instance=comment)
-        ctx = {'form': form,'question':question}
+        ctx = {'form': form,'question':comment.question}
         return render(request, template_name='question/comment_form.html', context=ctx)
 
 
