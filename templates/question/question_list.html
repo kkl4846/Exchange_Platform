@@ -1,28 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<span>(학교 이름 자리){{question.home_university}}</span><span>QnA</span>
-<button onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
-<div class="content_box" >
-    <ul>
-        <li><a href="">자매 결연 대학</a></li>
-        <li><a href="">위키</a></li>
-        <li><a href="">QnA</a></li>
-        <li><a href="">파견교별 학점컷</a></li>
-    </ul>
+<div class="d-flex justify-content-evenly ">
+    <div class="border border-dark rounded" style="width:200px;">
+        <ul>
+            <li><a href="">자매 결연 대학</a></li>
+            <li><a href="">위키</a></li>
+            <li><a href="">QnA</a></li>
+            <li><a href="">파견교별 학점컷</a></li>
+        </ul>
+    </div>
+    <div>
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>(학교 이름 자리){{question.home_university}}</h1>
+                <span>QnA</span>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
+        </div>
+        
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+            <hr>
+            {%for question in questions %}
+            <tr>
+                <td class="numbered" align='center'></td>
+                <td><a href="{% url 'question:question_detail' question.pk%}">{{ question.question_title }}</a></td>
+                <td>{{ question.created_at}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
-<table>
-	<th>번호</th>
-	<th>제목</th>
-    <th>날짜</th>
-    {%for question in questions %}
-    <tr>
-        <td class="numbered"></td>
-        <td><a href="{% url 'question:question_detail' question.pk%}">{{ question.question_title }}</a></td>
-        <td>{{ question.created_at}}</td>
-    </tr>
-    {% endfor %}
-</table>
 {% endblock %}
 
 {% block extra %}
