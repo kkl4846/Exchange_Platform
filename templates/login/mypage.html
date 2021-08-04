@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <h2>내 정보 수정</h2>
+        <div id="rename">
+            <span>닉네임 :</span>
+            <input id="nickname" type="text" value="{{ user.nickname }}">
+            <button onclick="onClickNickname(document.getElementById('nickname').value)">닉네임 수정</button>
+        </div>
+        <div id="repassword">
+            <form action=""></form>
+        </div>
+        <div id="school-certificate">
+            <span>학교 인증 : </span>
+            {% if user.school_certificate == 0 %}
+            <span>학교 인증이 필요합니다.</span>
+            {% else %}
+            <span>학교 인증이 완료되었습니다!</span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 닉네임 변경 ajax
+        const onClickNickname = async(nickname) => {
+            const url = '/rename/';
+            const {data} = await axios.post(url, {
+                nickname
+            });
+            nicknameHandleResponse(data.nickname);
+            alert('닉네임 수정이 완료되었습니다!');
+        };
+
+        const nicknameHandleResponse = (nickname) => {
+            const element = document.querySelector('#nickname');
+            const originHTML = element.innerHTML;
+            
+            element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+        };
+
+        
+    </script>
+{% endblock %}

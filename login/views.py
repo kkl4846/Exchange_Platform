@@ -1,7 +1,9 @@
 # from django.contrib.auth import login as auth_login
 # from django.http import HttpResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from . import models, forms
 from django.contrib import auth
 
@@ -21,7 +23,7 @@ def signup(request):
             return redirect('login:user_main')
     else:
         form = forms.SignupForm()
-        return render(request, 'login/signup.html', {'form': form})
+    return render(request, 'login/signup.html', {'form': form})
 
 
 def login(request):
@@ -38,6 +40,18 @@ def login(request):
         return render(request, 'login/login.html')
 
 
-@login_required
-def profile(request):
-    return render(request, 'login/user_main.html')
+def mypage(request):
+    user = request.user
+    return render(request, 'login/mypage.html', {'user': user})
+
+
+@csrf_exempt
+def rename(request):
+    req = json.loads(request.body)
+    nickname = req['nickname']
+
+    user = request.user
+    user.nickname = nickname
+    user.save()
+
+    return JsonResponse({'nickname': nickname})
