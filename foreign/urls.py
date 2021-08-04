@@ -13,5 +13,8 @@ urlpatterns = [
     path('wiki/edit_atmosphere/<int:pk>',views.wiki_edit_atmosphere,name='wiki_edit_atmosphere'),
     path('wiki/edit_club/<int:pk>',views.wiki_edit_club,name='wiki_edit_club'),
     path('wiki/edit_away_scholarship/<int:pk>',views.wiki_edit_away_scholarship,name='wiki_edit_away_scholarship'),
-
+    path('review/list',views.review_list,name="review_list"),
+    path('review/create',views.review_create,name="review_create"),
+    path('review/delete/<int:pk>',views.review_delete,name="review_delete"),
+    path('review/detail/<int:pk>',views.review_detail,name="review_detail"),
 ]
