@@ -12,12 +12,19 @@
     <button onclick="location.href='{% url "question:question_edit" question.pk %}'"> 수정 </button>
     <button onclick="location.href='{% url "question:question_list" %}'"> 목록 </button>
 </div>
+<span>답변</span>
+{% for comment in question.comment_set.all %}
+    <div>
+        {{ comment.comment_author }}
+        {{ comment.comment_content }}
+        {{ comment.created_at }}
+        <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
+        <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
+    </div>
+{% endfor %}
 <button onclick="location.href='{% url "question:comment_create" question.pk %}'">답변 달기</button>
 <form action ="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <!-- 작성자: {{form.comment_author}}
-    글: {{form.question}}
-    내용: {{form.comment_content}} -->
     {{form.as_p}}
     <input type="submit" value="저장하기"/>
 </form>
