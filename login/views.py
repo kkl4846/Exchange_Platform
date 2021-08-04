@@ -116,8 +116,5 @@ def school_search(request):
 
     school = dict(zip(school_names, school_domains))
 
-    if key in school:
-        if school_name in key:
-            domain = school[school_name]
-
-    return JsonResponse({'domain': domain})
+    school_domain = school[school_name]
+    return JsonResponse({'school_domain': school_domain})

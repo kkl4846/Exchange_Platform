@@ -23,21 +23,21 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // 학교 검색 ajax
-        // const onClickSchool = async(school_name) => {
-        //         const url = '/search_school/';
-        //         const {data} = await axios.post(url, {
-        //             school_name
-        //         });
-        //         schoolHandleResponse(data.school_name);
-        //     };
+        const onClickSchool = async(school_name) => {
+                const url = '/search_school/';
+                const {data} = await axios.post(url, {
+                    school_name
+                });
+                schoolHandleResponse(data.school_name);
+            };
 
-        // const schoolHandleResponse = (home_domain) => {
-        //     const element = document.querySelector('.domain');
-        //     const originHTML = element.innerHTML;
+        const schoolHandleResponse = (school_domain) => {
+            console.log(school_domain)
+            const element = document.querySelector('.domain');
+            const originHTML = element.innerHTML;
             
-        //     element.innerHTML = `${home_domain}`
-        // };
-
+            element.innerHTML = `${school_domain}`
+        };
     </script>
 <!-- <script>
     //학교 이름 뜨게 하기
