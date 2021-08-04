@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="d-flex justify-content-evenly ">
-    <div class="border border-dark rounded" style="width:200px;">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
         <ul>
             <li><a href="">자매 결연 대학</a></li>
             <li><a href="">위키</a></li>
@@ -18,14 +18,13 @@
             </div>
             <button class="btn btn-sm btn-border" onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
         </div>
-        
+        <hr>
         <table>
             <tr align='center'>
                 <th width='50'>번호</th>
                 <th width='600' >제목</th>
                 <th>날짜</th>
             </tr>
-            <hr>
             {%for question in questions %}
             <tr>
                 <td class="numbered" align='center'></td>
