@@ -71,3 +71,7 @@ def rename(request):
     user.save()
 
     return JsonResponse({'nickname': nickname})
+
+
+def certificate(request):
+    return render(request, 'login/certificate.html')

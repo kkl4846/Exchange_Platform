@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>Sign up!</h1>
+<div class="container ml-5 mt-4">
+    <h3>회원가입</h3>
+    <p>회원가입 페이지입니다.</p>
+    <hr />
     <form method="POST" action="{% url 'login:signup' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="회원가입" />
+        <input class="btn btn-primary" type="submit" value="회원가입" />
     </form>
 </div>
 {% endblock %}

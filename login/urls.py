@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='login/main.html'), name='logout'),
     path('mypage/', views.mypage, name='mypage'),
     path('rename/', views.rename, name='rename'),
+    path('certificate/', views.certificate, name='certificate')
 ]
