@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container ml-5 mt-4">
+    <h2>학교 인증</h2>
+    <hr />
+    <form class="search-form">
+        <input type="text" class="search_uni" placeholder="학교 이름">
+        <input type="submit" value="검색"/>
+        <ul class="suggestions">
+            
+        </ul>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra %}
+<script>
+    //학교 이름 뜨게 하기
+    const endpoint = 'https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json'
+    const universities = [];
+
+    fetch(endpoint)
+    .then(blob => blob.json())
+    .then(data => universities.push(...data))
+
+    function findMatches(wordToMatch, universities) {
+        return universities.filter(university => {
+            const regex = new RegExp(wordToMatch, 'gi');
+            return university.name.match(regex)
+        });
+    }
+
+    function displayMatches() {
+        const matchArray = findMatches(this.value, universities);
+        const html = matchArray.map(university => {
+            const regex = new RegExp(this.value, 'gi');
+            const universityName = university.name.replace(regex, `<span class="hl">${this.value}</span>`);
+            return `
+            <li class="mt-1">
+                <a href="#" class="name">${universityName}</a>
+            </li>`
+        }).join('')
+        suggestions.innerHTML = html;
+    };
+
+    const searchInput = document.querySelector('.search_uni');
+    const suggestions = document.querySelector('.suggestions');
+
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+
+    // //클릭시 자동완성
+    // const universityNames = document.querySelectorAll('li > a');
+    
+    // universityNames.forEach(college => college.addEventListener('click', autoComplete));
+    
+
+    // function autoComplete() {
+    //     const element = document.querySelector('.search_uni');
+    //     const originHTML = element.innerHTML;
+            
+    //     const html = `<input name="nickname" type="text" value="${this.value}">`
+    //     element.innerHTML = html
+    // };
+</script>
+{% endblock %}
