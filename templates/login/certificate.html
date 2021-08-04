@@ -13,9 +13,8 @@
         </select>
         <!-- <input type="text" class="search_uni" placeholder="학교 이름"> -->
         <button class="btn btn-sm btn-primary" onclick="onClickSchool(document.querySelector('#school_list').value)">학교 검색</button>
-        <input type="submit" value="검색"/>
     </div>
-    <div class="domain"></div>
+    <div class="domain mt-2"></div>
 </div>
 {% endblock %}
 
@@ -28,15 +27,20 @@
                 const {data} = await axios.post(url, {
                     school_name
                 });
-                schoolHandleResponse(data.school_name);
+                schoolHandleResponse(data.school_domain);
             };
 
         const schoolHandleResponse = (school_domain) => {
-            console.log(school_domain)
             const element = document.querySelector('.domain');
             const originHTML = element.innerHTML;
             
-            element.innerHTML = `${school_domain}`
+            element.innerHTML = `
+            <span>@${school_domain}</span>
+            <span>라는 도메인이 들어가는 메일 주소를 적어주세요.</span>
+            <div class='mt-1'>
+                <input type='email' />
+            </div>
+            `
         };
     </script>
 <!-- <script>
