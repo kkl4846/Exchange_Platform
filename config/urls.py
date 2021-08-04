@@ -18,4 +18,8 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('foreign/', include("foreign.urls")),  # foreign url추가
+    path('', include('login.urls')),
+    path('question/', include('question.urls'), name='question'),
+    path('domestic/',include('domestic.urls'),name='domestic')
 ]
