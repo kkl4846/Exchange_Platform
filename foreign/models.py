@@ -19,6 +19,8 @@ class Foreign(models.Model):
 
 
 class Post(models.Model):
+    foreign = models.ForeignKey(
+        Foreign, on_delete=models.CASCADE, related_name="reviews", default='')
     post_author = models.ForeignKey(
         "login.User", on_delete=models.CASCADE, related_name="user_posts")
     CHOICES = (
