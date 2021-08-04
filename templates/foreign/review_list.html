@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{%extends "foreign/foreign_base.html"%}
+{%block content%}
     <div><a href="{% url "foreign:review_create" foreign_id%}">글쓰기</a></div>
     {% for review in all_review %}
     <div>
@@ -16,5 +9,4 @@
     {{review.created_at}}
     {% endfor %}
     </div>
-</body>
-</html>
+{%endblock%}

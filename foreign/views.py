@@ -1,10 +1,14 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import JsonResponse
+import json
 from django.shortcuts import get_object_or_404, render, redirect
-from . import models
-from . import forms
+from .models import *
+from .forms import *
 
 
 def univ_list(request):
-    all_univ = models.Foreign.objects.all()
+    all_univ = Foreign.objects.all()
     return render(request, 'templates/foreign/univ_list', {
         'all_univ': all_univ,
     })
@@ -13,7 +17,7 @@ def univ_list(request):
 
 
 def wiki(request, pk):
-    univ = models.Foreign.objects.get(pk=pk)
+    univ = Foreign.objects.get(pk=pk)
     ctx = {
         'univ': univ,
     }
@@ -23,14 +27,14 @@ def wiki(request, pk):
 
 
 def wiki_edit_apply(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign = form.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -41,14 +45,14 @@ def wiki_edit_apply(request, pk):
 
 
 def wiki_edit_language_score(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -58,14 +62,14 @@ def wiki_edit_language_score(request, pk):
 
 
 def wiki_edit_course_enroll(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -76,14 +80,14 @@ def wiki_edit_course_enroll(request, pk):
 
 
 def wiki_edit_accommodation(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -94,14 +98,14 @@ def wiki_edit_accommodation(request, pk):
 
 
 def wiki_edit_atmosphere(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -112,14 +116,14 @@ def wiki_edit_atmosphere(request, pk):
 
 
 def wiki_edit_club(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -130,14 +134,14 @@ def wiki_edit_club(request, pk):
 
 
 def wiki_edit_away_scholarship(request, pk):
-    foreign = get_object_or_404(models.Foreign, pk=pk)
+    foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=foreign)
+        form = ForeignForm(request.POST, request.FILES, instance=foreign)
         if form.is_valid():
             foreign.save()
             return redirect('foreign:wiki', foreign.pk)
     else:
-        form = forms.ForeignForm(instance=foreign)
+        form = ForeignForm(instance=foreign)
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
@@ -148,34 +152,39 @@ def wiki_edit_away_scholarship(request, pk):
 # review
 
 def review_list(request, foreign_id):
-    foreign = get_object_or_404(models.Foreign, pk=foreign_id)
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
     all_review = foreign.reviews.all()
     print(all_review)
     ctx = {
         'all_review': all_review,
         'foreign_id': foreign_id,
+        'univ': foreign,
     }
     return render(request, 'foreign/review_list.html', ctx)
 
 
 def review_detail(request, pk, foreign_id):
-    review = get_object_or_404(models.Post, pk=pk)
+    review = get_object_or_404(Post, pk=pk)
+    foreign = get_object_or_404(
+        Foreign, pk=foreign_id)  # 외국 대학과 국가 넘겨주기위해 받음
     ctx = {
         'review': review,
         'foreign_id': foreign_id,
+        'univ': foreign,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
 
 def review_create(request, foreign_id, post=None):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
     if request.method == 'POST':
-        form = forms.ReviewForm(request.POST, request.FILES, instance=post)
+        form = ReviewForm(request.POST, request.FILES, instance=post)
         form.author_post = request.user
         print(form.errors)
         if form.is_valid():
             review = form.save(commit=False)  # db에 바로 저장되지 않도록
             review.post_author = request.user
-            review.foreign = get_object_or_404(models.Foreign, id=foreign_id)
+            review.foreign = get_object_or_404(Foreign, id=foreign_id)
             review.save()
             print(review.post_author)
             return redirect('foreign:review_list', foreign_id)
@@ -186,21 +195,22 @@ def review_create(request, foreign_id, post=None):
             type = 'update'
         else:
             type = 'create'
-        form = forms.ReviewForm(instance=post)
+        form = ReviewForm(instance=post)
 
     return render(request, 'foreign/review_create.html', {
         'form': form,
         'review': post,
         'type': type,
+        'univ': foreign,
     })
 
 
 def review_delete(request, pk, foreign_id):
-    review = get_object_or_404(models.Post, pk=pk)
+    review = get_object_or_404(Post, pk=pk)
     review.delete()
     return redirect('foreign:review_list')
 
 
 def review_update(request, pk, foreign_id):
-    post = get_object_or_404(models.Post, pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     return review_create(request, foreign_id, post)
