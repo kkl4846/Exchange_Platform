@@ -175,9 +175,12 @@ def review_create(request, post=None):
             print(review.post_author)
             return redirect('foreign:review_list')
     else:
+        post.post_author = request.user
+        post.save()
         form = forms.ReviewForm(instance=post)
     return render(request, 'foreign/review_create.html', {
         'form': form,
+        'review': post,
     })
 
 
@@ -185,3 +188,8 @@ def review_delete(request, pk):
     review = get_object_or_404(models.Post, pk=pk)
     review.delete()
     return redirect('foreign:review_list')
+
+
+def review_update(request, pk):
+    post = get_object_or_404(models.Post, pk=pk)
+    return review_create(request, post)

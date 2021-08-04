@@ -11,7 +11,9 @@
                 <form action="" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
                     <table class="table table-bordered">
+                        {% if request.user == review.post_author %}
                         {{form.as_table}}
+                        {% endif %}
                     </table>
                     <input type="submit" value="저장하기" class="btn btn-primary" />
                 </form>

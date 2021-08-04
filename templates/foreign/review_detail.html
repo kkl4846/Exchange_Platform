@@ -15,6 +15,7 @@
 <p>날짜: {{review.created_at}}</p>
 {% if request.user == review.post_author %}
 <a href="{% url "foreign:review_delete" review.pk%}">삭제</a>
+<a href="{% url "foreign:review_update" review.pk%}">수정</a>
 {% endif %}
 </body>
 </html>
