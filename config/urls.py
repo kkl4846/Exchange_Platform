@@ -20,5 +20,5 @@ from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('foreign/',include("foreign.urls")), #foreign url추가
+    path('foreign/', include("foreign.urls")),  # foreign url추가
 ]

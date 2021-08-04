@@ -25,25 +25,22 @@
             {%if field.name == 'atmosphere'%} <p>5.학교 분위기</p> {%endif%}
             {%if field.name == 'club'%}  <p>6.동아리</p> {%endif%}
             {%if field.name == 'away_scholarship'%} <p>7.장학금</p> {%endif%}
+            
             {% if btn == forloop.counter%}
             <div class="form-group">
-
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}">
-                {{field.value}}</textarea>
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
             </div>
+            <input type="submit" value="저장하기" />
             {% else %}
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly >
-                {{field.value}}</textarea>
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly cols = "100" rows="20" >{{field.value}}</textarea>
             </div>
           
             {%endif%}
             {% endfor %}
 
-
-            <input type="submit" value="저장하기" />
         </form>
 
     </div>
