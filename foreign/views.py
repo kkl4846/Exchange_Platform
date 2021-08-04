@@ -147,23 +147,27 @@ def wiki_edit_away_scholarship(request, pk):
 
 # review
 
-def review_list(request):
-    all_review = models.Post.objects.all()
+def review_list(request, foreign_id):
+    foreign = get_object_or_404(models.Foreign, pk=foreign_id)
+    all_review = foreign.reviews.all()
+    print(all_review)
     ctx = {
         'all_review': all_review,
+        'foreign_id': foreign_id,
     }
     return render(request, 'foreign/review_list.html', ctx)
 
 
-def review_detail(request, pk):
+def review_detail(request, pk, foreign_id):
     review = get_object_or_404(models.Post, pk=pk)
     ctx = {
         'review': review,
+        'foreign_id': foreign_id,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
 
-def review_create(request, post=None):
+def review_create(request, foreign_id, post=None):
     if request.method == 'POST':
         form = forms.ReviewForm(request.POST, request.FILES, instance=post)
         form.author_post = request.user
@@ -171,25 +175,32 @@ def review_create(request, post=None):
         if form.is_valid():
             review = form.save(commit=False)  # db에 바로 저장되지 않도록
             review.post_author = request.user
+            review.foreign = get_object_or_404(models.Foreign, id=foreign_id)
             review.save()
             print(review.post_author)
-            return redirect('foreign:review_list')
+            return redirect('foreign:review_list', foreign_id)
     else:
-        post.post_author = request.user
-        post.save()
+        if post != None:
+            post.post_author = request.user
+            post.save()
+            type = 'update'
+        else:
+            type = 'create'
         form = forms.ReviewForm(instance=post)
+
     return render(request, 'foreign/review_create.html', {
         'form': form,
         'review': post,
+        'type': type,
     })
 
 
-def review_delete(request, pk):
+def review_delete(request, pk, foreign_id):
     review = get_object_or_404(models.Post, pk=pk)
     review.delete()
     return redirect('foreign:review_list')
 
 
-def review_update(request, pk):
+def review_update(request, pk, foreign_id):
     post = get_object_or_404(models.Post, pk=pk)
-    return review_create(request, post)
+    return review_create(request, foreign_id, post)

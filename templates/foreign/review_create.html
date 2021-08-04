@@ -11,7 +11,7 @@
                 <form action="" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
                     <table class="table table-bordered">
-                        {% if request.user == review.post_author %}
+                        {% if request.user == review.post_author or type == 'create' %}
                         {{form.as_table}}
                         {% endif %}
                     </table>

@@ -7,11 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <div><a href="{% url "foreign:review_create" %}">글쓰기</a></div>
+    <div><a href="{% url "foreign:review_create" foreign_id%}">글쓰기</a></div>
     {% for review in all_review %}
     <div>
     {{forloop.counter}}     <!--for문이 돌은 횟수 -->
-    <a href="{% url "foreign:review_detail" review.pk %}">{{review.title}}</a>
+    <a href="{% url "foreign:review_detail" foreign_id review.pk %}">{{review.title}}</a>
     {{review.away_year}}-{{review.away_semester}}
     {{review.created_at}}
     {% endfor %}
