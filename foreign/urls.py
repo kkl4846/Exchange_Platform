@@ -37,6 +37,12 @@ urlpatterns = [
          views.question_edit, name='question_edit'),
     path('<int:foreign_id>/question/<int:pk>/delete/',
          views.question_delete, name='question_delete'),
+    path('<int:foreign_id>/comment/<int:pk>/create',
+         views.q_comment_create, name='q_comment_create'),
+    path('<int:foreign_id>/comment/<int:pk>/edit',
+         views.q_comment_edit, name='q_comment_edit'),
+    path('<int:foreign_id>/comment/<int:pk>/delete',
+         views.q_comment_delete, name='q_comment_delete'),
 
     path('<int:foreign_id>/review/detail/<int:pk>/comment_create/',
          views.comment_create, name="comment_create"),

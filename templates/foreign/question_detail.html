@@ -28,7 +28,7 @@
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-                <button onclick="location.href='{% url "foreign:comment_create" foreign_id question.pk %}'">답변 달기</button>
+                <button onclick="location.href='{% url "foreign:q_comment_create" foreign_id question.pk %}'">답변 달기</button>
             </div>
             {% for comment in comments %}
                 <div class="d-flex justify-content-between">
@@ -38,8 +38,8 @@
                     </div>
                     <div>
                         {{ comment.created_at }}
-                        <button onclick="location.href='{% url "foreign:comment_edit" foreign_id comment.pk%}'"> 수정  </button>
-                        <button onclick="location.href='{% url "foreign:comment_delete" foreign_id comment.pk%}'"> 삭제</button>
+                        <button onclick="location.href='{% url "foreign:q_comment_edit" foreign_id comment.pk%}'"> 수정  </button>
+                        <button onclick="location.href='{% url "foreign:q_comment_delete" foreign_id comment.pk%}'"> 삭제</button>
                     </div>
                 </div>
             {% endfor %}

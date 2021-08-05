@@ -1,3 +1,4 @@
+import foreign
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -263,15 +264,20 @@ def question_create(request, foreign_id):
 
 
 def question_edit(request, foreign_id, pk):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = get_object_or_404(FQuestion, id=pk)
     if request.method == 'POST':
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save()
-            return redirect('foreign:question_detail', pk)
+            return redirect('foreign:question_detail', foreign_id, pk)
     else:
         form = QuestionForm(instance=question)
-        ctx = {'form': form}
+        ctx = {
+            'form': form,
+            'foreign_id': foreign_id,
+            'univ': foreign,
+        }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 
 
@@ -283,7 +289,8 @@ def question_delete(request, foreign_id, pk):
 
 # 답글댓글
 
-def comment_create(request, pk):
+def q_comment_create(request, foreign_id, pk):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = FQuestion.objects.get(id=pk)
     # comment = Comment.objects.create(question=question)
     if request.method == 'POST':
@@ -291,33 +298,44 @@ def comment_create(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.question = question
+            comment.comment_author = request.user
             comment.save()
-            return redirect('question:question_detail', pk)
+            return redirect('foreign:question_detail', foreign_id, pk)
     else:
         form = CommentForm()
-        ctx = {'form': form,
-               'question': question}
-        return render(request, template_name='question/comment_form.html', context=ctx)
+        ctx = {
+            'form': form,
+            'question': question,
+            'foreign_id': foreign_id,
+            'univ': foreign,
+        }
+        return render(request, template_name='foreign/comment_form.html', context=ctx)
 
 
-def comment_edit(request, pk):
-    comment = get_object_or_404(FComment, id=pk)
+def q_comment_edit(request, foreign_id, pk):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    comment = FComment.objects.get(id=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect('question:question_detail', pk=comment.question.pk)
+            return redirect('foreign:question_detail', foreign_id, comment.question.pk)
     else:
         form = CommentForm(instance=comment)
-        ctx = {'form': form, 'question': comment.question}
-        return render(request, template_name='question/comment_form.html', context=ctx)
+        ctx = {
+            'form': form,
+            'question': comment.question,
+            'foreign_id': foreign_id,
+            'univ': foreign,
+        }
+        return render(request, template_name='foreign/comment_form.html', context=ctx)
 
 
-def comment_delete(request, pk):
+def q_comment_delete(request, foreign_id, pk):
     comment = FComment.objects.get(id=pk)
     question = comment.question
     comment.delete()
-    return redirect('question:question_detail', pk=question.pk)
+    return redirect('foreign:question_detail', foreign_id, pk=question.pk)
 
 
 # 댓글달기
