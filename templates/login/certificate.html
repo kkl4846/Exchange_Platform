@@ -39,11 +39,12 @@
             const originHTML = element.innerHTML;
             
             element.innerHTML = `
-            <span name="school_domain">@${school_domain}</span>
+            <span>@${school_domain}</span>
             <span>라는 도메인이 들어가는 메일 주소를 적어주세요.</span>
             <div class='mt-1'>
                 <input type="email" name="email" />
                 <input class="mt-2 btn btn-primary btn-sm mailing" type="submit" value="인증 메일 보내기"></input>
+                <input style="display: none;" name="school_domain" value="${school_domain}"/>
             </div>
             `
         };

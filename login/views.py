@@ -100,8 +100,11 @@ def certificate(request):
     if request.method == 'POST':
         user = request.user
         email = request.POST.get('email')
+        school_domain = request.POST.get('school_domain')
+        user.email = email
+        user.save()
 
-        if True:
+        if school[user.university] == school_domain:
             validate_email(email)
 
             current_site = get_current_site(request)
@@ -163,7 +166,7 @@ class Activate(View):
             if user is not None and tokens.school_certification_token.check_token(user, token):
                 user.school_certificate = 1
                 user.save()
-                return redirect(EMAIL['REDIRECT_PAGE'])
+                return render(request, 'login/success_email.html')
             return JsonResponse({"message": "AUTH FAIL"}, status=400)
         except ValidationError:
             return JsonResponse({"message": "TYPE_ERROR"}, status=400)
