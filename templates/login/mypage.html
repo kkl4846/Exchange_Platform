@@ -38,6 +38,8 @@
                 <a class="btn btn-sm btn-primary" href="{% url 'login:certificate' %}">학교 인증하러 가기</a>
                 {% else %}
                 <span>학교 인증이 완료되었습니다!</span>
+                <br />
+                <span>소속 대학 : {{ user.university }}</span>
                 {% endif %}
             </div>
         </div>

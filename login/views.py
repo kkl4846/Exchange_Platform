@@ -133,6 +133,10 @@ def school_search(request):
     req = json.loads(request.body)
     school_name = req['school_name']
 
+    user = request.user
+    user.university = school_name
+    user.save()
+
     f = open('config/univ.json', 'r')
     file = json.load(f)
 
