@@ -181,20 +181,18 @@ def review_create(request, foreign_id, post=None):
     if request.method == 'POST':
         form = ReviewForm(request.POST, request.FILES, instance=post)
         form.author_post = request.user
-        print(form.errors)
         if form.is_valid():
             review = form.save(commit=False)  # db에 바로 저장되지 않도록
             review.post_author = request.user
             review.foreign = get_object_or_404(Foreign, id=foreign_id)
             review.save()
-            print(review.post_author)
-            return redirect('foreign:review_list', foreign_id)
+            return redirect('foreign:review_detail', foreign_id, review.pk)
     else:
-        if post != None:
+        if post != None:                # 수정할 때
             post.post_author = request.user
             post.save()
             type = 'update'
-        else:
+        else:                           # 새로 생성할 때
             type = 'create'
         form = ReviewForm(instance=post)
 
@@ -215,6 +213,111 @@ def review_delete(request, pk, foreign_id):
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
     return review_create(request, foreign_id, post)
+
+# Q&A
+
+
+def question_list(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    questions = FQuestion.objects.filter(away_university=foreign)
+    ctx = {
+        'questions': questions,
+        'foreign_id': foreign_id,
+        'univ': foreign,
+    }
+    return render(request, 'foreign/question_list.html', context=ctx)
+
+
+def question_detail(request, foreign_id, pk):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    question = FQuestion.objects.get(id=pk)
+    comments = question.fcomment_set.all()
+    ctx = {
+        'question': question,
+        'comments': comments,
+        'foreign_id': foreign_id,
+        'univ': foreign,
+    }
+    return render(request, 'foreign/question_detail.html', context=ctx)
+
+
+def question_create(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        form.author_fquestion = request.user
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.away_university = foreign
+            post.save()
+            return redirect('foreign:question_detail', foreign_id, post.pk)
+    else:
+        form = QuestionForm()
+        ctx = {
+            'form': form,
+            'foreign_id': foreign_id,
+            'univ': foreign,
+        }
+        return render(request, template_name='foreign/question_form.html', context=ctx)
+
+
+def question_edit(request, foreign_id, pk):
+    question = get_object_or_404(FQuestion, id=pk)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save()
+            return redirect('foreign:question_detail', pk)
+    else:
+        form = QuestionForm(instance=question)
+        ctx = {'form': form}
+        return render(request, template_name='foreign/question_form.html', context=ctx)
+
+
+def question_delete(request, foreign_id, pk):
+    question = get_object_or_404(FQuestion, id=pk)
+    question.delete()
+    return redirect('foreign:question_list', foreign_id)
+
+
+# 답글댓글
+
+def comment_create(request, pk):
+    question = FQuestion.objects.get(id=pk)
+    # comment = Comment.objects.create(question=question)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.question = question
+            comment.save()
+            return redirect('question:question_detail', pk)
+    else:
+        form = CommentForm()
+        ctx = {'form': form,
+               'question': question}
+        return render(request, template_name='question/comment_form.html', context=ctx)
+
+
+def comment_edit(request, pk):
+    comment = get_object_or_404(FComment, id=pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            comment = form.save()
+            return redirect('question:question_detail', pk=comment.question.pk)
+    else:
+        form = CommentForm(instance=comment)
+        ctx = {'form': form, 'question': comment.question}
+        return render(request, template_name='question/comment_form.html', context=ctx)
+
+
+def comment_delete(request, pk):
+    comment = FComment.objects.get(id=pk)
+    question = comment.question
+    comment.delete()
+    return redirect('question:question_detail', pk=question.pk)
 
 
 # 댓글달기

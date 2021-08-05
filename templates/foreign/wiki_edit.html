@@ -1,6 +1,13 @@
 {%extends "foreign/foreign_base.html"%}
 {%block content%}
-    <div>
+<div style="width:750px;">
+    <div class="d-flex justify-content-between ">
+        <div class="d-flex align-items-center ">
+            <h1>{{univ.away_name}}</h1>
+            <span>위키</span>
+            <h3>{{univ.country}}</h3>
+        </div>
+    </div>
 
 
         <form action="" method="POST" enctype="multipart/form-data" class="table">
@@ -32,5 +39,7 @@
 
         </form>
 
+    </div>
+    </div>
     </div>
 {%endblock%}
