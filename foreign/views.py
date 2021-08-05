@@ -10,7 +10,7 @@ from .forms import *
 
 def univ_list(request):
     all_univ = Foreign.objects.all()
-    return render(request, 'templates/foreign/univ_list', {
+    return render(request, 'foreign/univ_list.html', {
         'all_univ': all_univ,
     })
 
@@ -346,8 +346,8 @@ def comment_create(request, foreign_id, pk):
     Post_id = req['post_id']
     post = Post.objects.get(id=Post_id)
     content = req['comment_content']
-    new_comment = Comment(comment_author=request.user,
-                          comment_content=content, post=post)
+    new_comment = Comment.objects.create(
+        comment_author=request.user, comment_content=content, post=post)
     new_comment.save()
 
     return JsonResponse({'post_id': Post_id, 'comment_content': content, 'comment_id': new_comment.id})
