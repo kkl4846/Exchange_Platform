@@ -1,56 +1,72 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from .forms import *
-
+from jamo import h2j, j2hcj
 # Create your views here.
 def univ_list(request):
-    return render(request, template_name='domestic/univ_list.html')
+    universities = Domestic.objects.all().order_by('home_name')
+    universities_dic = {}
+    last_cho = 'ㄱ'
+
+    for d in universities:
+        this_domestic = d.home_name
+        domestic_cho = j2hcj(h2j(this_domestic[0]))[0]
+        if last_cho != domestic_cho:     # 직전 초성과 다른 초성
+            universities_dic[domestic_cho] = [this_domestic]
+            last_cho = domestic_cho
+        else:                           # 같은 초성
+            universities_dic[domestic_cho].append(this_domestic)
+    
+    print(universities_dic)
+    ctx= {'universities_dic': universities_dic}
+
+    return render(request, template_name='domestic/univ_list.html', context=ctx)
 
 
-def wiki(request, pk):
-    univ = models.Domestic.objects.get(pk=pk)
+def wiki(request, domestic_id):
+    univ = models.Domestic.objects.get(pk=domestic_id)
     ctx = {
         'univ': univ,
     }
     return render(request, 'domestic/wiki.html', ctx)
 
-def wiki_edit_apply(request, pk):
-    domestic = get_object_or_404(models.Domestic, pk=pk)
+def wiki_edit_apply(request, domestic_id):
+    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic = form.save()
-            return redirect('foreign:wiki', domestic.pk)
+            return redirect('domestic:wiki', domestic_id)
     else:
-        form = forms.ForeignForm(instance=domestic)
+        form = forms.DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
         'btn': 1,
     })
 
-def wiki_edit_document(request, pk):
-    domestic = get_object_or_404(models.Domestic, pk=pk)
+def wiki_edit_document(request, domestic_id):
+    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic = form.save()
-            return redirect('domestic:wiki', domestic.pk)
+            return redirect('domestic:wiki', domestic_id)
     else:
         form = forms.ForeignForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
-        'btn': 1,
+        'btn': 2,
     })
 
-def wiki_edit_semester(request, pk):
-    domestic = get_object_or_404(models.Foreign, pk=pk)
+def wiki_edit_semester(request, domestic_id):
+    domestic = get_object_or_404(models.Foreign, pk=domestic_id)
     if request.method == 'POST':
         form = forms.ForeignForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic.save()
-            return redirect('domestic:wiki', domestic.pk)
+            return redirect('domestic:wiki', domestic_id)
     else:
         form = forms.DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
@@ -59,34 +75,34 @@ def wiki_edit_semester(request, pk):
         'btn': 3,
     })
 
-def wiki_edit_scholarship(request, pk):
-    domestic = get_object_or_404(models.Domestic, pk=pk)
+def wiki_edit_scholarship(request, domestic_id):
+    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = forms.ForeignForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic.save()
-            return redirect('domestic:wiki', domestic.pk)
-    else:
-        form = forms.DomesticForm(instance=domestic)
-    return render(request, 'domestic/wiki_edit.html', {
-        'form': form,
-        'univ': domestic,
-        'btn': 2,
-    })
-
-def wiki_edit_insurance(request, pk):
-    domestic = get_object_or_404(models.Domestic, pk=pk)
-    if request.method == 'POST':
-        form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
-        if form.is_valid():
-            domestic.save()
-            return redirect('domestic:wiki', domestic.pk)
+            return redirect('domestic:wiki', domestic_id)
     else:
         form = forms.DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
         'btn': 4,
+    })
+
+def wiki_edit_insurance(request, domestic_id):
+    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
+    if request.method == 'POST':
+        form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
+        if form.is_valid():
+            domestic.save()
+            return redirect('domestic:wiki', domestic_id)
+    else:
+        form = forms.DomesticForm(instance=domestic)
+    return render(request, 'domestic/wiki_edit.html', {
+        'form': form,
+        'univ': domestic,
+        'btn': 5,
     })
 
 # QnA
@@ -154,11 +170,12 @@ def comment_create(request,pk):
 
 def comment_edit(request, pk):
     comment = get_object_or_404(DComment, id=pk)
+    question = comment.question
     if request.method == 'POST':
         form = DCommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect('domestic:question_detail', pk=comment.question.pk)
+            return redirect('domestic:question_detail', pk=question.pk)
     else:
         form = DCommentForm(instance=comment)
         ctx = {'form': form,'question':comment.question}
@@ -172,12 +189,16 @@ def comment_delete(request, pk):
     return redirect('domestic:question_detail', pk=question.pk)
 
 #자매결연대학 목록
-def sister_list(request):
-    return render(request, template_name='domestic/sister_list.html')
+def sister_list(request,domestic_id):
+    domestic=Domestic.objects.get(id=domestic_id)
+    ctx={'domestic':domestic}
+    return render(request, template_name='domestic/sister_list.html',context=ctx)
 
 #학점컷
-def credit_list(request):
-    return render(request,template_name='domestic/credit_list.html')
+def credit_list(request,domestic_id):
+    domestic=Domestic.objects.get(id=domestic_id)
+    ctx={'domestic':domestic}
+    return render(request,template_name='domestic/credit_list.html',context=ctx)
 
 def credit_create(request):
     if request.method == 'POST':
