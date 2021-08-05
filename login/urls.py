@@ -13,4 +13,5 @@ urlpatterns = [
     path('rename/', views.rename, name='rename'),
     path('certificate/', views.certificate, name='certificate'),
     path('search_school/', views.school_search, name='search_school'),
+    path('users/<str:uidb64>/<str:token>', views.Activate.as_view()),
 ]
