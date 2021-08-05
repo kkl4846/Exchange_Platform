@@ -1,13 +1,9 @@
-# from django.contrib.auth import login as auth_login
-# from django.http import HttpResponse
 import json
-import jwt
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from . import models, forms, tokens, text
-from config.my_settings import EMAIL
 from django.contrib import auth
 from django.views import View
 from django.core.exceptions import ValidationError
@@ -94,8 +90,9 @@ def certificate(request):
         for key in university_dicts.keys():
             if 'ko-name' in key:
                 school_domains.append(university_dicts.get('domains')[0])
-
+    school_names.sort()
     school = dict(zip(school_names, school_domains))
+    align_school = sorted(school.items())
 
     if request.method == 'POST':
         user = request.user
@@ -117,16 +114,13 @@ def certificate(request):
             mail_to = email
             emailing = EmailMessage(mail_title, message_data, to=[mail_to])
             emailing.send()
-            print('이메일 전송이 완료되었습니다.')
-            return redirect('login:user_main')
+            return render(request, 'login/send_email.html')
         else:
             return redirect('login:certificate')
 
     else:
         ctx = {
             'school_names': school_names,
-            'school_domains': school_domains,
-            'school': school,
         }
         return render(request, 'login/certificate.html', context=ctx)
 

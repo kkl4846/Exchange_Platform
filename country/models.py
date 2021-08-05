@@ -8,3 +8,6 @@ class Country(models.Model):
     money = models.TextField(blank=True, verbose_name='물가 및 체류 비용')
     culture = models.TextField(blank=True, verbose_name='문화적 특징')
     covid_info = models.TextField(blank=True, verbose_name='코로나 정보')
+
+    def __str__(self):
+        return self.country_name
