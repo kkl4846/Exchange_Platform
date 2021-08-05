@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-{% autoescape off %}
-{% for key, val in univesties_dic.items %}
+
+    {% for key, value in universities_dic.items %}
     <ul>
-        <h3>{{ key }}</h3>
-        {% for university in val %}
-            <li>
-                {{ university }}
-            </li>
+        <h4>{{ key }}</h4>
+        {% for university in value %}
+              {{ university }}
         {% endfor %}
     </ul>
-    <br>
-{% endfor %}
-{% endautoescape %}
+    {% endfor %}
+
 {% endblock %}

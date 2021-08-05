@@ -7,19 +7,19 @@ def univ_list(request):
     universities = Domestic.objects.all().order_by('home_name')
     universities_dic = {}
     last_cho = 'ㄱ'
+    universities_dic[last_cho] = []
 
-    for d in universities:
-        this_domestic = d.home_name
-        domestic_cho = j2hcj(h2j(this_domestic[0]))[0]
-        if last_cho != domestic_cho:     # 직전 초성과 다른 초성
-            universities_dic[domestic_cho] = [this_domestic]
-            last_cho = domestic_cho
-        else:                           # 같은 초성
-            universities_dic[domestic_cho].append(this_domestic)
-    
+    for university in universities:
+        this_univ = university.home_name
+        univ_cho = j2hcj(h2j(this_univ[0]))[0]
+        if last_cho != univ_cho:
+            last_cho = univ_cho  
+            universities_dic[last_cho] = []
+            universities_dic[univ_cho].append(this_univ)
+        else:                        
+            universities_dic[univ_cho].append(this_univ)
     print(universities_dic)
     ctx= {'universities_dic': universities_dic}
-
     return render(request, template_name='domestic/univ_list.html', context=ctx)
 
 
