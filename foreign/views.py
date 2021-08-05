@@ -19,10 +19,10 @@ def univ_list(request):
         this_alpha = u[0]
         if last_alpha != this_alpha:
             univ_dict[this_alpha] = []
-            univ_dict[this_alpha].append(u)
+            univ_dict[this_alpha].append(univ)
             last_alpha = this_alpha
         else:
-            univ_dict[this_alpha].append(u)
+            univ_dict[this_alpha].append(univ)
     if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
         del(univ_dict['A'])
     print(univ_dict)
