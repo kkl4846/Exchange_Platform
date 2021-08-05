@@ -66684,14 +66684,14 @@
     },
     {
       "web_pages": [
-        "http://www.chungju.ac.kr/"
+        "https://www.ut.ac.kr/"
       ],
-      "name": "Chung-Ju National University",
+      "name": "Korea National University of Transportation",
       "ko-name": "한국교통대학교",
       "alpha_two_code": "KR",
       "state-province": null,
       "domains": [
-        "chungju.ac.kr"
+        "ut.ac.kr"
       ],
       "country": "Korea, Republic of"
     },
@@ -100862,7 +100862,7 @@
       "web_pages": [
         "http://www.city.ac.uk/"
       ],
-      "name": "City University",
+      "name": "City, University of London",
       "alpha_two_code": "GB",
       "state-province": null,
       "domains": [

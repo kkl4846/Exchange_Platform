@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container ml-5 mt-4">
+    <h2>학교 인증</h2>
+    <hr />
+    <div class="search-form">
+        <span>학교명 :</span>
+        <select name="school_list" id="school_list">
+            {% for school_name in school_names %}
+                <option>{{ school_name }}</option>
+            {% endfor %}
+        </select>
+        <!-- <input type="text" class="search_uni" placeholder="학교 이름"> -->
+        <button class="btn btn-sm btn-primary" onclick="onClickSchool(document.querySelector('#school_list').value)">학교 검색</button>
+    </div>
+    <div class="domain mt-2"></div>
+</div>
+{% endblock %}
+
+{% block extra %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 학교 검색 ajax
+        const onClickSchool = async(school_name) => {
+                const url = '/search_school/';
+                const {data} = await axios.post(url, {
+                    school_name
+                });
+                schoolHandleResponse(data.school_domain);
+            };
+
+        const schoolHandleResponse = (school_domain) => {
+            const element = document.querySelector('.domain');
+            const originHTML = element.innerHTML;
+            
+            element.innerHTML = `
+            <span>@${school_domain}</span>
+            <span>라는 도메인이 들어가는 메일 주소를 적어주세요.</span>
+            <div class='mt-1'>
+                <input type='email' />
+            </div>
+            `
+        };
+    </script>
+<!-- <script>
+    //학교 이름 뜨게 하기
+    const endpoint = 'https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json'
+    const universities = [];
+
+    fetch(endpoint)
+    .then(blob => blob.json())
+    .then(data => universities.push(...data))
+
+    function findMatches(wordToMatch, universities) {
+        return universities.filter(university => {
+            const regex = new RegExp(wordToMatch, 'gi');
+            return university.name.match(regex)
+        });
+    }
+
+    function displayMatches() {
+        const matchArray = findMatches(this.value, universities);
+        const html = matchArray.map(university => {
+            const regex = new RegExp(this.value, 'gi');
+            const universityName = university.name.replace(regex, `<span class="hl">${this.value}</span>`);
+            return `
+            <li class="mt-1">
+                <a href="#" class="name">${universityName}</a>
+            </li>`
+        }).join('')
+        suggestions.innerHTML = html;
+    };
+
+    const searchInput = document.querySelector('.search_uni');
+    const suggestions = document.querySelector('.suggestions');
+
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches); -->
+</script>
+{% endblock %}
