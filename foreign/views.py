@@ -9,10 +9,28 @@ from .forms import *
 
 
 def univ_list(request):
-    all_univ = Foreign.objects.all()
+    unives = Foreign.objects.all().order_by('away_name')
+    univ_dict = {}
+    last_alpha = 'A'
+    univ_dict[last_alpha] = []
+
+    for univ in unives:
+        u = univ.away_name
+        this_alpha = u[0]
+        if last_alpha != this_alpha:
+            univ_dict[this_alpha] = []
+            univ_dict[this_alpha].append(u)
+            last_alpha = this_alpha
+        else:
+            univ_dict[this_alpha].append(u)
+    if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
+        del(univ_dict['A'])
+    print(univ_dict)
     return render(request, 'foreign/univ_list.html', {
-        'all_univ': all_univ,
+        'univ_dict': univ_dict,
+        'all_univs': unives,
     })
+
 
 # wiki
 

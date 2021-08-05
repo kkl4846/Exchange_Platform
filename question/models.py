@@ -13,15 +13,14 @@ class Question(models.Model):
         to='country.Country', on_delete=models.CASCADE, null=True, blank=True)
     question_title = models.CharField(max_length=50)
     question_content = models.TextField()
-    created_at = models.DateField(auto_now_add=True,blank=False)
+    created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
 
 
 class Comment(models.Model):
     comment_author = models.ForeignKey(
-        to='login.User', on_delete=models.CASCADE,null=True)
+        to='login.User', on_delete=models.CASCADE, null=True)
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
     comment_content = models.TextField(null=True)
-    created_at = models.DateField(auto_now_add=True,blank=False)
+    created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
-

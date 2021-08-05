@@ -1,3 +1,18 @@
 {%extends "base.html"%}
 {%block content%}
+{% for key, val in univ_dict.items %}
+    <ul>
+        <h3>{{ key }}</h3>
+        {% for country in val %}
+        {% for univ in all_univs %}
+        {% if univ.away_name == country %}
+            <li>
+                <a href="{% url "foreign:wiki" univ.pk%}">{{country}}</a>
+            </li>
+        {%endif%}
+        {% endfor %}
+        {% endfor %}
+    </ul>
+    <br>
+{% endfor %}
 {%endblock%}
