@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'country',
     'domestic',
     'foreign',
-    'question',
+
 ]
 
 MIDDLEWARE = [

@@ -9,6 +9,11 @@ from .forms import *
 
 
 def univ_list(request):
+    if request.method == 'GET':
+        query = request.GET['query']
+        if query:
+            univ = Foreign.objects.filter()
+
     unives = Foreign.objects.all().order_by('away_name')
     univ_dict = {}
     last_alpha = 'A'
@@ -28,7 +33,7 @@ def univ_list(request):
     print(univ_dict)
     return render(request, 'foreign/univ_list.html', {
         'univ_dict': univ_dict,
-        'all_univs': unives,
+
     })
 
 

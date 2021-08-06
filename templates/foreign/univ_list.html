@@ -1,5 +1,11 @@
 {%extends "base.html"%}
 {%block content%}
+
+<form action="{% url "foreign:search_univ" %}" method='GET'>
+    학교명: <input type="search" name='query'>
+    <input type="submit" value='검색'>
+</form>
+
 {% for key, val in univ_dict.items %}
     <ul>
         <h3>{{ key }}</h3>

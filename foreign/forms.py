@@ -1,6 +1,5 @@
 from .models import *
 from django import forms
-from question.models import *
 
 
 class ForeignForm(forms.ModelForm):
