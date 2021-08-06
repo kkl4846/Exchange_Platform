@@ -107,23 +107,30 @@ def wiki_edit_insurance(request, domestic_id):
     })
 
 # QnA
-def question_list(request,domestic_id):
-    questions = DQuestion.objects.all()
+def question_list(request, domestic_id):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
+    questions = domestic.question_set.all()
     ctx = {
+        'domestic':domestic,
         'questions': questions,
-        'domestic_id':domestic_id
     }
     return render(request, template_name='domestic/question_list.html', context=ctx)
 
 
-def question_detail(request, pk):
+def question_detail(request, domestic_id, pk):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
     comments = question.comment_set.all()
-    ctx = {'question': question, 'comments': comments}
+    ctx = {
+        'question': question, 
+        'comments': comments,
+        'domestic': domestic
+        }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
 
-def question_create(request):
+def question_create(request, domestic_id):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = DQuestionForm(request.POST)
         if form.is_valid():
@@ -131,11 +138,15 @@ def question_create(request):
             return redirect('domestic:question_detail', pk=post.pk)
     else:
         form = DQuestionForm()
-        ctx = {'form': form}
+        ctx = {
+            'form': form,
+            'domestic':domestic
+            }
         return render(request, template_name='domestic/question_form.html', context=ctx)
 
 
-def question_edit(request, pk):
+def question_edit(request, domestic_id, pk):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = get_object_or_404(DQuestion, id=pk)
     if request.method == 'POST':
         form = DQuestionForm(request.POST, instance=question)
@@ -144,14 +155,17 @@ def question_edit(request, pk):
             return redirect('domestic:question_detail', pk)
     else:
         form = DQuestionForm(instance=question)
-        ctx = {'form': form}
+        ctx = {
+            'form': form,
+            'domestic':domestic
+            }
         return render(request, template_name='domestic/question_form.html', context=ctx)
 
 
-def question_delete(request, pk):
+def question_delete(request, domestic_id, pk):
     question = DQuestion.objects.get(id=pk)
     question.delete()
-    return redirect('domestic:question_list')
+    return redirect('domestic:question_list', domestic_id)
 
 
 # 답글댓글
