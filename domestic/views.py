@@ -28,7 +28,6 @@ def wiki(request, domestic_id):
     univ = Domestic.objects.get(pk=domestic_id)
     ctx = {
         'univ': univ,
-        'domestic_id':domestic_id
     }
     return render(request, 'domestic/wiki.html', ctx)
 
@@ -45,7 +44,6 @@ def wiki_edit_apply(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 1,
-        'domestic_id':domestic_id,
     })
 
 def wiki_edit_document(request, domestic_id):
@@ -61,7 +59,6 @@ def wiki_edit_document(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 2,
-        'domestic_id':domestic_id,
     })
 
 def wiki_edit_semester(request, domestic_id):
@@ -77,7 +74,6 @@ def wiki_edit_semester(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 3,
-        'domestic_id':domestic_id,
     })
 
 def wiki_edit_scholarship(request, domestic_id):
@@ -93,7 +89,6 @@ def wiki_edit_scholarship(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 4,
-        'domestic_id':domestic_id
     })
 
 def wiki_edit_insurance(request, domestic_id):
@@ -109,13 +104,15 @@ def wiki_edit_insurance(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 5,
-        'domestic_id':domestic_id,
     })
 
 # QnA
-def question_list(request):
+def question_list(request,domestic_id):
     questions = DQuestion.objects.all()
-    ctx = {'questions': questions}
+    ctx = {
+        'questions': questions,
+        'domestic_id':domestic_id
+    }
     return render(request, template_name='domestic/question_list.html', context=ctx)
 
 

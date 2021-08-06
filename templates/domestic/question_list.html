@@ -4,16 +4,16 @@
 <div class="d-flex justify-content-evenly ">
     <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
         <ul>
-            <li><a href="{% url 'domestic:sister_list' %}">자매 결연 대학</a></li>
-            <li><a href="{% url 'domestic:wiki' %}">위키</a></li>
-            <li><a href="{% url 'domestic:question_list' %}">QnA</a></li>
-            <li><a href="{% url 'domestic:credit_list' %}">파견교별 학점컷</a></li>
+            <li><a href="{% url 'domestic:sister_list' domestic_id %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'domestic:wiki' domestic_id %}">위키</a></li>
+            <li><a href="{% url 'domestic:question_list' domestic_id %}">QnA</a></li>
+            <li><a href="{% url 'domestic:credit_list' domestic_id %}">파견교별 학점컷</a></li>
         </ul>
     </div>
     <div>
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
-                <h1>(학교 이름 자리){{question.home_university}}</h1>
+                <h1>(학교 이름 자리){{domestic_id.question.home_university}}</h1>
                 <span>QnA</span>
             </div>
             <button class="btn btn-sm btn-border" onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
