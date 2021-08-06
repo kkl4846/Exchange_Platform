@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {%block content%}
-    <div>
+<div class="d-flex justify-content-evenly ">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="">자매 결연 대학</a></li>
+            <li><a href="">위키</a></li>
+            <li><a href="">QnA</a></li>
+            <li><a href="">파견교별 학점컷</a></li>
+        </ul>
+    </div>
+    <div style="width:750px;">
         <div>
             <p>1.지원 방법</p>
             <pre>{{univ.home_apply}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
@@ -28,4 +37,5 @@
         </div>
     </div>
 
+</div>
 {%endblock%}

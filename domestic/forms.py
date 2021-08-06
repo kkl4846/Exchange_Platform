@@ -1,7 +1,11 @@
 from django import forms
 from .models import *
 
-
+class DomesticForm(forms.ModelForm):
+    class Meta:
+        model = Domestic
+        fields = ['home_apply', 'home_document', 'semester',
+                  'home_scholarship', 'insurance']
 class DQuestionForm(forms.ModelForm):
     class Meta:
         model = DQuestion

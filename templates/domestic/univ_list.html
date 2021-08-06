@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-
-    {% for key, value in universities_dic.items %}
+    {% for key, val in universities_dict.items %}
     <ul>
-        <h4>{{ key }}</h4>
-        {% for university in value %}
-              {{ university }}
+        <h3>{{ key }}</h3>
+        {% for university in val %}
+            <a href="{% url "domestic:wiki" university.pk %}">{{university.home_name}}</a>
         {% endfor %}
     </ul>
+    <br>
     {% endfor %}
-
 {% endblock %}

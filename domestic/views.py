@@ -5,40 +5,41 @@ from jamo import h2j, j2hcj
 # Create your views here.
 def univ_list(request):
     universities = Domestic.objects.all().order_by('home_name')
-    universities_dic = {}
+    universities_dict = {}
     last_cho = 'ㄱ'
-    universities_dic[last_cho] = []
+    universities_dict[last_cho] = []
 
     for university in universities:
-        this_univ = university.home_name
-        univ_cho = j2hcj(h2j(this_univ[0]))[0]
-        if last_cho != univ_cho:
-            last_cho = univ_cho  
-            universities_dic[last_cho] = []
-            universities_dic[univ_cho].append(this_univ)
-        else:                        
-            universities_dic[univ_cho].append(this_univ)
-    print(universities_dic)
-    ctx= {'universities_dic': universities_dic}
-    return render(request, template_name='domestic/univ_list.html', context=ctx)
+        this_university = university.home_name
+        university_cho = j2hcj(h2j(this_university[0]))[0]
+        if last_cho != university_cho:     # 직전 초성과 다른 초성   
+            universities_dict[university_cho] = []
+            universities_dict[university_cho].append(university)
+            last_cho = university_cho
+        else:                           # 같은 초성
+            universities_dict[university_cho].append(university)
+    g_cho = 'ㄱ'
+    if len(universities_dict[g_cho]) == 0:
+        del(universities_dict[g_cho])
 
+    return render(request, 'domestic/univ_list.html', {'universities_dict': universities_dict})
 
 def wiki(request, domestic_id):
-    univ = models.Domestic.objects.get(pk=domestic_id)
+    univ = Domestic.objects.get(pk=domestic_id)
     ctx = {
         'univ': univ,
     }
     return render(request, 'domestic/wiki.html', ctx)
 
 def wiki_edit_apply(request, domestic_id):
-    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
-        form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
+        form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic = form.save()
             return redirect('domestic:wiki', domestic_id)
     else:
-        form = forms.DomesticForm(instance=domestic)
+        form = DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -63,12 +64,12 @@ def wiki_edit_document(request, domestic_id):
 def wiki_edit_semester(request, domestic_id):
     domestic = get_object_or_404(models.Foreign, pk=domestic_id)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=domestic)
+        form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic.save()
             return redirect('domestic:wiki', domestic_id)
     else:
-        form = forms.DomesticForm(instance=domestic)
+        form = DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -78,12 +79,12 @@ def wiki_edit_semester(request, domestic_id):
 def wiki_edit_scholarship(request, domestic_id):
     domestic = get_object_or_404(models.Domestic, pk=domestic_id)
     if request.method == 'POST':
-        form = forms.ForeignForm(request.POST, request.FILES, instance=domestic)
+        form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic.save()
             return redirect('domestic:wiki', domestic_id)
     else:
-        form = forms.DomesticForm(instance=domestic)
+        form = DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -93,12 +94,12 @@ def wiki_edit_scholarship(request, domestic_id):
 def wiki_edit_insurance(request, domestic_id):
     domestic = get_object_or_404(models.Domestic, pk=domestic_id)
     if request.method == 'POST':
-        form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
+        form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic.save()
             return redirect('domestic:wiki', domestic_id)
     else:
-        form = forms.DomesticForm(instance=domestic)
+        form = DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
