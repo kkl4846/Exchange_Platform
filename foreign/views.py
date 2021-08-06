@@ -1,4 +1,5 @@
 import foreign
+import json
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -28,6 +29,40 @@ def univ_list(request):
     if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
         del(univ_dict['A'])
     return render(request, 'foreign/univ_list.html', {
+        'univ_dict': univ_dict,
+
+    })
+
+# 해외 대학 추가
+
+
+def univ_create(request):
+    f = open('config/univ.json', 'r', encoding='UTF8')
+    file = json.load(f)
+    foreign_univs = []
+    search_univs = []
+    for university_dicts in file:
+        for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'name' in key):
+            foreign_univs.append(university_name)
+    query = request.GET.get('query', '')
+    univ_dict = {}
+    last_alpha = 'A'
+    univ_dict[last_alpha] = []
+    if query:
+        for univ in foreign_univs:
+            if query in univ:
+                search_univs.append(univ)
+        for univ in search_univs:
+            this_alpha = univ[0]
+            if last_alpha != this_alpha:
+                univ_dict[this_alpha] = []
+                univ_dict[this_alpha].append(univ)
+                last_alpha = this_alpha
+            else:
+                univ_dict[this_alpha].append(univ)
+        if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
+            del(univ_dict['A'])
+    return render(request, 'foreign/univ_create.html', {
         'univ_dict': univ_dict,
 
     })
