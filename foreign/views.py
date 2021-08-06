@@ -9,16 +9,13 @@ from .forms import *
 
 
 def univ_list(request):
-    if request.method == 'GET':
-        query = request.GET['query']
-        if query:
-            univ = Foreign.objects.filter()
-
     unives = Foreign.objects.all().order_by('away_name')
+    query = request.GET.get('query', '')
     univ_dict = {}
     last_alpha = 'A'
     univ_dict[last_alpha] = []
-
+    if query:
+        unives = unives.filter(away_name__icontains=query)
     for univ in unives:
         u = univ.away_name
         this_alpha = u[0]
@@ -30,7 +27,6 @@ def univ_list(request):
             univ_dict[this_alpha].append(univ)
     if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
         del(univ_dict['A'])
-    print(univ_dict)
     return render(request, 'foreign/univ_list.html', {
         'univ_dict': univ_dict,
 
