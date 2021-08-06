@@ -1,6 +1,6 @@
 import country
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Country, Foreign
+from .models import Country
 from jamo import h2j, j2hcj
 
 # Create your views here.
@@ -21,8 +21,9 @@ def country_list(request):
             last_cho = country_cho
         else:                           # 같은 초성
             countries_dict[country_cho].append(c)
-    if len(countries_dict['ㄱ']) == 0:
-        del(countries_dict['ㄱ'])
+    g_cho = 'ㄱ'
+    if len(countries_dict[g_cho]) == 0:
+        del(countries_dict[g_cho])
     # print(countries_dict)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
