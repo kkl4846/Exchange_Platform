@@ -1,0 +1,20 @@
+{%extends "country/country_base.html"%}
+{% block contents %}
+
+    
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <h1>{{country.country_name}}</h1>
+            <span>QnA</span>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:question_create" foreign_id%}'"> 글쓰기 </button>
+        </div>
+        <hr>
+        <form action ="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
+        </form>
+    </div>
+
+
+{% endblock %}
