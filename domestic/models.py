@@ -6,7 +6,7 @@ from django.db import models
 class Domestic(models.Model):
     home_name = models.CharField(max_length=50)
     home_sister = models.ManyToManyField(
-        verbose_name="자매결연", to='foreign.Foreign', related_name='sisters', null=True, blank=True)
+        verbose_name="자매결연", to='foreign.Foreign', related_name='sisters')
     home_apply = models.TextField(blank=True)
     home_document = models.TextField(blank=True)
     semester = models.TextField(blank=True)

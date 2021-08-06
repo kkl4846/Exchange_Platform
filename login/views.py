@@ -101,7 +101,7 @@ def certificate(request):
         user.email = email
         user.save()
 
-        if True:
+        if email.endswith(school_domain) == True:
             validate_email(email)
 
             current_site = get_current_site(request)
@@ -116,7 +116,12 @@ def certificate(request):
             emailing.send()
             return render(request, 'login/send_email.html')
         else:
-            return redirect('login:certificate')
+            domain_error = "이메일을 확인해주세요."
+            ctx = {
+                'domain_error': domain_error,
+                'school_names': school_names,
+            }
+            return render(request, 'login/certificate.html', context=ctx)
 
     else:
         ctx = {

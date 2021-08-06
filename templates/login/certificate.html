@@ -18,6 +18,11 @@
         {% csrf_token %}
         <div class="domain mt-2">
     </form>
+    {% if domain_error %}
+        <div>
+            <span>{{ domain_error }}</span>
+        </div>
+    {% endif %}
     </div>
 </div>
 {% endblock %}
