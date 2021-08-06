@@ -101,7 +101,7 @@ def certificate(request):
         user.email = email
         user.save()
 
-        if school[user.university] == school_domain:
+        if True:
             validate_email(email)
 
             current_site = get_current_site(request)
