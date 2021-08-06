@@ -5,7 +5,9 @@ app_name = 'foreign'
 
 urlpatterns = [
     path('univ_list', views.univ_list, name='univ_list'),
-    path('univ_create', views.univ_create, name='univ_create'),
+    path('univ_search', views.univ_search, name='univ_search'),
+    path('univ_create/<str:univ_name>', views.univ_create, name='univ_create'),
+
     path('wiki/<int:pk>', views.wiki, name='wiki'),
     path('wiki/edit_apply/<int:pk>', views.wiki_edit_apply, name='wiki_edit_apply'),
     path('wiki/edit_language_score/<int:pk>',

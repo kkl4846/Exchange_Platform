@@ -1,3 +1,4 @@
+from domestic.models import Domestic
 from .models import *
 from django import forms
 
@@ -7,6 +8,14 @@ class ForeignForm(forms.ModelForm):
         model = Foreign
         fields = ['away_apply', 'language_score', 'course_enroll',
                   'accommodation', 'atmosphere', 'club', 'away_scholarship']
+
+
+class NewForeignForm(forms.ModelForm):
+    foreign_sister = forms.ModelChoiceField(queryset=Domestic.objects.all())
+
+    class Meta:
+        model = Foreign
+        fields = ['away_name', 'country', 'foreign_sister']
 
 
 class ReviewForm(forms.ModelForm):
