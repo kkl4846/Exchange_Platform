@@ -28,6 +28,7 @@ def wiki(request, domestic_id):
     univ = Domestic.objects.get(pk=domestic_id)
     ctx = {
         'univ': univ,
+        'domestic_id':domestic_id
     }
     return render(request, 'domestic/wiki.html', ctx)
 
@@ -44,25 +45,27 @@ def wiki_edit_apply(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 1,
+        'domestic_id':domestic_id,
     })
 
 def wiki_edit_document(request, domestic_id):
-    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
-        form = forms.DomesticForm(request.POST, request.FILES, instance=domestic)
+        form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
             domestic = form.save()
             return redirect('domestic:wiki', domestic_id)
     else:
-        form = forms.ForeignForm(instance=domestic)
+        form = DomesticForm(instance=domestic)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
         'btn': 2,
+        'domestic_id':domestic_id,
     })
 
 def wiki_edit_semester(request, domestic_id):
-    domestic = get_object_or_404(models.Foreign, pk=domestic_id)
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
@@ -74,10 +77,11 @@ def wiki_edit_semester(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 3,
+        'domestic_id':domestic_id,
     })
 
 def wiki_edit_scholarship(request, domestic_id):
-    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
@@ -89,10 +93,11 @@ def wiki_edit_scholarship(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 4,
+        'domestic_id':domestic_id
     })
 
 def wiki_edit_insurance(request, domestic_id):
-    domestic = get_object_or_404(models.Domestic, pk=domestic_id)
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
         form = DomesticForm(request.POST, request.FILES, instance=domestic)
         if form.is_valid():
@@ -104,6 +109,7 @@ def wiki_edit_insurance(request, domestic_id):
         'form': form,
         'univ': domestic,
         'btn': 5,
+        'domestic_id':domestic_id,
     })
 
 # QnA
