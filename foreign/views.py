@@ -17,10 +17,10 @@ def univ_list(request):
         this_alpha = u[0]
         if last_alpha != this_alpha:
             univ_dict[this_alpha] = []
-            univ_dict[this_alpha].append(u)
+            univ_dict[this_alpha].append(univ)
             last_alpha = this_alpha
         else:
-            univ_dict[this_alpha].append(u)
+            univ_dict[this_alpha].append(univ)
 
 
     return render(request, 'templates/foreign/univ_list', {

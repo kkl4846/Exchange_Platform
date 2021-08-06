@@ -7,9 +7,9 @@
     <ul>
         <h3>{{ key }}</h3>
         {% for country in val %}
-            <li>
-                {{ country }}
-            </li>
+            <li><a href="{% url 'country:country_wiki' pk=country.pk %}">
+                {{ country.country_name }}
+            </a></li>
         {% endfor %}
     </ul>
     <br>

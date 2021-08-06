@@ -1,6 +1,6 @@
 import country
-from django.shortcuts import render
-from .models import Country
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Country, Foreign
 from jamo import h2j, j2hcj
 
 # Create your views here.
@@ -17,11 +17,34 @@ def country_list(request):
         country_cho = j2hcj(h2j(this_country[0]))[0]
         if last_cho != country_cho:     # 직전 초성과 다른 초성   
             countries_dict[country_cho] = []
-            countries_dict[country_cho].append(this_country)
+            countries_dict[country_cho].append(c)
             last_cho = country_cho
         else:                           # 같은 초성
-            countries_dict[country_cho].append(this_country)
-    
+            countries_dict[country_cho].append(c)
+    if len(countries_dict['ㄱ']) == 0:
+        del(countries_dict['ㄱ'])
     # print(countries_dict)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
+
+
+def country_wiki(request, pk):
+    return render(request, 'country/country_wiki.html', {
+        
+    })
+
+
+
+def country_univ(request, pk):      # 각국의 대학 목록
+    country = get_object_or_404(Country, pk=pk)
+    unives = country.foriegn_set.all()
+
+    return render(request, 'country/country_univ.html', {
+        'unives': unives
+    })
+
+
+def country_qna(request, pk):
+    return render(request, 'country/country_qna.html', {
+        
+    })
