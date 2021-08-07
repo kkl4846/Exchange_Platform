@@ -55,6 +55,9 @@
         };
 
     </script>
+    {% if alert_flag %}
+        <script>alert("이미 존재하는 이메일입니다.")</script>  
+    {% endif %}
 <!-- <script>
     //학교 이름 뜨게 하기
     const endpoint = 'https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json'

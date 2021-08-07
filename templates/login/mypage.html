@@ -6,6 +6,7 @@
         <hr />
         <div class="d-flex flex-column">
             <div id="rename">
+                <h5>닉네임 변경</h5>
                 <span>닉네임 :</span>
                 <input id="nickname" type="text" value="{{ user.nickname }}">
                 <button class="btn btn-sm btn-primary" onclick="onClickNickname(document.getElementById('nickname').value)">닉네임 수정</button>
@@ -67,9 +68,9 @@
             element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
         };
 
-        
+    //비밀번호 변경시 팝업
     </script>
-    {% if alert_flag %}
+    {% if alert_flag1 %}
         <script>alert("비밀번호 변경이 완료되었습니다.")</script>  
     {% endif %}
 {% endblock %}

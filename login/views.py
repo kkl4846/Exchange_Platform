@@ -12,6 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
+from django.db import IntegrityError
 
 
 def user_main(request):
@@ -58,7 +59,7 @@ def mypage(request):
                 user.set_password(new_password)
                 user.save()
                 auth.login(request, user)
-                return render(request, 'login/mypage.html', {'alert_flag': True})
+                return render(request, 'login/mypage.html', {'alert_flag1': True})
             else:
                 context.update({'error': "새로운 비밀번호를 다시 확인해주세요."})
         else:
@@ -91,15 +92,20 @@ def certificate(request):
             if 'ko-name' in key:
                 school_domains.append(university_dicts.get('domains')[0])
     school_names.sort()
-    school = dict(zip(school_names, school_domains))
-    align_school = sorted(school.items())
 
     if request.method == 'POST':
         user = request.user
         email = request.POST.get('email')
         school_domain = request.POST.get('school_domain')
-        user.email = email
-        user.save()
+        try:
+            user.email = email
+            user.save()
+        except IntegrityError:
+            ctx = {
+                'alert_flag': True,
+                'school_names': school_names
+            }
+            return render(request, 'login/certificate.html', context=ctx)
 
         if email.endswith(school_domain) == True:
             validate_email(email)
