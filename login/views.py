@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
-from . import models, forms, tokens, text
+from . import models, tokens, text
 from django.contrib import auth
 from django.views import View
 from django.core.exceptions import ValidationError
@@ -22,15 +22,25 @@ def user_main(request):
 
 def signup(request):
     if request.method == "POST":
-        form = forms.SignupForm(request.POST)
-        if form.is_valid():
-            new_user = models.User.objects.create_user(
-                username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
-            auth.login(request, new_user)
-            return redirect('login:user_main')
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if password1 == password2:
+            try:
+                new_user = models.User.objects.create_user(
+                    username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
+                auth.login(request, new_user)
+                return redirect('login:user_main')
+            except IntegrityError as e:
+                if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
+                    return render(request, 'login/signup.html', {'username_error': True})
+                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
+                    return render(request, 'login/signup.html', {'nickname_error': True})
+                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
+                    return render(request, 'login/signup.html', {'email_error': True})
+        else:
+            return render(request, 'login/signup.html', {'password_error': True})
     else:
-        form = forms.SignupForm()
-    return render(request, 'login/signup.html', {'form': form})
+        return render(request, 'login/signup.html')
 
 
 def login(request):
@@ -42,7 +52,7 @@ def login(request):
             auth.login(request, user)
             return redirect('login:user_main')
         else:
-            return render(request, 'login/login.html', {'error': 'username or password is incorrect'})
+            return render(request, 'login/login.html', {'login_error': True})
     else:
         return render(request, 'login/login.html')
 
