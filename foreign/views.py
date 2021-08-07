@@ -37,37 +37,47 @@ def univ_list(request):
 
 
 def univ_search(request):
-    f = open('config/univ.json', 'r', encoding='UTF8')
-    file = json.load(f)
-    foreign_univs = []
-    search_univs = []
-    for university_dicts in file:
-        for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'name' in key):
-            foreign_univs.append(university_name)
-    foreign_univs.sort()
-    query = request.GET.get('query', '')
-    univ_dict = {}
-    last_alpha = 'A'
-    univ_dict[last_alpha] = []
-    if query:
-        for univ in foreign_univs:
-            if query in univ:
-                search_univs.append(univ)
-        for univ in search_univs:
-            this_alpha = univ[0]
-            if last_alpha != this_alpha:
-                univ_dict[this_alpha] = []
-                univ_dict[this_alpha].append(univ)
-                last_alpha = this_alpha
-            else:
-                univ_dict[this_alpha].append(univ)
-        print(len(univ_dict['A']))
-    if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
-        del(univ_dict['A'])
-    return render(request, 'foreign/univ_search.html', {
-        'univ_dict': univ_dict,
+    if request.method == 'POST':  # newforeign폼 입력시
+        form = NewForeignForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            univ = form.save()
+            return redirect('foreign:univ_list')
+    else:
+        f = open('config/univ.json', 'r', encoding='UTF8')
+        file = json.load(f)
+        foreign_univs = []
+        search_univs = []
+        for university_dicts in file:
+            for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'name' in key):
+                foreign_univs.append(university_name)
+        foreign_univs.sort()
+        query = request.GET.get('query', '')
+        univ_dict = {}
+        last_alpha = 'A'
+        univ_dict[last_alpha] = []
+        if query:
+            for univ in foreign_univs:
+                if query in univ:
+                    search_univs.append(univ)
+            for univ in search_univs:
+                this_alpha = univ[0]
+                if last_alpha != this_alpha:
+                    univ_dict[this_alpha] = []
+                    univ_dict[this_alpha].append(univ)
+                    last_alpha = this_alpha
+                else:
+                    univ_dict[this_alpha].append(univ)
+            print(len(univ_dict['A']))
+        if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
+            del(univ_dict['A'])
 
-    })
+        form = NewForeignForm()
+
+        return render(request, 'foreign/univ_search.html', {
+            'univ_dict': univ_dict,
+            'form': form,
+        })
 
 
 # 해외 대학 추가 폼
@@ -84,6 +94,16 @@ def univ_create(request, univ_name):
             'univ_name': univ_name,
         }
         return render(request, template_name='foreign/univ_create.html', context=ctx)
+
+# 학교 클릭시 해외 대학 추가 폼에 띄우기
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+def get_foreign(request):
+    req = json.loads(request.body)
+    foreign_name = req['foreign_name']
+
+    return JsonResponse({'foreign_name': foreign_name})
 
 
 # wiki

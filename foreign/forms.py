@@ -11,7 +11,10 @@ class ForeignForm(forms.ModelForm):
 
 
 class NewForeignForm(forms.ModelForm):
-    foreign_sister = forms.ModelChoiceField(queryset=Domestic.objects.all())
+    foreign_sister = forms.ModelMultipleChoiceField(
+        queryset=Domestic.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True)
 
     class Meta:
         model = Foreign

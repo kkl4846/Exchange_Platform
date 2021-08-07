@@ -1,24 +1,29 @@
 {%extends "base.html"%}
 {%block content%}
-
-<form action="" method='GET'>
-    학교명: <input type="search" name='query' >
+<div class="d-flex flex-column justify-content-center">
+<div class="d-flex justify-content-evenly">
+<form action="" method='GET' style="width:50%">
+    학교명: <input type="search" name='query' style="width:80%" >
     <input type="submit" value='검색'>
+    
 </form>
 
-<button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
-
+<button class="btn btn-sm btn-border btn-primary" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+</div>
+<div class="text-center mt-5" >
 {% for key, val in univ_dict.items %}
     <ul>
         <h3>{{ key }}</h3>
         {% for univ in val %}
 
-            <li>
+        
                 <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
-            </li>
+         
 
         {% endfor %}
     </ul>
     <br>
 {% endfor %}
+</div>
+</div>
 {%endblock%}
