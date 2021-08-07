@@ -58,7 +58,7 @@ def mypage(request):
                 user.set_password(new_password)
                 user.save()
                 auth.login(request, user)
-                return redirect('login:mypage')
+                return render(request, 'login/mypage.html', {'alert_flag': True})
             else:
                 context.update({'error': "새로운 비밀번호를 다시 확인해주세요."})
         else:
