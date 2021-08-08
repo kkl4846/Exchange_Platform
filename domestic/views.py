@@ -108,10 +108,11 @@ def wiki_edit_insurance(request, domestic_id):
 
 # QnA
 def question_list(request, domestic_id):
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
+    domestic= get_object_or_404(Domestic, pk=domestic_id)
     questions = domestic.dquestion_set.all()
+    print(questions)
     ctx = {
-        'domestic':domestic,
+        'domestic': domestic  ,
         'questions': questions,
     }
     return render(request, template_name='domestic/question_list.html', context=ctx)
@@ -136,6 +137,7 @@ def question_create(request, domestic_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.author=request.user
+            post.home_university =domestic
             post.save()
             return redirect('domestic:question_detail', domestic_id, post.pk)
     else:
