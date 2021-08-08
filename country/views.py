@@ -121,10 +121,26 @@ def wiki_edit_covid_info(request, pk):
 
 def country_univ(request, pk):      # 각국의 대학 목록
     country = get_object_or_404(Country, pk=pk)
-    unives = country.foriegn_set.all()
+    unives = country.country_univs.all().order_by('away_name')
+
+    univ_dict = {}
+    last_alpha = 'A'
+    univ_dict[last_alpha] = []
+    for univ in unives:
+        u = univ.away_name
+        this_alpha = u[0]
+        if last_alpha != this_alpha:
+            univ_dict[this_alpha] = []
+            univ_dict[this_alpha].append(univ)
+            last_alpha = this_alpha
+        else:
+            univ_dict[this_alpha].append(univ)
+    if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
+        del(univ_dict['A'])
 
     return render(request, 'country/country_univ.html', {
-        'unives': unives
+        'country': country,
+        'univ_dict': univ_dict,
     })
 
 
