@@ -58,7 +58,6 @@
     };
 
     const commentHandleResponse=(post_id,comment_content,comment_id) => {
-        console.log(comment_id)
         const element=document.querySelector(`.post_${post_id}`)
         const newDiv = document.createElement('div')
         newDiv.className = `comment_${comment_id} d-flex justify-content-between`;

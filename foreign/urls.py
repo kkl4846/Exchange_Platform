@@ -14,7 +14,7 @@ urlpatterns = [
          views.wiki_edit_language_score, name='wiki_edit_language_score'),
     path('wiki/edit_course_enroll/<int:pk>',
          views.wiki_edit_course_enroll, name='wiki_edit_course_enroll'),
-    path('wiki/edit_accomodation/<int:pk>',
+    path('wiki/edit_accommodation/<int:pk>',
          views.wiki_edit_accommodation, name='wiki_edit_accommodation'),
     path('wiki/edit_atmosphere/<int:pk>',
          views.wiki_edit_atmosphere, name='wiki_edit_atmosphere'),
