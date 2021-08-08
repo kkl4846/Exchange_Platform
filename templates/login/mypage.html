@@ -56,20 +56,51 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // 닉네임 변경 ajax
-        const onClickNickname = async(nickname) => {
+        // const onClickNickname = async(nickname) => {
+        //     const url = '/rename/';
+        //     const {data} = await axios.post(url, {
+        //         nickname
+        //     });
+        //     nicknameHandleResponse(data.nickname);
+        //     alert('닉네임 수정이 완료되었습니다!');
+        // };
+
+        // const nicknameHandleResponse = (nickname) => {
+        //     const element = document.querySelector('#nickname');
+        //     const originHTML = element.innerHTML;
+            
+        //     element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+        // };
+
+        const requestNickname = new XMLHttpRequest();
+
+        const onClickNickname = (nickname) => {
             const url = '/rename/';
-            const {data} = await axios.post(url, {
-                nickname
-            });
-            nicknameHandleResponse(data.nickname);
-            alert('닉네임 수정이 완료되었습니다!');
+            requestNickname.open('POST', url, true);
+            requestNickname.setRequestHeader(
+                'Content-Type',
+                'application/x-www-form-urlencoded'
+            );
+            requestNickname.send(JSON.stringify({nickname: nickname}));
         };
 
-        const nicknameHandleResponse = (nickname) => {
-            const element = document.querySelector('#nickname');
-            const originHTML = element.innerHTML;
-            
-            element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+        const nicknameHandleResponse = () => {
+            if (requestNickname.status < 400) {
+                const {nickname} = JSON.parse(requestNickname.response);
+                alert('닉네임 수정이 완료되었습니다!')
+                const element = document.querySelector('#nickname');
+                const originHTML = element.innerHTML;
+                    
+                element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+            } else {
+                alert('이미 사용 중인 닉네임입니다.')
+            };
+        };
+
+        requestNickname.onreadystatechange = () => {
+            if (requestNickname.readyState === XMLHttpRequest.DONE) {
+                nicknameHandleResponse();
+            };
         };
 
     //비밀번호 변경시 팝업
