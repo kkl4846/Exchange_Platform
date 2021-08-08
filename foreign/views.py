@@ -39,7 +39,6 @@ def univ_list(request):
 def univ_search(request):
     if request.method == 'POST':  # newforeign폼 입력시
         form = NewForeignForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             univ = form.save()
             return redirect('foreign:univ_list')
@@ -86,6 +85,8 @@ def univ_create(request, univ_name):
         form = NewForeignForm(request.POST)
         if form.is_valid():
             univ = form.save(commit=False)
+            univ.save()
+            univs = Foreign.objects.filter()
             return redirect('foreign:univ_list')
     else:
         form = NewForeignForm()
@@ -428,6 +429,20 @@ def q_comment_delete(request, foreign_id, pk):
     question = comment.question
     comment.delete()
     return redirect('foreign:question_detail', foreign_id, pk=question.pk)
+
+# 자매대학
+
+
+def sister(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    sisters = foreign.sisters.all()
+    domestic = get_object_or_404(Domestic, pk=1)
+    print(sisters)
+    ctx = {
+        'sisters': sisters,
+        'univ': foreign,
+    }
+    return render(request, 'foreign/sister.html', ctx)
 
 
 # 댓글달기

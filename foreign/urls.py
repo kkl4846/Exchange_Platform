@@ -21,6 +21,7 @@ urlpatterns = [
     path('wiki/edit_club/<int:pk>', views.wiki_edit_club, name='wiki_edit_club'),
     path('wiki/edit_away_scholarship/<int:pk>',
          views.wiki_edit_away_scholarship, name='wiki_edit_away_scholarship'),
+
     path('<int:foreign_id>/review/list', views.review_list, name="review_list"),
     path('<int:foreign_id>/review/create',
          views.review_create, name="review_create"),
@@ -51,4 +52,7 @@ urlpatterns = [
          views.comment_create, name="comment_create"),
     path('<int:foreign_id>/review/<int:pk>/comment_delete/',
          views.comment_delete, name="comment_delete"),
+
+    path('<int:foreign_id>/sister/',
+         views.sister, name="sister"),
 ]

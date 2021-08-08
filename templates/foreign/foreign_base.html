@@ -5,7 +5,7 @@
         <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center"
             style="width:200px; height:150px;">
             <ul>
-                <li><a href="">자매 결연 대학</a></li>
+                <li><a href="{% url "foreign:sister" univ.pk%}">자매 결연 대학</a></li>
                 <li><a href="{% url "foreign:wiki" univ.pk%}">위키</a></li>
                 <li><a href="{% url "foreign:question_list" univ.pk%}">QnA</a></li>
                 <li><a href="{% url "foreign:review_list" univ.pk%}">파견교 후기 공유</a></li>

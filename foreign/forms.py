@@ -1,4 +1,4 @@
-from domestic.models import Domestic
+from domestic.models import *
 from .models import *
 from django import forms
 
@@ -11,14 +11,48 @@ class ForeignForm(forms.ModelForm):
 
 
 class NewForeignForm(forms.ModelForm):
-    foreign_sister = forms.ModelMultipleChoiceField(
+    domestics = forms.ModelMultipleChoiceField(
         queryset=Domestic.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=True)
 
     class Meta:
         model = Foreign
-        fields = ['away_name', 'country', 'foreign_sister']
+        fields = ['away_name', 'country', 'domestics']
+
+    def __init__(self, *args, **kwargs):  # tuple/dictionary
+        # instance 생성
+        if kwargs.get('instance'):
+            # We get the 'initial' keyword argument or initialize it
+            initial = kwargs.setdefault('initial', {})
+            # The widget for a ModelMultipleChoiceField expects
+            # a list of primary key for the selected data.
+            initial['domestics'] = [t.pk for t in
+                                    kwargs['instance'].sisters.all()]
+
+        forms.ModelForm.__init__(self, *args, **kwargs)
+
+    # Overriding save allows us to process the value of 'toppings' field
+
+    def save(self, commit=True):
+        # 저장되지 않은 NewForeignForm 저장
+        instance = forms.ModelForm.save(self, False)
+
+        # Prepare a 'save_m2m' method for the form,
+        old_save_m2m = self.save_m2m
+
+        def save_m2m():
+            old_save_m2m()
+            # domestics와 foreign폼 연결
+            instance.sisters.clear()
+            for course in self.cleaned_data['domestics']:
+                instance.sisters.add(course)
+
+        self.save_m2m = save_m2m
+        instance.save()
+        self.save_m2m()
+
+        return instance
 
 
 class ReviewForm(forms.ModelForm):
