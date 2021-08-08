@@ -10,7 +10,7 @@
                 <span>QnA</span>
                 <h3>{{univ.country}}</h3>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:question_create" foreign_id %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ user.is_authenticated }}')"> 글쓰기 </button>
         </div>
         <hr>
         <table>
@@ -42,6 +42,15 @@
         }
     }
     numbering(0);
+
+    const canIPost= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            window.location.href='{% url "foreign:question_create" foreign_id %}';
+        }
+    };
 </script>
 
 {% endblock %}

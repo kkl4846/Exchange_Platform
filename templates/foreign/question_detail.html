@@ -8,7 +8,7 @@
                 <span>QnA</span>
                 <h3>{{univ.country}}</h3>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:question_create" foreign_id %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ user.is_authenticated }}')"> 글쓰기 </button>
         </div>
         <hr>
         <div>
@@ -21,14 +21,17 @@
             {{ question.question_content }}
             </p>
             <div class="d-flex justify-content-end">
+                {% if question.author.pk == user.pk %}
                 <button onclick="location.href='{% url "foreign:question_delete" foreign_id question.pk %}'"> 삭제 </button>
                 <button onclick="location.href='{% url "foreign:question_edit" foreign_id question.pk %}'"> 수정 </button>
+                {% endif %}
                 <button onclick="location.href='{% url "foreign:question_list" foreign_id%}'"> 목록 </button>
             </div>
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-                <button onclick="location.href='{% url "foreign:q_comment_create" foreign_id question.pk %}'">답변 달기</button>
+
+                <button onclick="canIAnswer('{{ user.is_authenticated }}')">답변 달기</button>
             </div>
             {% for comment in comments %}
                 <div class="d-flex justify-content-between">
@@ -38,13 +41,34 @@
                     </div>
                     <div>
                         {{ comment.created_at }}
+                        {% if comment.comment_author == user %}
                         <button onclick="location.href='{% url "foreign:q_comment_edit" foreign_id comment.pk%}'"> 수정  </button>
                         <button onclick="location.href='{% url "foreign:q_comment_delete" foreign_id comment.pk%}'"> 삭제</button>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
             </div>
     </div>
-
+    <script>
+        const canIPost= (is_authenticated)=> {
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
+            }else{
+                window.location.href='{% url "foreign:question_create" foreign_id %}';
+            }
+        };
+    
+        const canIAnswer= (is_authenticated)=> {
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
+            }else{
+                window.location.href='{% url "foreign:q_comment_create" foreign_id question.pk %}';
+            }
+        };
+        
+    </script>
 
 {% endblock %}
