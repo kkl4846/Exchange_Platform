@@ -36,7 +36,7 @@
                 <h4>답변</h4>
                 <button onclick="location.href='{% url "question:comment_create" question.pk %}'">답변 달기</button>
             </div>
-            {% for comment in question.comment_set.all %}
+            {% for comment in question.dcomment_set.all %}
                 <div class="d-flex justify-content-between">
                     <div>
                         <h5>{{ comment.comment_author }}</h5> 
