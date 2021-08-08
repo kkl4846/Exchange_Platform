@@ -110,10 +110,10 @@ def wiki_edit_insurance(request, domestic_id):
 def question_list(request, domestic_id):
     domestic= get_object_or_404(Domestic, pk=domestic_id)
     questions = domestic.dquestion_set.all()
-    print(questions)
     ctx = {
         'domestic': domestic  ,
         'questions': questions,
+        'is_authenticated':request.user.is_authenticated
     }
     return render(request, template_name='domestic/question_list.html', context=ctx)
 
@@ -125,7 +125,8 @@ def question_detail(request, domestic_id, pk):
     ctx = {
         'question': question, 
         'comments': comments,
-        'domestic': domestic
+        'domestic': domestic,
+        'is_authenticated':request.user.is_authenticated
         }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
@@ -144,9 +145,11 @@ def question_create(request, domestic_id):
         form = DQuestionForm()
         ctx = {
             'form': form,
-            'domestic':domestic
+            'domestic':domestic,
+            'is_authenticated': request.user.is_authenticated,
             }
         return render(request, template_name='domestic/question_form.html', context=ctx)
+        
 
 
 def question_edit(request, domestic_id, pk):
@@ -190,7 +193,8 @@ def comment_create(request,domestic_id, pk):
         ctx = {
             'form': form,
             'question':question,
-            'domestic':domestic
+            'domestic':domestic,
+            'is_authenticated': request.user.is_authenticated,
             }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
@@ -209,7 +213,8 @@ def comment_edit(request, domestic_id, comment_id):
         ctx = {
             'form': form,
             'question':comment.question,
-            'domestic':domestic
+            'domestic':domestic,
+            'is_authenticated': request.user.is_authenticated,
             }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 

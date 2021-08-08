@@ -15,7 +15,7 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>QnA</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:question_create" domestic.pk %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
         </div>
         <hr>
         <form action ="" method="POST" enctype="multipart/form-data">
@@ -26,4 +26,15 @@
     </div>
 </div>
 
+<script>
+    const canIPost= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            window.location.href='{% url "domestic:question_create" domestic.pk %}';
+        }
+    };
+
+</script>
 {% endblock %}
