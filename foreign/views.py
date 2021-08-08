@@ -7,6 +7,7 @@ import json
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from .forms import *
+from jamo import h2j, j2hcj
 
 
 def univ_list(request):
@@ -106,6 +107,33 @@ def get_foreign(request):
 
     return JsonResponse({'foreign_name': foreign_name})
 
+# 자매대학
+
+
+def sister(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    sisters = foreign.sisters.all().order_by('home_name')
+    sisters_dict = {}
+    last_cho = 'ㄱ'
+    sisters_dict[last_cho] = []
+
+    for university in sisters:
+        this_university = university.home_name
+        university_cho = j2hcj(h2j(this_university[0]))[0]
+        if last_cho != university_cho:     # 직전 초성과 다른 초성
+            sisters_dict[university_cho] = []
+            sisters_dict[university_cho].append(university)
+            last_cho = university_cho
+        else:                           # 같은 초성
+            sisters_dict[university_cho].append(university)
+    g_cho = 'ㄱ'
+    if len(sisters_dict[g_cho]) == 0:
+        del(sisters_dict[g_cho])
+    ctx = {
+        'sisters_dict': sisters_dict,
+        'univ': foreign,
+    }
+    return render(request, 'foreign/sister.html', ctx)
 
 # wiki
 
@@ -429,20 +457,6 @@ def q_comment_delete(request, foreign_id, pk):
     question = comment.question
     comment.delete()
     return redirect('foreign:question_detail', foreign_id, pk=question.pk)
-
-# 자매대학
-
-
-def sister(request, foreign_id):
-    foreign = get_object_or_404(Foreign, pk=foreign_id)
-    sisters = foreign.sisters.all()
-    domestic = get_object_or_404(Domestic, pk=1)
-    print(sisters)
-    ctx = {
-        'sisters': sisters,
-        'univ': foreign,
-    }
-    return render(request, 'foreign/sister.html', ctx)
 
 
 # 댓글달기
