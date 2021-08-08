@@ -228,7 +228,11 @@ def comment_delete(request, domestic_id, comment_id):
 #자매결연대학 목록
 def sister_list(request,domestic_id):
     domestic=Domestic.objects.get(id=domestic_id)
-    ctx={'domestic':domestic}
+    sisters=domestic.home_sister.all()
+    ctx={
+        'domestic':domestic,
+        'sisters': sisters,
+        }
     return render(request, template_name='domestic/sister_list.html',context=ctx)
 
 #학점컷
