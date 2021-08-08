@@ -36,7 +36,7 @@
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-                <button onclick="location.href='{% url "domestic:comment_create" domestic.pk question.pk %}'">답변 달기</button>
+                <button onclick="canIAnswer('{{ is_authenticated }}')">답변 달기</button>
             </div>
             {% for comment in question.dcomment_set.all %}
                 <div class="d-flex justify-content-between">
@@ -74,5 +74,13 @@
         }
     };
 
+    const canIAnswer= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            window.location.href='{% url "domestic:comment_create" domestic.pk question.pk %}';
+        }
+    };
 </script>
 {% endblock %}
