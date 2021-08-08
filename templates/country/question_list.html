@@ -1,0 +1,52 @@
+{%extends "country/country_base.html"%}
+{% block contents %}
+
+    
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{ country.country_name }}</h1>
+                <span>QnA</span>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
+        </div>
+        <hr>
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+            {% for question in questions %}
+            <tr>
+                <td class="numbered" align='center'></td>
+                <td><a href="{% url 'country:question_detail' country.pk question.pk %}">{{ question.question_title }}</a></td>
+                <td>{{ question.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script>
+        function numbering(startnum){
+            var init = startnum;
+            var td_list = document.querySelectorAll(`.numbered`);
+            for(var i=0; i<td_list.length; i++){
+                init++;
+                td_list[i].innerHTML= `${init}`;
+            }
+        }
+        numbering(0);
+    
+        const canIPost= (is_authenticated)=> {
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:test" %}';
+            }else{
+                window.location.href='{% url "country:question_create" country.pk %}';
+            }
+        };
+    
+    </script>
+
+{% endblock %}

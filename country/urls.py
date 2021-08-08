@@ -14,5 +14,15 @@ urlpatterns = [
     path('wiki/edit_covid_info/<int:pk>/', views.wiki_edit_covid_info, name='wiki_edit_covid_info'),
 
     path('<int:pk>/univ', views.country_univ, name='country_univ'),
-    path('<int:pk>/qna', views.country_qna, name='country_qna'),
+    
+    path('<int:country_id>/qna/', views.question_list, name='question_list'),
+    path('<int:country_id>/qna/create/', views.question_create, name='question_create'),
+    path('<int:country_id>/qna/<int:pk>/', views.question_detail, name='question_detail'),
+    path('<int:country_id>/qna/<int:pk>/edit/', views.question_edit, name='question_edit'),
+    path('<int:country_id>/qna/<int:pk>/delete/', views.question_delete, name='question_delete'),
+
+    path('<int:country_id>/qna/<int:pk>/comment/create/', views.comment_create, name='comment_create'),
+    path('<int:country_id>/comment/<int:comment_id>/edit/', views.comment_edit, name='comment_edit'),
+    path('<int:country_id>/comment/<int:comment_id>/delete/', views.comment_delete, name='comment_delete'),
+
 ]

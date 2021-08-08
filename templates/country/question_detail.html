@@ -1,0 +1,74 @@
+{%extends "country/country_base.html"%} 
+
+{%block contents%}
+
+<div class="d-flex justify-content-evenly ">
+    
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{country.country_name}}</h1>
+                <span>QnA</span>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
+        </div>
+        <hr>
+        <div>
+            <div class="d-flex justify-content-between">
+                <h4>{{ question.question_title }}</h4>
+                <p>작성자: {{ question.author}} 작성 시간: {{ question.created_at }}</p>
+            </div>
+            {{ question.question_content }}
+            </p>
+            <div class="d-flex justify-content-end">
+                {% if question.author == user %}
+                    <button onclick="location.href='{% url "country:question_delete" country.pk question.pk %}'"> 삭제 </button>
+                    <button onclick="location.href='{% url "country:question_edit" country.pk question.pk %}'"> 수정 </button>
+                {% endif %}
+                <button onclick="location.href='{% url "country:question_list" country.pk %}'"> 목록 </button>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <h4>답변</h4>
+                <button onclick="canIAnswer('{{ is_authenticated }}')">답변 달기</button>
+            </div>
+            {% for comment in comments %}
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ comment.comment_author }}</h5> 
+                        {{ comment.comment_content }}
+                    </div>
+                    <div>
+                        {{ comment.created_at }}
+                        {% if comment.comment_author == user %}
+                            <button onclick="location.href='{% url "country:comment_edit" country.pk comment.pk %}'"> 수정  </button>
+                            <button onclick="location.href='{% url "country:comment_delete" country.pk comment.pk %}'"> 삭제</button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+    </div>
+</div>
+<script>
+    const canIPost= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:test" %}';
+        }else{
+            window.location.href='{% url "country:question_create" country.pk %}';
+        }
+    };
+
+    const canIAnswer= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:test" %}';
+        }else{
+            window.location.href='{% url "country:comment_create" country.pk question.pk %}';
+        }
+    };
+    
+</script>
+
+{%endblock%}

@@ -9,23 +9,21 @@ class CountryForm(forms.ModelForm):
                   'culture', 'covid_info']
 
 
-class QuestionForm(forms.ModelForm):
+class CQuestionForm(forms.ModelForm):
     class Meta:
         model = CQuestion
         fields = [
             'question_title', 'question_content']
         labels = {
-
             'question_title': '제목',
             'question_content': '내용',
         }
 
 
-class CommentForm(forms.ModelForm):
+class CCommentForm(forms.ModelForm):
     class Meta:
         model = CComment
         fields = ['comment_content']
         labels = {
-
             'comment_content': '내용'
         }
