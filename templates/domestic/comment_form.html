@@ -15,7 +15,7 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>QnA</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:question_create" domestic.pk %}'"> 글쓰기 </button>
         </div>
         <hr>
         <div>
@@ -27,14 +27,16 @@
             {{ question.question_content }}
             </p>
             <div class="d-flex justify-content-end">
-                <button onclick="location.href='{% url "question:question_delete" question.pk %}'"> 삭제 </button>
-                <button onclick="location.href='{% url "question:question_edit" question.pk %}'"> 수정 </button>
-                <button onclick="location.href='{% url "question:question_list" %}'"> 목록 </button>
+                {% if question.author.pk == user.pk %}
+                    <button onclick="location.href='{% url "domestic:question_delete" domestic.pk question.pk %}'"> 삭제 </button>
+                    <button onclick="location.href='{% url "domestic:question_edit" domestic.pk question.pk %}'"> 수정 </button>
+                {% endif %}
+                <button onclick="location.href='{% url "domestic:question_list" domestic.pk %}'"> 목록 </button>
             </div>
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-                <button onclick="location.href='{% url "question:comment_create" question.pk %}'">답변 달기</button>
+                <button onclick="location.href='{% url "domestic:comment_create" domestic.pk question.pk %}'">답변 달기</button>
             </div>
             {% for comment in question.dcomment_set.all %}
                 <div class="d-flex justify-content-between">
@@ -45,8 +47,10 @@
                     </div>
                     <div>
                         {{ comment.created_at }}
-                        <button onclick="location.href='{% url "question:comment_edit" comment.pk%}'"> 수정  </button>
-                        <button onclick="location.href='{% url "question:comment_delete" comment.pk%}'"> 삭제</button>
+                        {% if comment.comment_author == user %}
+                            <button onclick="location.href='{% url "domestic:comment_edit" domestic.pk comment.pk %}'"> 수정  </button>
+                            <button onclick="location.href='{% url "domestic:comment_delete" domestic.pk comment.pk %}'"> 삭제</button>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

@@ -26,8 +26,10 @@
             {{ question.question_content }}
             </p>
             <div class="d-flex justify-content-end">
-                <button onclick="location.href='{% url "domestic:question_delete" domestic.pk question.pk %}'"> 삭제 </button>
-                <button onclick="location.href='{% url "domestic:question_edit" domestic.pk question.pk %}'"> 수정 </button>
+                {% if question.author == user %}
+                    <button onclick="location.href='{% url "domestic:question_delete" domestic.pk question.pk %}'"> 삭제 </button>
+                    <button onclick="location.href='{% url "domestic:question_edit" domestic.pk question.pk %}'"> 수정 </button>
+                {% endif %}
                 <button onclick="location.href='{% url "domestic:question_list" domestic.pk %}'"> 목록 </button>
             </div>
             <hr>
@@ -43,8 +45,10 @@
                     </div>
                     <div>
                         {{ comment.created_at }}
-                        <button onclick="location.href='{% url "domestic:comment_edit" domestic.pk comment.pk %}'"> 수정  </button>
-                        <button onclick="location.href='{% url "domestic:comment_delete" domestic.pk comment.pk %}'"> 삭제</button>
+                        {% if comment.comment_author == user %}
+                            <button onclick="location.href='{% url "domestic:comment_edit" domestic.pk comment.pk %}'"> 수정  </button>
+                            <button onclick="location.href='{% url "domestic:comment_delete" domestic.pk comment.pk %}'"> 삭제</button>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
