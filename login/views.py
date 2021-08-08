@@ -24,21 +24,24 @@ def signup(request):
     if request.method == "POST":
         password1 = request.POST['password1']
         password2 = request.POST['password2']
-        if password1 == password2:
-            try:
-                new_user = models.User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
-                auth.login(request, new_user)
-                return redirect('login:user_main')
-            except IntegrityError as e:
-                if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
-                    return render(request, 'login/signup.html', {'username_error': True})
-                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
-                    return render(request, 'login/signup.html', {'nickname_error': True})
-                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
-                    return render(request, 'login/signup.html', {'email_error': True})
+        if len(password1) < 8:
+            return render(request, 'login/signup.html', {'length_error': True})
         else:
-            return render(request, 'login/signup.html', {'password_error': True})
+            if password1 == password2:
+                try:
+                    new_user = models.User.objects.create_user(
+                        username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
+                    auth.login(request, new_user)
+                    return redirect('login:user_main')
+                except IntegrityError as e:
+                    if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
+                        return render(request, 'login/signup.html', {'username_error': True})
+                    elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
+                        return render(request, 'login/signup.html', {'nickname_error': True})
+                    elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
+                        return render(request, 'login/signup.html', {'email_error': True})
+            else:
+                return render(request, 'login/signup.html', {'password_error': True})
     else:
         return render(request, 'login/signup.html')
 

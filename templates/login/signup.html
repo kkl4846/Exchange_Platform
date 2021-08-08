@@ -52,6 +52,9 @@
         {% if password_error %}
             <p>입력한 비밀번호가 일치하지 않습니다.</p>
         {% endif %}
+        {% if length_error %}
+            <p>비밀번호를 8자 이상 작성해주세요.</p>
+        {% endif %}
         <input class="btn btn-primary" type="submit" value="회원가입" />
     </form>
 </div>
