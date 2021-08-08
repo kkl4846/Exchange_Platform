@@ -238,16 +238,27 @@ def sister_list(request,domestic_id):
 #학점컷
 def credit_list(request,domestic_id):
     domestic=Domestic.objects.get(id=domestic_id)
-    ctx={'domestic':domestic}
+    credit_posts=domestic.credit_set.all()
+    ctx={
+        'domestic':domestic,
+        'credit_posts':credit_posts
+        }
     return render(request,template_name='domestic/credit_list.html',context=ctx)
 
-def credit_create(request):
+def credit_create(request,domestic_id):
+    domestic=Domestic.objects.get(id=domestic_id)
     if request.method == 'POST':
-        form = DQuestionForm(request.POST)
+        form = CreditForm(request.POST)
         if form.is_valid():
-            post = form.save()
-            return redirect('domestic:credit_list', pk=post.pk)
+            credit_post = form.save(commit=False)
+            credit_post.home_school = domestic
+            credit_post.credit_author=request.user
+            credit_post.save()
+            return redirect('domestic:credit_list', domestic_id)
     else:
-        form = DQuestionForm()
-        ctx = {'form': form}
+        form = CreditForm()
+        ctx = {
+            'form': form,
+            'domestic': domestic,
+            }
         return render(request, template_name='domestic/credit_form.html', context=ctx)

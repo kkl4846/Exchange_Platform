@@ -35,3 +35,12 @@ class DComment(models.Model):
     created_at = models.DateField(auto_now_add=True,blank=False)
     updated_at = models.DateField(auto_now=True)
 
+class Credit(models.Model):
+    credit_author = models.ForeignKey(to='login.User', on_delete=models.CASCADE)
+    home_school = models.ForeignKey(to='Domestic', on_delete=models.CASCADE, null=True, blank=True)
+    college = models.CharField(max_length=20)
+    credit = models.IntegerField(default=1)
+    grade_average = models.FloatField(default=0.0)
+    apply_semester = models.CharField(max_length= 20, choices=(("1학기", "1학기"),("2학기", "2학기")))
+    away_university = models.ForeignKey(to='foreign.Foreign', on_delete=models.CASCADE, null=True, blank=True)
+    pass_fail = models.CharField(max_length= 20, choices=(("O", "O"),("X", "X")))

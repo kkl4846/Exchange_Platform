@@ -9,14 +9,8 @@ class DomesticForm(forms.ModelForm):
 class DQuestionForm(forms.ModelForm):
     class Meta:
         model = DQuestion
-        fields = [
-            # 'author', 
-        # 'away_university', 'country',
-                  'question_title', 'question_content']
+        fields = ['question_title', 'question_content']
         labels = {
-            # 'author': '작성자',
-            # 'away_university': '파견교',
-            # 'country': '파견 국가',
             'question_title': '제목',
             'question_content': '내용',
         }
@@ -25,10 +19,20 @@ class DQuestionForm(forms.ModelForm):
 class DCommentForm(forms.ModelForm):
     class Meta:
         model = DComment
+        fields = ['comment_content']
+        labels = {'comment_content': '내용'}
+
+class CreditForm(forms.ModelForm):
+    class Meta:
+        model = Credit
         fields = [
-            # 'comment_author', 
-        'comment_content']
+        'college','credit','grade_average','apply_semester','away_university','pass_fail'
+        ]
         labels = {
-            # 'comment_author': '작성자',
-            'comment_content': '내용'
+            'college': '단과대학',
+            'credit': '이수 학점',
+            'grade_average': '평점 평균',
+            'apply_semester': '지원 시기',
+            'away_university': '지원 학교',
+            'pass_fail': '합격 여부'
         }

@@ -15,8 +15,14 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>파견교별 학점컷</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:question_create" domestic.pk %}'"> 내 점수 등록 </button>
         </div>
+        <hr>
+        <form action ="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
+        </form>
     </div>
 </div>
 {% endblock %}

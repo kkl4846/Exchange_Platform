@@ -15,9 +15,29 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>파견교별 학점컷</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "question:question_create" %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:credit_create" domestic.pk %}'"> 내 점수 등록 </button>
         </div>
         <hr>
+        <table>
+            <tr align='center'>
+                <th width='150'>단과대학</th>
+                <th width='150'>이수학점</th>
+                <th width='150'>평점평균</th>
+                <th width='150'>지원시기</th>
+                <th width='150'>지원학교</th>
+                <th width='150'>합격여부</th>
+            </tr>
+            {% for post in credit_posts %}
+            <tr align='center'>
+                <td>{{ post.college  }}</td>
+                <td>{{ post.credit }}</td>
+                <td>{{ post.grade_average }}</td>
+                <td>{{ post.apply_semester }}</td>
+                <td>{{ post.away_university }}</td>
+                <td>{{ post.pass_fail }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}
