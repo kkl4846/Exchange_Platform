@@ -470,11 +470,11 @@ def comment_create(request, foreign_id, pk):
     new_comment = Comment.objects.create(
         comment_author=request.user, comment_content=content, post=post)
     new_comment.save()
-
     return JsonResponse({'post_id': Post_id, 'comment_content': content, 'comment_id': new_comment.id})
 
 
-def comment_delete(request):
+@method_decorator(csrf_exempt, name="dispatch")
+def comment_delete(request, foreign_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     comment = Comment.objects.get(id=comment_id)

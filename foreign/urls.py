@@ -50,7 +50,7 @@ urlpatterns = [
 
     path('<int:foreign_id>/review/detail/<int:pk>/comment_create/',
          views.comment_create, name="comment_create"),
-    path('<int:foreign_id>/review/<int:pk>/comment_delete/',
+    path('<int:foreign_id>/review/detail/<int:pk>/comment_delete/',
          views.comment_delete, name="comment_delete"),
 
     path('<int:foreign_id>/sister/',
