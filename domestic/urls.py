@@ -21,8 +21,8 @@ urlpatterns = [
     path('<int:domestic_id>/qna/<int:pk>/delete/', views.question_delete, name='question_delete'),
 
     path('<int:domestic_id>/qna/<int:pk>/comment/create/', views.comment_create, name='comment_create'),
-    path('<int:domestic_id>/qna/comment/<int:pk>/edit/', views.comment_edit, name='comment_edit'),
-    path('<int:domestic_id>/qna/comment/<int:pk>/delete/', views.comment_delete, name='comment_delete'),
+    path('<int:domestic_id>/comment/<int:comment_id>/edit/', views.comment_edit, name='comment_edit'),
+    path('<int:domestic_id>/comment/<int:comment_id>/delete/', views.comment_delete, name='comment_delete'),
 
 
     path('<int:domestic_id>/sister/', views.sister_list, name='sister_list'),

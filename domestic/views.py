@@ -109,7 +109,7 @@ def wiki_edit_insurance(request, domestic_id):
 # QnA
 def question_list(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    questions = domestic.question_set.all()
+    questions = domestic.dquestion_set.all()
     ctx = {
         'domestic':domestic,
         'questions': questions,
@@ -120,7 +120,7 @@ def question_list(request, domestic_id):
 def question_detail(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
-    comments = question.comment_set.all()
+    comments = question.dcomment_set.all()
     ctx = {
         'question': question, 
         'comments': comments,
@@ -134,8 +134,10 @@ def question_create(request, domestic_id):
     if request.method == 'POST':
         form = DQuestionForm(request.POST)
         if form.is_valid():
-            post = form.save()
-            return redirect('domestic:question_detail', pk=post.pk)
+            post = form.save(commit=False)
+            post.author=request.user
+            post.save()
+            return redirect('domestic:question_detail', domestic_id, post.pk)
     else:
         form = DQuestionForm()
         ctx = {
@@ -152,7 +154,7 @@ def question_edit(request, domestic_id, pk):
         form = DQuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save()
-            return redirect('domestic:question_detail', pk)
+            return redirect('domestic:question_detail',domestic_id, pk)
     else:
         form = DQuestionForm(instance=question)
         ctx = {
@@ -170,41 +172,51 @@ def question_delete(request, domestic_id, pk):
 
 # 답글댓글
 
-def comment_create(request,pk):
+def comment_create(request,domestic_id, pk):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
     if request.method == 'POST':
         form = DCommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.question=question
+            comment.comment_author = request.user
             comment.save()
-            return redirect('domestic:question_detail', pk)
+            return redirect('domestic:question_detail',domestic_id, pk)
     else:
         form = DCommentForm()
-        ctx = {'form': form,
-        'question':question}
+        ctx = {
+            'form': form,
+            'question':question,
+            'domestic':domestic
+            }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
 
-def comment_edit(request, pk):
-    comment = get_object_or_404(DComment, id=pk)
+def comment_edit(request, domestic_id, comment_id):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
+    comment = get_object_or_404(DComment, id=comment_id)
     question = comment.question
     if request.method == 'POST':
         form = DCommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect('domestic:question_detail', pk=question.pk)
+            return redirect('domestic:question_detail', domestic_id, question.pk)
     else:
         form = DCommentForm(instance=comment)
-        ctx = {'form': form,'question':comment.question}
+        ctx = {
+            'form': form,
+            'question':comment.question,
+            'domestic':domestic
+            }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
 
-def comment_delete(request, pk):
-    comment = DComment.objects.get(id=pk)
+def comment_delete(request, domestic_id, comment_id):
+    comment = DComment.objects.get(id=comment_id)
     question = comment.question
     comment.delete()
-    return redirect('domestic:question_detail', pk=question.pk)
+    return redirect('domestic:question_detail',domestic_id, question.pk)
 
 #자매결연대학 목록
 def sister_list(request,domestic_id):

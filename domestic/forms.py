@@ -9,11 +9,12 @@ class DomesticForm(forms.ModelForm):
 class DQuestionForm(forms.ModelForm):
     class Meta:
         model = DQuestion
-        fields = ['author', 
+        fields = [
+            # 'author', 
         # 'away_university', 'country',
                   'question_title', 'question_content']
         labels = {
-            'author': '작성자',
+            # 'author': '작성자',
             # 'away_university': '파견교',
             # 'country': '파견 국가',
             'question_title': '제목',
@@ -24,8 +25,10 @@ class DQuestionForm(forms.ModelForm):
 class DCommentForm(forms.ModelForm):
     class Meta:
         model = DComment
-        fields = ['comment_author', 'comment_content']
+        fields = [
+            # 'comment_author', 
+        'comment_content']
         labels = {
-            'comment_author': '작성자',
+            # 'comment_author': '작성자',
             'comment_content': '내용'
         }
