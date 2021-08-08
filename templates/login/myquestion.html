@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container ml-5 mt-4 w-75">
+        <h4>내가 쓴 글 목록</h4>
+        <hr />
+        <div class="d-flex flex-column">
+            <h5>국내대학별</h5>
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='600' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for question in d_questions %}
+                <tr>
+                    <td class="numbered" align='center'></td>
+                    <td><a href="{% url 'domestic:question_detail' question.home_university.pk question.pk %}">{{ question.question_title }}</a></td>
+                    <td>{{ question.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br />
+            <h5>해외파견교별</h5>
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='600' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for question in f_questions %}
+                <tr>
+                    <td class="numbered" align='center'></td>
+                    <td><a href="{% url 'domestic:question_detail' question.away_university.pk question.pk %}">{{ question.question_title }}</a></td>
+                    <td>{{ question.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br />
+            <h5>파견국가별</h5>
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='600' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for question in c_questions %}
+                <tr>
+                    <td class="numbered" align='center'></td>
+                    <td><a href="{% url 'domestic:question_detail' question.country.pk question.pk %}">{{ question.question_title }}</a></td>
+                    <td>{{ question.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+{% endblock %}

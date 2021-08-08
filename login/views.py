@@ -3,7 +3,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
-from . import models, tokens, text
 from django.contrib import auth
 from django.views import View
 from django.core.exceptions import ValidationError
@@ -13,6 +12,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
+from . import models, tokens, text
+#from domestic.models import DQuestion
+#from foreign.models import FQuestion
+#from country.models import CQuestion
 
 
 def user_main(request):
@@ -190,3 +193,16 @@ class Activate(View):
             return JsonResponse({"message": "TYPE_ERROR"}, status=400)
         except KeyError:
             return JsonResponse({"message": "INVALID_KEY"}, status=400)
+
+
+def myquestion(request):
+    user = request.user
+    # d_question = DQuestion.objects.filter(author=user)
+    # f_question = FQuestion.objects.filter(author=user)
+    # c_question = CQuestion.objects.filter(author=user)
+    ctx = {
+        # 'd_questions': d_questions
+        # 'f_questions': f_questions
+        # 'c_questions': c_questions
+    }
+    return render(request, 'login/myquestion.html', context=ctx)
