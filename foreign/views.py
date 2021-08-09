@@ -335,7 +335,7 @@ def review_create(request, foreign_id, post=None):
 def review_delete(request, pk, foreign_id):
     review = get_object_or_404(Post, pk=pk)
     review.delete()
-    return redirect('foreign:review_list')
+    return redirect('foreign:review_list', foreign_id)
 
 
 def review_update(request, pk, foreign_id):

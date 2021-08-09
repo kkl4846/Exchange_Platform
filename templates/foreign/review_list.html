@@ -10,16 +10,36 @@
         <div><a href="{% url "foreign:review_create" foreign_id%}">글쓰기</a></div>
         </div>
         <hr>
-        {% for review in all_review %}
-        
-        <div>
-            {{forloop.counter}}
-            <!--for문이 돌은 횟수 -->
-            <a href="{% url "foreign:review_detail" foreign_id review.pk %}">{{review.title}}</a>
-            {{review.away_year}}-{{review.away_semester}}
-            {{review.created_at}}
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='400' >제목</th>
+                <th width='100'>파견 학기</th>
+                <th>날짜</th>
+            </tr>
+            {%for review in all_review %}
+            <tr>
+                <td class="numbered" align='center'></td>
+                <td><a href="{% url "foreign:review_detail" foreign_id review.pk %}">{{ review.title }}</a></td>
+                <td align="center">{{review.away_year}}-{{review.away_semester}}</td>
+                <td align="center">{{ review.created_at }}</td>
+            </tr>
             {% endfor %}
-        </div>
+        </table>
 
 </div>
 {%endblock%}
+
+{% block extra %}
+<script>
+    function numbering(startnum){
+        var init = startnum;
+        var td_list = document.querySelectorAll(`.numbered`);
+        for(var i=0; i<td_list.length; i++){
+            init++;
+            td_list[i].innerHTML= `${init}`;
+        }
+    }
+    numbering(0);
+</script>
+{% endblock %}
