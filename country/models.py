@@ -27,6 +27,9 @@ class CQuestion(models.Model):
     created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
 
+    def __str__(self):
+        return self.question_title
+
 
 class CComment(models.Model):
     comment_author = models.ForeignKey(
@@ -36,3 +39,6 @@ class CComment(models.Model):
 
     created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.comment_content

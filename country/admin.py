@@ -6,3 +6,13 @@ from . import models
 @admin.register(models.Country)
 class CountryAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.CQuestion)
+class CustomCQuestionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.CComment)
+class CustomCCommentAdmin(admin.ModelAdmin):
+    pass

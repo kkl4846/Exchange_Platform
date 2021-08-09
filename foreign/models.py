@@ -65,6 +65,9 @@ class FQuestion(models.Model):
     created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
 
+    def __str__(self):
+        return self.question_title
+
 
 class FComment(models.Model):
     comment_author = models.ForeignKey(
@@ -73,3 +76,6 @@ class FComment(models.Model):
     comment_content = models.TextField(null=True)
     created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.comment_content
