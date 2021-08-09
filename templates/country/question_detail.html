@@ -54,7 +54,7 @@
     const canIPost= (is_authenticated)=> {
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
-            window.location.href='{% url "login:test" %}';
+            window.location.href='{% url "login:login" %}';
         }else{
             window.location.href='{% url "country:question_create" country.pk %}';
         }
@@ -63,7 +63,7 @@
     const canIAnswer= (is_authenticated)=> {
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
-            window.location.href='{% url "login:test" %}';
+            window.location.href='{% url "login:login" %}';
         }else{
             window.location.href='{% url "country:comment_create" country.pk question.pk %}';
         }
