@@ -94,15 +94,6 @@ def univ_create(request, univ_name):
         }
         return render(request, template_name='foreign/univ_create.html', context=ctx)
 
-# 학교 클릭시 해외 대학 추가 폼에 띄우기
-
-
-@method_decorator(csrf_exempt, name="dispatch")
-def get_foreign(request):
-    req = json.loads(request.body)
-    foreign_name = req['foreign_name']
-
-    return JsonResponse({'foreign_name': foreign_name})
 
 # 자매대학
 

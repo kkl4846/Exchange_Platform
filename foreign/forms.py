@@ -56,6 +56,13 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'away_year', 'away_semester']
+        labels = {
+
+            'title': '제목',
+            'content': '내용',
+            'away_year': '파견 연도',
+            'away_semester': '파견 학기'
+        }
 
 
 class QuestionForm(forms.ModelForm):
