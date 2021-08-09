@@ -26,6 +26,7 @@ urlpatterns = [
 
 
     path('<int:domestic_id>/sister/', views.sister_list, name='sister_list'),
+    path('<int:domestic_id>/sister/add',views.sister_add, name='sister_add'),
 
 
     path('<int:domestic_id>/credit/', views.credit_list, name='credit_list'),

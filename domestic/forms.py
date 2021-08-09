@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-
+from foreign.models import *
 class DomesticForm(forms.ModelForm):
     class Meta:
         model = Domestic
@@ -35,4 +35,12 @@ class CreditForm(forms.ModelForm):
             'apply_semester': '지원 시기',
             'away_university': '지원 학교',
             'pass_fail': '합격 여부'
+        }
+
+class AddSisterForm(forms.ModelForm):
+    class Meta:
+        model = Domestic
+        fields=['home_sister']
+        widgets={
+            'home_sister':forms.CheckboxSelectMultiple
         }

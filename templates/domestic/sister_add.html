@@ -18,27 +18,16 @@
             <button class="btn btn-sm btn-border" onclick="canIAdd('{{ is_authenticated }}')"> 학교 추가 </button>
         </div>
         <hr>
-        {% for key, val in sisters_dict.items %}
-            <a href="#{{ key }}">{{ key }}</a>
-        {% endfor %}
-        {% for key, val in sisters_dict.items %}
-        <ul>
-            <h3 id="{{ key }}">{{ key }}</h3>
-            {% for sister in val %}
-                <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
-            {% endfor %}
-        </ul>
-        {% endfor %}
+        <form  action ="" method="POST"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <select name="sister">
+                {% for univ in univs %}
+                <option>{{ univ.away_name}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-outline-danger"> 추가 </button>
+        </form>
     </div>
 </div>
-<script>
-    const canIAdd= (is_authenticated)=> {
-        if (is_authenticated == 'False') {
-            alert('로그인이 필요한 서비스입니다.');
-            window.location.href='{% url "login:login" %}';
-        }else{
-            window.location.href='{% url "domestic:sister_add" domestic.pk %}';
-        }
-    };
-</script>
+
 {% endblock %}

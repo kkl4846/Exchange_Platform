@@ -1,7 +1,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
+from foreign.models import *
+
 # Create your views here.
 def univ_list(request):
     universities = Domestic.objects.all().order_by('home_name')
@@ -247,8 +250,27 @@ def sister_list(request,domestic_id):
         'domestic':domestic,
         'sisters': sisters,
         'sisters_dict': sisters_dict,
+        'is_authenticated': request.user.is_authenticated,
         }
     return render(request, 'domestic/sister_list.html',context=ctx)
+
+def sister_add(request, domestic_id):
+    domestic=Domestic.objects.get(id=domestic_id)
+    if request.method == 'POST':
+        sister_name = request.POST['sister']
+        sister = get_object_or_404(Foreign, away_name=sister_name)
+        print(sister)
+        domestic.home_sister.add(sister.id)
+        return redirect('domestic:sister_list', domestic_id)
+    else:
+        univs = Foreign.objects.all()
+        print(univs)
+        ctx = {
+            'domestic': domestic,
+            'is_authenticated': request.user.is_authenticated,
+            'univs': univs,
+        }
+        return render(request, template_name='domestic/sister_add.html', context=ctx)
 
 #학점컷
 def credit_list(request,domestic_id):

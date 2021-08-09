@@ -14,7 +14,7 @@
         <form  action ="" method="POST"  enctype="multipart/form-data">
         <select name="sister">
             {% for domestic_univ in domestic_univs %}
-            <option>{{domestic_univ.home_name}}</option>
+                <option>{{ domestic_univ.away_name }}</option>
             {% endfor %}
         </select>
         <button type="submit" class="btn btn-outline-danger"> 추가 </button>
