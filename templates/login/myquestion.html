@@ -15,8 +15,8 @@
                 {% for question in d_questions %}
                 <tr>
                     <td class="numbered" align='center'></td>
-                    <td><a href="{% url 'domestic:question_detail' question.home_university.pk question.pk %}">{{ question.question_title }}</a></td>
-                    <td>{{ question.created_at }}</td>
+                    <td style="padding-left: 30px;"><a href="{% url 'domestic:question_detail' question.home_university.pk question.pk %}">{{ question.question_title }}</a></td>
+                    <td align="center">{{ question.created_at }}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -31,8 +31,8 @@
                 {% for question in f_questions %}
                 <tr>
                     <td class="numbered" align='center'></td>
-                    <td><a href="{% url 'domestic:question_detail' question.away_university.pk question.pk %}">{{ question.question_title }}</a></td>
-                    <td>{{ question.created_at }}</td>
+                    <td style="padding-left: 30px;"><a href="{% url 'foreign:question_detail' question.away_university.pk question.pk %}">{{ question.question_title }}</a></td>
+                    <td align="center">{{ question.created_at }}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -47,12 +47,26 @@
                 {% for question in c_questions %}
                 <tr>
                     <td class="numbered" align='center'></td>
-                    <td><a href="{% url 'domestic:question_detail' question.country.pk question.pk %}">{{ question.question_title }}</a></td>
-                    <td>{{ question.created_at }}</td>
+                    <td style="padding-left: 30px;"><a href="{% url 'country:question_detail' question.country.pk question.pk %}">{{ question.question_title }}</a></td>
+                    <td align="center">{{ question.created_at }}</td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
     
+{% endblock %}
+
+{% block extra %}
+<script>
+    function numbering(startnum){
+        var init = startnum;
+        var td_list = document.querySelectorAll(`.numbered`);
+        for(var i=0; i<td_list.length; i++){
+            init++;
+            td_list[i].innerHTML= `${init}`;
+        }
+    }
+    numbering(0);
+</script>
 {% endblock %}
