@@ -228,12 +228,27 @@ def comment_delete(request, domestic_id, comment_id):
 #자매결연대학 목록
 def sister_list(request,domestic_id):
     domestic=Domestic.objects.get(id=domestic_id)
-    sisters=domestic.home_sister.all()
+    sisters=domestic.home_sister.all().order_by('away_name')
+    sisters_dict = {}
+    last_alpha = 'A'
+    sisters_dict[last_alpha] = []
+    for sister in sisters:
+        s = sister.away_name
+        this_alpha = s[0]
+        if last_alpha != this_alpha:
+            sisters_dict[this_alpha] = []
+            sisters_dict[this_alpha].append(sister)
+            last_alpha = this_alpha
+        else:
+            sisters_dict[this_alpha].append(sister)
+    if len(sisters_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
+        del(sisters_dict['A'])
     ctx={
         'domestic':domestic,
         'sisters': sisters,
+        'sisters_dict': sisters_dict,
         }
-    return render(request, template_name='domestic/sister_list.html',context=ctx)
+    return render(request, 'domestic/sister_list.html',context=ctx)
 
 #학점컷
 def credit_list(request,domestic_id):

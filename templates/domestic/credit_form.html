@@ -15,7 +15,7 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>파견교별 학점컷</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:question_create" domestic.pk %}'"> 내 점수 등록 </button>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:credit_create" domestic.pk %}'"> 내 점수 등록 </button>
         </div>
         <hr>
         <form action ="" method="POST" enctype="multipart/form-data">

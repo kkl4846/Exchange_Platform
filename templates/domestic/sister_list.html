@@ -17,9 +17,17 @@
             </div>
         </div>
         <hr>
-        {% for sister in sisters %}
+        {% for key, val in sisters_dict.items %}
+            <a href="#{{ key }}">{{ key }}</a>
+        {% endfor %}
+        {% for key, val in sisters_dict.items %}
+        <ul>
+            <h3 id="{{ key }}">{{ key }}</h3>
+            {% for sister in val %}
                 <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
             {% endfor %}
+        </ul>
+        {% endfor %}
     </div>
 </div>
 
