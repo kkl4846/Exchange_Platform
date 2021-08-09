@@ -15,7 +15,7 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>파견교별 학점컷</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:credit_create" domestic.pk %}'"> 내 점수 등록 </button>
+            <button class="btn btn-sm btn-border" onclick="canIpost('{{ is_authenticated }}','{{ is_enrolled }}')"> 내 점수 등록 </button>
         </div>
         <hr>
         <table>
@@ -40,4 +40,18 @@
         </table>
     </div>
 </div>
+<script>
+    const canIpost= (is_authenticated, is_enrolled)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href=`create`; 
+            }
+        }
+    };
+</script>
 {% endblock %}

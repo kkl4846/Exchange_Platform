@@ -288,9 +288,17 @@ def sister_add(request, domestic_id):
 def credit_list(request,domestic_id):
     domestic=Domestic.objects.get(id=domestic_id)
     credit_posts=domestic.credit_set.all()
+    user=request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name :
+            is_enrolled = 'True'
+        else:
+            is_enrolled = 'False'
     ctx={
         'domestic':domestic,
-        'credit_posts':credit_posts
+        'credit_posts':credit_posts,
+        'is_enrolled':is_enrolled,
         }
     return render(request,template_name='domestic/credit_list.html',context=ctx)
 
