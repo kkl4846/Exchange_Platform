@@ -20,14 +20,13 @@
         <form action="" method="POST" enctype="multipart/form-data" class="table">
             {% csrf_token %}
             {% for field in form %}
-
+            {% if btn == forloop.counter%}
             {%if field.name == 'home_apply'%} <p>1.지원 방법</p>  {%endif%}
             {%if field.name == 'home_document'%}<p>2.필요 서류</p>   {%endif%}
             {%if field.name == 'semester'%} <p>3.수학 가능 학기</p>  {%endif%}
             {%if field.name == 'home_scholarship'%} <p> 4.교내 장학금 정보</p> {%endif%}
             {%if field.name == 'insurance'%} <p>5.유학생 보험 준비</p> {%endif%}
             
-            {% if btn == forloop.counter%}
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
                     id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
@@ -36,7 +35,7 @@
             {% else %}
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly cols = "100" rows="20" >{{field.value}}</textarea>
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
             </div>
             {%endif%}
             {% endfor %}
