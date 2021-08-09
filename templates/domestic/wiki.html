@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{%block content%}
+<div class="d-flex justify-content-evenly ">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="{% url 'domestic:sister_list' univ.pk %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'domestic:wiki' univ.pk %}">위키</a></li>
+            <li><a href="{% url 'domestic:question_list' univ.pk %}">QnA</a></li>
+            <li><a href="{% url 'domestic:credit_list' univ.pk %}">파견교별 학점컷</a></li>
+        </ul>
+    </div>
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{ univ.home_name }}</h1>
+                <span>Wiki</span>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <p>1. 지원 방법</p>
+            <pre>{{univ.home_apply}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
+            <div><a href="{% url "domestic:wiki_edit_apply" univ.pk %}">수정</a></div>
+            <div>
+                <p>2. 필요 서류</p>
+                <pre>{{univ.home_document}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_document" univ.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>3. 수학 가능 학기</p>
+                <pre>{{univ.semester}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_semester" univ.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>4. 교내 장학금 정보</p>
+                <pre>{{univ.home_scholarship}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_scholarship" univ.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>5. 유학생 보험 준비</p>
+                <pre>{{univ.insurance}}</pre>
+                <div><a href="{% url "domestic:wiki_edit_insurance" univ.pk %}">수정</a></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{%endblock%}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-evenly ">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
+            <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
+            <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
+        </ul>
+    </div>
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{ domestic.home_name }}</h1>
+                <span>자매 결연 대학</span>
+            </div>
+        </div>
+        <hr>
+        {% for key, val in sisters_dict.items %}
+            <a href="#{{ key }}">{{ key }}</a>
+        {% endfor %}
+        {% for key, val in sisters_dict.items %}
+        <ul>
+            <h3 id="{{ key }}">{{ key }}</h3>
+            {% for sister in val %}
+                <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

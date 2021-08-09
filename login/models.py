@@ -8,7 +8,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=20, verbose_name='닉네임', unique=True)
     university = models.ForeignKey(
         'domestic.Domestic', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='소속 대학')
-    email = models.EmailField(blank=True, verbose_name='이메일', unique=True)
+    email = models.EmailField(
+        blank=True, verbose_name='이메일', unique=True, max_length=100)
     school_certificate = models.BooleanField(
         verbose_name='학교 인증 여부', default=False)
     USERNAME_FIELD = 'username'
@@ -28,3 +29,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     objects = UserManager()
+
+    def create_user(self, username, nickname, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self.create_user(username, nickname, email, password, **extra_fields)

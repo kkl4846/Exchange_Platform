@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-evenly ">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
+            <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
+            <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
+        </ul>
+    </div>
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{ domestic.home_name }}</h1>
+                <span>파견교별 학점컷</span>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:credit_create" domestic.pk %}'"> 내 점수 등록 </button>
+        </div>
+        <hr>
+        <table>
+            <tr align='center'>
+                <th width='150'>단과대학</th>
+                <th width='150'>이수학점</th>
+                <th width='150'>평점평균</th>
+                <th width='150'>지원시기</th>
+                <th width='150'>지원학교</th>
+                <th width='150'>합격여부</th>
+            </tr>
+            {% for post in credit_posts %}
+            <tr align='center'>
+                <td>{{ post.college  }}</td>
+                <td>{{ post.credit }}</td>
+                <td>{{ post.grade_average }}</td>
+                <td>{{ post.apply_semester }}</td>
+                <td>{{ post.away_university }}</td>
+                <td>{{ post.pass_fail }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

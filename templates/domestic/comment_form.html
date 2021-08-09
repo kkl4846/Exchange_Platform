@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-evenly ">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
+            <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
+            <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
+        </ul>
+    </div>
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{ domestic.home_name }}</h1>
+                <span>QnA</span>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
+        </div>
+        <hr>
+        <div>
+            <div class="d-flex justify-content-between">
+                <h4>{{ question.question_title }}</h4>
+                <p>작성자: {{ question.author}} 작성 시간: {{ question.created_at }}</p>
+            </div>
+            <p>
+            {{ question.question_content }}
+            </p>
+            <div class="d-flex justify-content-end">
+                {% if question.author.pk == user.pk %}
+                    <button onclick="location.href='{% url "domestic:question_delete" domestic.pk question.pk %}'"> 삭제 </button>
+                    <button onclick="location.href='{% url "domestic:question_edit" domestic.pk question.pk %}'"> 수정 </button>
+                {% endif %}
+                <button onclick="location.href='{% url "domestic:question_list" domestic.pk %}'"> 목록 </button>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <h4>답변</h4>
+                <button onclick="canIAnswer('{{ is_authenticated }}')">답변 달기</button>
+            </div>
+            {% for comment in question.dcomment_set.all %}
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ comment.comment_author }}</h5> 
+                        {{ comment.comment_content }}
+                        
+                    </div>
+                    <div>
+                        {{ comment.created_at }}
+                        {% if comment.comment_author == user %}
+                            <button onclick="location.href='{% url "domestic:comment_edit" domestic.pk comment.pk %}'"> 수정  </button>
+                            <button onclick="location.href='{% url "domestic:comment_delete" domestic.pk comment.pk %}'"> 삭제</button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            <hr>
+            <form action ="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value="저장하기"/>
+            </form>
+            </div>
+    </div>
+</div>
+
+<script>
+    const canIPost= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            window.location.href='{% url "domestic:question_create" domestic.pk %}';
+        }
+    };
+
+    const canIAnswer= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            window.location.href='{% url "domestic:comment_create" domestic.pk question.pk %}';
+        }
+    };
+</script>
+{% endblock %}
