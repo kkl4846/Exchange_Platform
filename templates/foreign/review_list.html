@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center ">
             <h1>{{univ.away_name}}</h1>
             <span>파견교 후기 공유</span>
-            <h3>{{univ.country}}</h3>
+            <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
         </div>
         <div><a href="{% url "foreign:review_create" foreign_id%}">글쓰기</a></div>
         </div>

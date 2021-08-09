@@ -6,7 +6,7 @@
         <div class="d-flex justify-content-between ">
             <h1>{{univ.away_name}}</h1>
             <span>QnA</span>
-            <h3>{{univ.country}}</h3>
+            <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
             <button class="btn btn-sm btn-border" onclick="canIPost('{{ user.is_authenticated }}')"> 글쓰기 </button>
         </div>
         <hr>
