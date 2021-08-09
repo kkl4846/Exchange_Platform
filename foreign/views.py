@@ -135,6 +135,26 @@ def sister(request, foreign_id):
     }
     return render(request, 'foreign/sister.html', ctx)
 
+# 자매대학 추가
+
+
+@csrf_exempt
+def create_sister(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    if request.method == 'POST':
+        sister_name = request.POST['sister']
+        sister = get_object_or_404(Domestic, home_name=sister_name)
+        print(sister)
+        foreign.sisters.add(sister.id)
+
+        return redirect("foreign:sister", foreign_id)
+    else:
+        univs = Domestic.objects.all()
+    return render(request, 'foreign/create_sister.html', {
+        'domestic_univs': univs,
+        'univ': foreign
+    })
+
 # wiki
 
 

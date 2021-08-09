@@ -5,10 +5,11 @@
         <div class="d-flex align-items-center ">
             <h1>{{univ.away_name}}</h1>
             <span>파견교 후기 공유</span>
-            <h3>{{univ.country}}</h3>
+            <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
         </div>
 </div>
-<p>작성자:{{review.post_author}}</p>
+<hr>
+<p>작성자:{{review.post_author.nickname}}</p>
 <p>제목: {{review.title}}</p>
 <p>내용: {{review.content}}</p>
 <p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
@@ -24,7 +25,7 @@
 {%if all_comment %}
 {%for comment in all_comment %}
 <div class="comment_{{comment.id}} d-flex justify-content-between">
-    작성자:{{comment.comment_author}} &#160; &#160; 
+    작성자:{{comment.comment_author.nickname}} &#160; &#160; 
     {{comment.comment_content}}
     {% if request.user == comment.comment_author %}
     <div class="btn btn-outline-secondary delete " onclick="onClickDelete({{comment.id}} )">삭제</div>
@@ -68,7 +69,7 @@
         const element=document.querySelector(`.post_${post_id}`)
         const newDiv = document.createElement('div')
         newDiv.className = `comment_${comment_id} d-flex justify-content-between`;
-        newDiv.innerHTML = `작성자:{{request.user}} &#160; &#160; ${comment_content}<div class="btn btn-outline-secondary delete" onclick="onClickDelete(${comment_id})">삭제</div>`
+        newDiv.innerHTML = `작성자:{{request.user.nickname}} &#160; &#160; ${comment_content}<div class="btn btn-outline-secondary delete" onclick="onClickDelete(${comment_id})">삭제</div>`
         element.appendChild(newDiv)
         //댓글 입력창 비워주기
         const input_content = document.querySelector(`#comment_${post_id}`)
