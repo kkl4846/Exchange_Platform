@@ -12,8 +12,11 @@
 </div>
 <div class="text-center mt-5" >
 {% for key, val in univ_dict.items %}
+<a href="#{{ key }}">{{ key }}</a>
+{% endfor %}
+{% for key, val in univ_dict.items %}
     <ul>
-        <h3>{{ key }}</h3>
+        <h3 id="{{ key }}">{{ key }}</h3>
         {% for univ in val %}
 
         

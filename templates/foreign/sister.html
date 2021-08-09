@@ -5,7 +5,7 @@
     <div class="d-flex align-items-center ">
         <h1>{{univ.away_name}}</h1>
         <span>자매 결연 대학</span>
-        <h3>{{univ.country}}</h3>
+        <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
     </div>
     <hr>
     <div>
@@ -13,9 +13,7 @@
         <ul>
             <h3>{{ key }}</h3>
             {% for sister in val %}
-
-            <a herf="{ url " domestic:wiki" sister.pk}">{{sister.home_name}}</a>
-
+            <a href="{% url "domestic:wiki" sister.pk %}">{{sister.home_name}}</a>
             {% endfor %}
         </ul>
         <br>
