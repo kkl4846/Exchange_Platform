@@ -4,18 +4,61 @@
 <div class="container ml-5 mt-4">
     <h2>학교 인증</h2>
     <hr />
-    <form class="search-form">
-        <input type="text" class="search_uni" placeholder="학교 이름">
-        <input type="submit" value="검색"/>
-        <ul class="suggestions">
-            
-        </ul>
+    <div class="search-form">
+        <span>학교명 :</span>
+        <select name="school_list" id="school_list" name="school_list">
+            {% for school_name in school_names %}
+                <option>{{ school_name }}</option>
+            {% endfor %}
+        </select>
+        <!-- <input type="text" class="search_uni" placeholder="학교 이름"> -->
+        <button class="btn btn-sm btn-primary" onclick="onClickSchool(document.querySelector('#school_list').value)">학교 검색</button>
+    </div>
+    <form class="mt-2" method="POST">
+        {% csrf_token %}
+        <div class="domain mt-2">
     </form>
+    {% if domain_error %}
+        <div>
+            <span>{{ domain_error }}</span>
+        </div>
+    {% endif %}
+    </div>
 </div>
 {% endblock %}
 
 {% block extra %}
-<script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 학교 검색 ajax
+        const onClickSchool = async(school_name) => {
+                const url = '/search_school/';
+                const {data} = await axios.post(url, {
+                    school_name
+                });
+                schoolHandleResponse(data.school_domain);
+            };
+
+        const schoolHandleResponse = (school_domain) => {
+            const element = document.querySelector('.domain');
+            const originHTML = element.innerHTML;
+            
+            element.innerHTML = `
+            <span>@${school_domain}</span>
+            <span>라는 도메인이 들어가는 메일 주소를 적어주세요.</span>
+            <div class='mt-1'>
+                <input type="email" name="email" />
+                <input class="mt-2 btn btn-primary btn-sm mailing" type="submit" value="인증 메일 보내기"></input>
+                <input style="display: none;" name="school_domain" value="${school_domain}"/>
+            </div>
+            `
+        };
+
+    </script>
+    {% if alert_flag %}
+        <script>alert("이미 존재하는 이메일입니다.")</script>  
+    {% endif %}
+<!-- <script>
     //학교 이름 뜨게 하기
     const endpoint = 'https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json'
     const universities = [];
@@ -48,20 +91,6 @@
     const suggestions = document.querySelector('.suggestions');
 
     searchInput.addEventListener('change', displayMatches);
-    searchInput.addEventListener('keyup', displayMatches);
-
-    // //클릭시 자동완성
-    // const universityNames = document.querySelectorAll('li > a');
-    
-    // universityNames.forEach(college => college.addEventListener('click', autoComplete));
-    
-
-    // function autoComplete() {
-    //     const element = document.querySelector('.search_uni');
-    //     const originHTML = element.innerHTML;
-            
-    //     const html = `<input name="nickname" type="text" value="${this.value}">`
-    //     element.innerHTML = html
-    // };
+    searchInput.addEventListener('keyup', displayMatches); -->
 </script>
 {% endblock %}

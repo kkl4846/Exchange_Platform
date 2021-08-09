@@ -1,12 +1,21 @@
-# from django.contrib.auth import login as auth_login
-# from django.http import HttpResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
-from . import models, forms
 from django.contrib import auth
+from django.views import View
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import EmailMessage
+from django.utils.encoding import force_bytes, force_text
+from django.db import IntegrityError
+from . import models, tokens, text
+#from domestic.models import DQuestion
+#from foreign.models import FQuestion
+#from country.models import CQuestion
 
 
 def user_main(request):
@@ -16,15 +25,28 @@ def user_main(request):
 
 def signup(request):
     if request.method == "POST":
-        form = forms.SignupForm(request.POST)
-        if form.is_valid():
-            new_user = models.User.objects.create_user(
-                username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
-            auth.login(request, new_user)
-            return redirect('login:user_main')
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if len(password1) < 8:
+            return render(request, 'login/signup.html', {'length_error': True})
+        else:
+            if password1 == password2:
+                try:
+                    new_user = models.User.objects.create_user(
+                        username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
+                    auth.login(request, new_user)
+                    return redirect('login:user_main')
+                except IntegrityError as e:
+                    if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
+                        return render(request, 'login/signup.html', {'username_error': True})
+                    elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
+                        return render(request, 'login/signup.html', {'nickname_error': True})
+                    elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
+                        return render(request, 'login/signup.html', {'email_error': True})
+            else:
+                return render(request, 'login/signup.html', {'password_error': True})
     else:
-        form = forms.SignupForm()
-    return render(request, 'login/signup.html', {'form': form})
+        return render(request, 'login/signup.html')
 
 
 def login(request):
@@ -36,7 +58,7 @@ def login(request):
             auth.login(request, user)
             return redirect('login:user_main')
         else:
-            return render(request, 'login/login.html', {'error': 'username or password is incorrect'})
+            return render(request, 'login/login.html', {'login_error': True})
     else:
         return render(request, 'login/login.html')
 
@@ -53,7 +75,7 @@ def mypage(request):
                 user.set_password(new_password)
                 user.save()
                 auth.login(request, user)
-                return redirect('login:mypage')
+                return render(request, 'login/mypage.html', {'alert_flag1': True})
             else:
                 context.update({'error': "새로운 비밀번호를 다시 확인해주세요."})
         else:
@@ -79,7 +101,108 @@ def certificate(request):
 
     school_names = []
     school_domains = []
-    for university in file:
-        pass
+    for university_dicts in file:
+        for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'ko-name' in key):
+            school_names.append(university_name)
+        for key in university_dicts.keys():
+            if 'ko-name' in key:
+                school_domains.append(university_dicts.get('domains')[0])
+    school_names.sort()
 
-    return render(request, 'login/certificate.html')
+    if request.method == 'POST':
+        user = request.user
+        email = request.POST.get('email')
+        school_domain = request.POST.get('school_domain')
+        try:
+            user.email = email
+            user.save()
+        except IntegrityError:
+            ctx = {
+                'alert_flag': True,
+                'school_names': school_names
+            }
+            return render(request, 'login/certificate.html', context=ctx)
+
+        if email.endswith(school_domain) == True:
+            validate_email(email)
+
+            current_site = get_current_site(request)
+            domain = current_site.domain
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            token = tokens.school_certification_token.make_token(user)
+            message_data = text.message(domain, uidb64, token)
+
+            mail_title = "학교 인증을 완료해주세요"
+            mail_to = email
+            emailing = EmailMessage(mail_title, message_data, to=[mail_to])
+            emailing.send()
+            return render(request, 'login/send_email.html')
+        else:
+            domain_error = "이메일을 확인해주세요."
+            ctx = {
+                'domain_error': domain_error,
+                'school_names': school_names,
+            }
+            return render(request, 'login/certificate.html', context=ctx)
+
+    else:
+        ctx = {
+            'school_names': school_names,
+        }
+        return render(request, 'login/certificate.html', context=ctx)
+
+
+@csrf_exempt
+def school_search(request):
+    req = json.loads(request.body)
+    school_name = req['school_name']
+
+    user = request.user
+    user.university = school_name
+    user.save()
+
+    f = open('config/univ.json', 'r')
+    file = json.load(f)
+
+    school_names = []
+    school_domains = []
+    for university_dicts in file:
+        for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'ko-name' in key):
+            school_names.append(university_name)
+        for key in university_dicts.keys():
+            if 'ko-name' in key:
+                school_domains.append(university_dicts.get('domains')[0])
+
+    school = dict(zip(school_names, school_domains))
+
+    school_domain = school[school_name]
+    return JsonResponse({'school_domain': school_domain})
+
+
+class Activate(View):
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = models.User.objects.get(pk=uid)
+            if user is not None and tokens.school_certification_token.check_token(user, token):
+                user.school_certificate = 1
+                user.save()
+                return render(request, 'login/success_email.html')
+            return JsonResponse({"message": "AUTH FAIL"}, status=400)
+        except ValidationError:
+            return JsonResponse({"message": "TYPE_ERROR"}, status=400)
+        except KeyError:
+            return JsonResponse({"message": "INVALID_KEY"}, status=400)
+
+
+def myquestion(request):
+    user = request.user
+    # d_question = DQuestion.objects.filter(author=user)
+    # f_question = FQuestion.objects.filter(author=user)
+    # c_question = CQuestion.objects.filter(author=user)
+    ctx = {
+        # 'd_questions': d_questions
+        # 'f_questions': f_questions
+        # 'c_questions': c_questions
+    }
+    return render(request, 'login/myquestion.html', context=ctx)

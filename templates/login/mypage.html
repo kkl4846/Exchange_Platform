@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container ml-5 mt-4">
+    <div class="container ml-5 mt-4 w-75">
         <h2>내 정보 수정</h2>
         <hr />
         <div class="d-flex flex-column">
             <div id="rename">
+                <h5>닉네임 변경</h5>
                 <span>닉네임 :</span>
                 <input id="nickname" type="text" value="{{ user.nickname }}">
                 <button class="btn btn-sm btn-primary" onclick="onClickNickname(document.getElementById('nickname').value)">닉네임 수정</button>
@@ -38,10 +39,16 @@
                 <a class="btn btn-sm btn-primary" href="{% url 'login:certificate' %}">학교 인증하러 가기</a>
                 {% else %}
                 <span>학교 인증이 완료되었습니다!</span>
+                <br />
+                <span>소속 대학 : {{ user.university }}</span>
                 {% endif %}
             </div>
         </div>
-        
+        <br>
+        <div>
+            <h5>내가 쓴 글</h5>
+            <a href="{% url 'login:myquestion' %}" class="btn btn-secondary btn-sm">목록 보러 가기</a>
+        </div>
     </div>
 {% endblock %}
 
@@ -49,22 +56,56 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // 닉네임 변경 ajax
-        const onClickNickname = async(nickname) => {
-            const url = '/rename/';
-            const {data} = await axios.post(url, {
-                nickname
-            });
-            nicknameHandleResponse(data.nickname);
-            alert('닉네임 수정이 완료되었습니다!');
-        };
+        // const onClickNickname = async(nickname) => {
+        //     const url = '/rename/';
+        //     const {data} = await axios.post(url, {
+        //         nickname
+        //     });
+        //     nicknameHandleResponse(data.nickname);
+        //     alert('닉네임 수정이 완료되었습니다!');
+        // };
 
-        const nicknameHandleResponse = (nickname) => {
-            const element = document.querySelector('#nickname');
-            const originHTML = element.innerHTML;
+        // const nicknameHandleResponse = (nickname) => {
+        //     const element = document.querySelector('#nickname');
+        //     const originHTML = element.innerHTML;
             
-            element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+        //     element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+        // };
+
+        const requestNickname = new XMLHttpRequest();
+
+        const onClickNickname = (nickname) => {
+            const url = '/rename/';
+            requestNickname.open('POST', url, true);
+            requestNickname.setRequestHeader(
+                'Content-Type',
+                'application/x-www-form-urlencoded'
+            );
+            requestNickname.send(JSON.stringify({nickname: nickname}));
         };
 
-        
+        const nicknameHandleResponse = () => {
+            if (requestNickname.status < 400) {
+                const {nickname} = JSON.parse(requestNickname.response);
+                alert('닉네임 수정이 완료되었습니다!')
+                const element = document.querySelector('#nickname');
+                const originHTML = element.innerHTML;
+                    
+                element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
+            } else {
+                alert('이미 사용 중인 닉네임입니다.')
+            };
+        };
+
+        requestNickname.onreadystatechange = () => {
+            if (requestNickname.readyState === XMLHttpRequest.DONE) {
+                nicknameHandleResponse();
+            };
+        };
+
+    //비밀번호 변경시 팝업
     </script>
+    {% if alert_flag1 %}
+        <script>alert("비밀번호 변경이 완료되었습니다.")</script>  
+    {% endif %}
 {% endblock %}

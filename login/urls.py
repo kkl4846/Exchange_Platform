@@ -11,5 +11,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='login/main.html'), name='logout'),
     path('mypage/', views.mypage, name='mypage'),
     path('rename/', views.rename, name='rename'),
-    path('certificate/', views.certificate, name='certificate')
+    path('certificate/', views.certificate, name='certificate'),
+    path('search_school/', views.school_search, name='search_school'),
+    path('users/<str:uidb64>/<str:token>', views.Activate.as_view()),
+    path('myquestion/', views.myquestion, name="myquestion"),
 ]

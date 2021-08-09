@@ -7,15 +7,20 @@
     <div class="d-flex justify-content-center">
         <form method="POST">
             {% csrf_token %}
-            Username:
-            <br>
-            <input name="username" type="text" />
-            <br>
-            Password:
-            <br>
-            <input name="password" type="password" />
-            <br><br>
-            <input class="btn btn-primary" type="submit" value="로그인" />
+            아이디:
+            <br />
+            <input name="username" type="text" required/>
+            <br />
+            비밀번호:
+            <br />
+            <input name="password" type="password" required/>
+            <br />
+            {% if login_error %}
+                <div class="mt-1">
+                    <span>아이디 혹은 비밀번호를 확인해주세요.</span>
+                </div>
+            {% endif %}
+            <input class="btn btn-primary mt-2" type="submit" value="로그인" />
         </form>
     </div>
 </div>

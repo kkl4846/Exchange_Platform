@@ -1,5 +1,12 @@
 asgiref==3.4.1
+autopep8==1.5.7
+cffi==1.14.6
+cryptography==3.4.7
 Django==3.2.6
+pycodestyle==2.7.0
+pycparser==2.20
 pytz==2021.1
+six==1.16.0
 sqlparse==0.4.1
 jamo==0.4.1
+toml==0.10.2

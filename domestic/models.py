@@ -13,6 +13,9 @@ class Domestic(models.Model):
     home_scholarship = models.TextField(blank=True)
     insurance = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.home_name
+
 class DQuestion(models.Model):
     author = models.ForeignKey(to='login.User', on_delete=models.CASCADE)
     home_university = models.ForeignKey(
