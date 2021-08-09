@@ -13,9 +13,9 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
 from . import models, tokens, text
-#from domestic.models import DQuestion
-#from foreign.models import FQuestion
-#from country.models import CQuestion
+from domestic.models import DQuestion
+from foreign.models import FQuestion
+from country.models import CQuestion
 
 
 def user_main(request):
@@ -197,12 +197,12 @@ class Activate(View):
 
 def myquestion(request):
     user = request.user
-    # d_question = DQuestion.objects.filter(author=user)
-    # f_question = FQuestion.objects.filter(author=user)
-    # c_question = CQuestion.objects.filter(author=user)
+    d_questions = DQuestion.objects.filter(author=user)
+    f_questions = FQuestion.objects.filter(author=user)
+    c_questions = CQuestion.objects.filter(author=user)
     ctx = {
-        # 'd_questions': d_questions
-        # 'f_questions': f_questions
-        # 'c_questions': c_questions
+        'd_questions': d_questions,
+        'f_questions': f_questions,
+        'c_questions': c_questions,
     }
     return render(request, 'login/myquestion.html', context=ctx)
