@@ -21,8 +21,10 @@
             {{ question.question_content }}
             </p>
             <div class="d-flex justify-content-end">
+                {% if question.author == user %}
                 <button onclick="location.href='{% url "foreign:question_delete" foreign_id question.pk %}'"> 삭제 </button>
                 <button onclick="location.href='{% url "foreign:question_edit" foreign_id question.pk %}'"> 수정 </button>
+                {% endif %}
                 <button onclick="location.href='{% url "foreign:question_list" foreign_id %}'"> 목록 </button>
             </div>
             <hr>
