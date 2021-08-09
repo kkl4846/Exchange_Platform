@@ -1,19 +1,14 @@
 {%extends "base.html"%}
 {%block content%}
 <div class="d-flex flex-column justify-content-center">
-<div class="d-flex justify-content-evenly">
-<form action="" method='GET' style="width:50%">
-    학교명: <input type="search" name='query' style="width:80%" >
-    <input type="submit" value='검색'>
-    
-</form>
-
-<button class="btn btn-sm btn-border btn-primary" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
-</div>
-<div class="text-center mt-5" >
+  <div>
+        <button class="btn btn-sm btn-border btn-primary mt-5 mx-5" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+    </div>
+<div class=" mt-5" >
 {% for key, val in univ_dict.items %}
 <a href="#{{ key }}">{{ key }}</a>
 {% endfor %}
+
 {% for key, val in univ_dict.items %}
     <ul>
         <h3 id="{{ key }}">{{ key }}</h3>
@@ -27,6 +22,6 @@
     </ul>
     <br>
 {% endfor %}
-</div>
+</>
 </div>
 {%endblock%}

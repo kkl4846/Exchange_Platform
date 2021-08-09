@@ -7,14 +7,15 @@
         <span>자매 결연 대학</span>
         <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
     </div>
-    <a href="{% url "foreign:create_sister" univ.pk%}">학교 추가</a>
+    <button class="btn btn-sm btn-border btn-primary" onclick="location.href='{% url "foreign:create_sister" univ.pk %}'">학교 추가</button>
     <hr>
     <div>
         학교명
         <form  action ="" method="POST"  enctype="multipart/form-data">
+        {% csrf_token %}
         <select name="sister">
             {% for domestic_univ in domestic_univs %}
-                <option>{{ domestic_univ.away_name }}</option>
+                <option>{{ domestic_univ.home_name }}</option>
             {% endfor %}
         </select>
         <button type="submit" class="btn btn-outline-danger"> 추가 </button>

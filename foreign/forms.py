@@ -11,10 +11,7 @@ class ForeignForm(forms.ModelForm):
 
 
 class NewForeignForm(forms.ModelForm):
-    domestics = forms.ModelMultipleChoiceField(
-        queryset=Domestic.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True)
+    domestics = forms.ModelChoiceField(queryset=Domestic.objects.all())
 
     class Meta:
         model = Foreign
@@ -45,8 +42,8 @@ class NewForeignForm(forms.ModelForm):
             old_save_m2m()
             # domestics와 foreign폼 연결
             instance.sisters.clear()
-            for course in self.cleaned_data['domestics']:
-                instance.sisters.add(course)
+
+            instance.sisters.add(self.cleaned_data['domestics'])
 
         self.save_m2m = save_m2m
         instance.save()

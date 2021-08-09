@@ -12,12 +12,9 @@ from jamo import h2j, j2hcj
 
 def univ_list(request):
     unives = Foreign.objects.all().order_by('away_name')
-    query = request.GET.get('query', '')
     univ_dict = {}
     last_alpha = 'A'
     univ_dict[last_alpha] = []
-    if query:
-        unives = unives.filter(away_name__icontains=query)
     for univ in unives:
         u = univ.away_name
         this_alpha = u[0]
@@ -138,13 +135,11 @@ def sister(request, foreign_id):
 # 자매대학 추가
 
 
-@csrf_exempt
 def create_sister(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     if request.method == 'POST':
         sister_name = request.POST['sister']
         sister = get_object_or_404(Domestic, home_name=sister_name)
-        print(sister)
         foreign.sisters.add(sister.id)
 
         return redirect("foreign:sister", foreign_id)
