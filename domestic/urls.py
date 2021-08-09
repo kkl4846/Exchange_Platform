@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.univ_list, name='univ_list'),
 
     path('<int:domestic_id>/wiki/', views.wiki, name='wiki'),
-    path('<int:domestic_id>/wiki/edit/apply/', views.wiki_edit_apply, name='wiki_edit_apply'),
+    path('<int:domestic_id>/wiki/edit_apply/', views.wiki_edit_apply, name='wiki_edit_apply'),
     path('<int:domestic_id>/wiki/edit_document/',views.wiki_edit_document, name='wiki_edit_document'),
     path('<int:domestic_id>/wiki/edit_semester/',views.wiki_edit_semester, name='wiki_edit_semester'),
     path('<int:domestic_id>/wiki/edit_scholarship/',views.wiki_edit_scholarship, name='wiki_edit_scholarship'),

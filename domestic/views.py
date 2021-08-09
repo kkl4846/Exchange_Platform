@@ -21,16 +21,28 @@ def univ_list(request):
             last_cho = university_cho
         else:                           # 같은 초성
             universities_dict[university_cho].append(university)
+
     g_cho = 'ㄱ'
     if len(universities_dict[g_cho]) == 0:
         del(universities_dict[g_cho])
 
-    return render(request, 'domestic/univ_list.html', {'universities_dict': universities_dict})
+    ctx={'universities_dict': universities_dict}
+
+    return render(request, 'domestic/univ_list.html', ctx)
 
 def wiki(request, domestic_id):
     univ = Domestic.objects.get(pk=domestic_id)
+    user=request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == univ.home_name :
+            is_enrolled = 'True'
+        else:
+            is_enrolled = 'False'
     ctx = {
         'univ': univ,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': is_enrolled,
     }
     return render(request, 'domestic/wiki.html', ctx)
 
