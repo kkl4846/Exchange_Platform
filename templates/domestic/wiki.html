@@ -19,30 +19,44 @@
         <hr>
         <div>
             <p>1. 지원 방법</p>
-            <pre>{{univ.home_apply}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
-            <div><a href="{% url "domestic:wiki_edit_apply" univ.pk %}">수정</a></div>
+            <pre>{{univ.home_apply}}</pre>
+            <button class="btn btn-sm btn-border" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
             <div>
                 <p>2. 필요 서류</p>
                 <pre>{{univ.home_document}}</pre>
-                <div><a href="{% url "domestic:wiki_edit_document" univ.pk %}">수정</a></div>
+                <button class="btn btn-sm btn-border" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
             </div>
             <div>
                 <p>3. 수학 가능 학기</p>
                 <pre>{{univ.semester}}</pre>
-                <div><a href="{% url "domestic:wiki_edit_semester" univ.pk %}">수정</a></div>
+                <button class="btn btn-sm btn-border" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
             </div>
             <div>
                 <p>4. 교내 장학금 정보</p>
                 <pre>{{univ.home_scholarship}}</pre>
-                <div><a href="{% url "domestic:wiki_edit_scholarship" univ.pk %}">수정</a></div>
+                <button class="btn btn-sm btn-border" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
             </div>
             <div>
                 <p>5. 유학생 보험 준비</p>
                 <pre>{{univ.insurance}}</pre>
-                <div><a href="{% url "domestic:wiki_edit_insurance" univ.pk %}">수정</a></div>
+                <button class="btn btn-sm btn-border" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
             </div>
         </div>
     </div>
 
 </div>
+<script>
+    const canIEdit= (is_authenticated, is_enrolled, str)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href=`edit_${str}`; 
+            }
+        }
+    };
+</script>
 {%endblock%}

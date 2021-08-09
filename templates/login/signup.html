@@ -9,22 +9,22 @@
         {% csrf_token %}
         <p>
             <label for="id_username">아이디:</label>
-            <input type="text" name="username" max="30" autofocus required id="id_username" />
-            <span class="helptext">필수입력. 문자, 숫자 혹은 특수문자(@/./+/-/_)를 포함한 30자 이하.</span>
+            <input type="text" name="username" max="30" autofocus required id="id_username" autocomplete="off"/>
+            <span class="helptext">문자, 숫자 혹은 특수문자(@/./+/-/_)를 포함한 30자 이하.</span>
         </p>
         {% if username_error %}
             <span>이미 사용 중인 아이디입니다.</span>
         {% endif %}
         <p>
             <label for="id_nickname">닉네임:</label>
-            <input type="text" name="nickname" maxlength="20" required id="id_nickname">
+            <input type="text" name="nickname" maxlength="20" required id="id_nickname" autocomplete="off">
         </p>
         {% if nickname_error %}
             <span>이미 사용 중인 닉네임입니다.</span>
         {% endif %}
         <p>
             <label for="id_email">이메일:</label>
-            <input type="email" name="email" maxlength="100" required id="id_email" />
+            <input type="email" name="email" maxlength="100" required id="id_email" autocomplete="off"/>
         </p>
         {% if email_error %}
             <span>이미 사용 중인 이메일입니다.</span>
