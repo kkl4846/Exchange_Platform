@@ -37,24 +37,31 @@
 <form action="./comment_create/" method="POST">
     {% csrf_token %}
     <input type="text" name="comment_content" id="comment_{{review.id}}" placeholder='댓글달기...' style="width: 80%;"/>
-    <div class="btn btn-outline-dark submit" onclick="onClickComment({{review.id}}, document.querySelector('#comment_{{review.id}}').value)">
+    <div class="btn btn-outline-dark submit" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">
         submit
     </div>
 </form>
 </div>
 
 <script>
-        const onClickComment= async(post_id, comment_content) => {  
+        const onClickComment= async(is_authenticated,post_id, comment_content) => {  
+        console.log(is_authenticated)
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
+        }else{
         const url = './comment_create/';
         const res= await fetch(url,{        
             method: 'POST',
             headers:{
             'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify({post_id:post_id,comment_content:comment_content})
+            body: JSON.stringify({is_authenticated:is_authenticated,post_id:post_id,comment_content:comment_content})
         }); 
+    
         const {post_id:id,comment_content:content,comment_id:c_id}= await res.json();        
         commentHandleResponse(id,content,c_id);
+    }
     };
 
     const commentHandleResponse=(post_id,comment_content,comment_id) => {

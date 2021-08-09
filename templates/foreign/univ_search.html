@@ -35,6 +35,8 @@
 </div>
 
 <script>
+    const Name = document.querySelector('.name input')
+    Name.size = "40"
     const onClickUniv = async (foreign_name) => {
         const url = '/foreign/get_foreign/';
         const res = await fetch(url, {
