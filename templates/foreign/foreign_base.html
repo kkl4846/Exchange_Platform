@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>{{univ.away_name}}</h1>
-    위키
-    <h3>{{univ.country}}</h3>
-    <hr/>
-    {% block content %}
-    {% endblock %}
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content%}
+    <div class="d-flex justify-content-evenly ">
+        <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center"
+            style="width:200px; height:150px;">
+            <ul>
+                <li><a href="{% url "foreign:sister" univ.pk%}">자매 결연 대학</a></li>
+                <li><a href="{% url "foreign:wiki" univ.pk%}">위키</a></li>
+                <li><a href="{% url "foreign:question_list" univ.pk%}">QnA</a></li>
+                <li><a href="{% url "foreign:review_list" univ.pk%}">파견교 후기 공유</a></li>
+            </ul>
+        </div>
+        <div style="width:750px;">
+            
+    {% block contents %}
+    {% endblock %}
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,56 @@
+{% extends "foreign/foreign_base.html" %}
+
+{% block contents %}
+
+    
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{univ.away_name}}</h1>
+                <span>QnA</span>
+                <h3>{{univ.country}}</h3>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ user.is_authenticated }}')"> 글쓰기 </button>
+        </div>
+        <hr>
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+            {%for question in questions %}
+            <tr>
+                <td class="numbered" align='center'></td>
+                <td><a href="{% url "foreign:question_detail" foreign_id question.pk %}">{{ question.question_title }}</a></td>
+                <td>{{ question.created_at}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block extra %}
+<script>
+    function numbering(startnum){
+        var init = startnum;
+        var td_list = document.querySelectorAll(`.numbered`);
+        for(var i=0; i<td_list.length; i++){
+            init++;
+            td_list[i].innerHTML= `${init}`;
+        }
+    }
+    numbering(0);
+
+    const canIPost= (is_authenticated)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            window.location.href='{% url "foreign:question_create" foreign_id %}';
+        }
+    };
+</script>
+
+{% endblock %}

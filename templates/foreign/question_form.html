@@ -1,0 +1,21 @@
+{% extends "foreign/foreign_base.html" %}
+{% block contents %}
+
+    
+    <div style="width:750px;">
+        <div class="d-flex justify-content-between ">
+            <h1>{{univ.away_name}}</h1>
+            <span>QnA</span>
+            <h3>{{univ.country}}</h3>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ user.is_authenticated }}')"> 글쓰기 </button>
+        </div>
+        <hr>
+        <form action ="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
+        </form>
+    </div>
+
+
+{% endblock %}

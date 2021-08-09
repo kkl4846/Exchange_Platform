@@ -1,0 +1,60 @@
+{%extends "base.html"%}
+{%block content%}
+<div class='d-flex justify-content-evenly '>
+    <div class='foreign_list' style="width: 55%;">
+        <form action="" method='GET' >
+            학교명: <input type="search" name='query' style="width: 65%;">
+            <input type="submit" value='검색'>
+        </form>
+
+
+        {% for key, val in univ_dict.items %}
+        <ul>
+            <h3>{{ key }}</h3>
+            {% for univ in val %}
+
+            <div class="btn"  onclick="onClickUniv('{{univ}}')">{{univ}}</div>
+            <br/>
+
+            {% endfor %}
+        </ul>
+        <br>
+        {% endfor %}
+    </div>
+    <div style="width: 30%;">
+        <form action="" method="post" enctype="multipart/form-data" class="form" >
+            {% csrf_token %}
+            <table class="table table-bordered">
+                <p class='name'>대학명: {{form.away_name}}</p>
+                <p>국가: {{form.country}}</p>
+                <p>자매 결연 대학:{{form.domestics}}</p>
+            </table>
+            <input type="submit" value="저장하기" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+<script>
+    const Name = document.querySelector('.name input')
+    Name.size = "40"
+    const onClickUniv = async (foreign_name) => {
+        const url = '/foreign/get_foreign/';
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({ foreign_name: foreign_name})
+        });
+        const { foreign_name: name } = await res.json();
+        ForeignHandleResponse(name);
+    };
+
+    const ForeignHandleResponse = (foreign_name) => {
+
+        const element = document.querySelector('.name input');
+        element.value=foreign_name
+    }
+
+</script>
+{%endblock%}

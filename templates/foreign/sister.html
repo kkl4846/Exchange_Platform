@@ -1,0 +1,28 @@
+{% extends "foreign/foreign_base.html" %}
+
+{% block contents %}
+<div style="width:750px;">
+    <div class="d-flex align-items-center ">
+        <h1>{{univ.away_name}}</h1>
+        <span>자매 결연 대학</span>
+        <h3>{{univ.country}}</h3>
+    </div>
+    <hr>
+    <div>
+        {% for key, val in sisters_dict.items %}
+        <ul>
+            <h3>{{ key }}</h3>
+            {% for sister in val %}
+
+            <a herf="{ url " domestic:wiki" sister.pk}">{{sister.home_name}}</a>
+
+            {% endfor %}
+        </ul>
+        <br>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock %}

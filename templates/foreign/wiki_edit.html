@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <div>
+{%extends "foreign/foreign_base.html"%}
+{%block contents%}
+<div style="width:750px;">
+    <div class="d-flex justify-content-between ">
+        <div class="d-flex align-items-center ">
+            <h1>{{univ.away_name}}</h1>
+            <span>위키</span>
+            <h3>{{univ.country}}</h3>
+        </div>
     </div>
-    <div>
 
-
+    <hr>
         <form action="" method="POST" enctype="multipart/form-data" class="table">
             {% csrf_token %}
             {% for field in form %}
-
+            {% if btn == forloop.counter%}
             {%if field.name == 'away_apply'%} <p>1.파견로의 지원방법</p>  {%endif%}
             {%if field.name == 'language_score'%}<p>2.필요 어학 점수</p>   {%endif%}
             {%if field.name == 'course_enroll'%} <p>3.수강신청방법</p>  {%endif%}
@@ -26,7 +22,7 @@
             {%if field.name == 'club'%}  <p>6.동아리</p> {%endif%}
             {%if field.name == 'away_scholarship'%} <p>7.장학금</p> {%endif%}
             
-            {% if btn == forloop.counter%}
+            
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
                     id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
@@ -35,7 +31,7 @@
             {% else %}
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly cols = "100" rows="20" >{{field.value}}</textarea>
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
             </div>
           
             {%endif%}
@@ -44,6 +40,6 @@
         </form>
 
     </div>
-</body>
-
-</html>
+    </div>
+    </div>
+{%endblock%}
