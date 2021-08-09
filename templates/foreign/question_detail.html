@@ -14,7 +14,7 @@
         <div>
             <div class="d-flex justify-content-between">
                 <h4>{{ question.question_title }}</h4>
-                <p>작성자: {{ question.author}} 작성 시간: {{ question.created_at }}</p>
+                <p>작성자: {{ question.author.nickname}} 작성 시간: {{ question.created_at }}</p>
             </div>
     
             <p>
@@ -36,7 +36,7 @@
             {% for comment in comments %}
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h5>{{ comment.comment_author }}</h5> 
+                        <h5>{{ comment.comment_author.nickname }}</h5> 
                         {{ comment.comment_content }}
                     </div>
                     <div>
