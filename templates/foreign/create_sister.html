@@ -10,19 +10,16 @@
     <a href="{% url "foreign:create_sister" univ.pk%}">학교 추가</a>
     <hr>
     <div>
-        {% for key, val in sisters_dict.items %}
-        <ul>
-            <h3>{{ key }}</h3>
-            {% for sister in val %}
-            <a href="{% url "domestic:wiki" sister.pk %}">{{sister.home_name}}</a>
+        학교명
+        <form  action ="" method="POST"  enctype="multipart/form-data">
+        <select name="sister">
+            {% for domestic_univ in domestic_univs %}
+            <option>{{domestic_univ.home_name}}</option>
             {% endfor %}
-        </ul>
-        <br>
-        {% endfor %}
-        
+        </select>
+        <button type="submit" class="btn btn-outline-danger"> 추가 </button>
+        </form>
     </div>
 
 </div>
-
-
 {% endblock %}

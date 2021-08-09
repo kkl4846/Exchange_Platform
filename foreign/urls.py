@@ -55,4 +55,6 @@ urlpatterns = [
 
     path('<int:foreign_id>/sister/',
          views.sister, name="sister"),
+    path('<int:foreign_id>/create_sister/',
+         views.create_sister, name="create_sister"),
 ]
