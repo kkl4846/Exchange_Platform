@@ -1,27 +1,24 @@
 {%extends "base.html"%}
 {%block content%}
-<div class="d-flex flex-column justify-content-center">
-  <div>
-        <button class="btn btn-sm btn-border btn-primary mt-5 mx-5" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+<div class="d-flex flex-column justify-content-center" style="margin-left: 30px;">
+    <div class=" mt-5" >
+    {% for key, val in univ_dict.items %}
+    <a href="#{{ key }}">{{ key }}</a>
+    {% endfor %}
+    <button class="btn btn-sm btn-border btn-primary mx-5" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+    {% for key, val in univ_dict.items %}
+        <ul>
+            <h3 id="{{ key }}">{{ key }}</h3>
+            {% for univ in val %}
+
+            
+                    <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
+            
+
+            {% endfor %}
+        </ul>
+        <br>
+    {% endfor %}
     </div>
-<div class=" mt-5" >
-{% for key, val in univ_dict.items %}
-<a href="#{{ key }}">{{ key }}</a>
-{% endfor %}
-
-{% for key, val in univ_dict.items %}
-    <ul>
-        <h3 id="{{ key }}">{{ key }}</h3>
-        {% for univ in val %}
-
-        
-                <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
-         
-
-        {% endfor %}
-    </ul>
-    <br>
-{% endfor %}
-</>
 </div>
 {%endblock%}

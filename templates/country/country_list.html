@@ -2,17 +2,24 @@
 
 
 {% block content %}
-{% autoescape off %}
-{% for key, val in countries_dict.items %}
-    <ul>
-        <h3>{{ key }}</h3>
-        {% for country in val %}
-            <li><a href="{% url 'country:country_wiki' pk=country.pk %}">
-                {{ country.country_name }}
-            </a></li>
+<div class="mx-5 mt-5">
+    {% autoescape off %}
+    <div>
+        {% for key, val in countries_dict.items %}
+        <a href="#{{ key }}">{{ key }}</a>
         {% endfor %}
-    </ul>
-    <br>
-{% endfor %}
-{% endautoescape %}
+    </div>
+    <div class="mx-4">
+        {% for key, val in countries_dict.items %}
+            <h3 id="{{ key }}">{{ key }}</h3>
+            {% for country in val %}
+                <a href="{% url 'country:country_wiki' pk=country.pk %}">
+                    {{ country.country_name }}
+                </a>
+            {% endfor %}
+            <br>
+        {% endfor %}
+    </div>
+    {% endautoescape %}
+</div>
 {% endblock %}
