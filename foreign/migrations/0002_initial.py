@@ -11,60 +11,60 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('country', '0002_initial'),
-        ('domestic', '0001_initial'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('foreign', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('domestic', '0002_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='dquestion',
+            model_name='post',
+            name='post_author',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_posts', to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='fquestion',
             name='author',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='dquestion',
+            model_name='fquestion',
             name='away_university',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='foreign.foreign'),
         ),
         migrations.AddField(
-            model_name='dquestion',
+            model_name='fquestion',
             name='country',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='country.country'),
         ),
         migrations.AddField(
-            model_name='dquestion',
+            model_name='fquestion',
             name='home_university',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='domestic.domestic'),
         ),
         migrations.AddField(
-            model_name='domestic',
-            name='home_sister',
-            field=models.ManyToManyField(related_name='sisters', to='foreign.Foreign', verbose_name='자매결연'),
+            model_name='foreign',
+            name='country',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='country_univs', to='country.country'),
         ),
         migrations.AddField(
-            model_name='dcomment',
+            model_name='fcomment',
             name='comment_author',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='dcomment',
+            model_name='fcomment',
             name='question',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='domestic.dquestion'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='foreign.fquestion'),
         ),
         migrations.AddField(
-            model_name='credit',
-            name='away_university',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='foreign.foreign'),
+            model_name='comment',
+            name='comment_author',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_comments', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='credit',
-            name='credit_author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='credit',
-            name='home_school',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='domestic.domestic'),
+            model_name='comment',
+            name='post',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_comment', to='foreign.post'),
         ),
     ]

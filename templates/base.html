@@ -17,10 +17,10 @@
                     <a class="btn" href="{% url 'domestic:univ_list' %}">국내대학별</a>
                 </div>
                 <div>
-                    <a class="btn" href="">해외파견교별</a>
+                    <a class="btn" href="{% url 'foreign:univ_list' %}">해외파견교별</a>
                 </div>
                 <div>
-                    <a class="btn" href="">파견국가별</a>
+                    <a class="btn" href="{% url 'country:country_list' %}">파견국가별</a>
                 </div>
             </div>
             {% if not user.is_authenticated %}
