@@ -1,0 +1,40 @@
+{%extends "country/country_base.html"%}
+{%block contents%}
+<div style="width:750px;">
+    <div class="d-flex justify-content-between ">
+        <div class="d-flex align-items-center ">
+            <h1>{{country.country_name}}</h1>
+            <span>위키</span>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <p>1. 비자 발급 방법</p>
+            <pre>{{country.visa}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
+            <div><a href="{% url "country:wiki_edit_visa" country.pk %}">수정</a></div>
+            <div>
+                <p>2. 현지생활 및 치안</p>
+                <pre>{{country.lifestyle}}</pre>
+                <div><a href="{% url "country:wiki_edit_lifestyle" country.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>3. 물가 및 체류 비용</p>
+                <pre>{{country.money}}</pre>
+                <div><a href="{% url "country:wiki_edit_money" country.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>4. 문화적 특징</p>
+                <pre>{{country.culture}}</pre>
+                <div><a href="{% url "country:wiki_edit_culture" country.pk %}">수정</a></div>
+            </div>
+            <div>
+                <p>5. 코로나 정보</p>
+                <pre>{{country.covid_info}}</pre>
+                <div><a href="{% url "country:wiki_edit_covid_info" country.pk %}">수정</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

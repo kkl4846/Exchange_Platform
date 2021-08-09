@@ -22,4 +22,5 @@ urlpatterns = [
     path('foreign/', include("foreign.urls")),  # foreign url추가
     path('', include('login.urls')),
     path('domestic/', include('domestic.urls'), name='domestic')
+    path('country/', include('country.urls')),
 ]

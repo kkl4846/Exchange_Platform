@@ -1,0 +1,42 @@
+{%extends "country/country_base.html"%}
+{%block contents%}
+<div style="width:750px;">
+    <div class="d-flex justify-content-between ">
+        <div class="d-flex align-items-center ">
+            <h1>{{country.country_name}}</h1>
+            <span>위키</span>
+        </div>
+    </div>
+
+
+        <form action="" method="POST" enctype="multipart/form-data" class="table">
+            {% csrf_token %}
+            {% for field in form %}
+            {% if btn == forloop.counter%}
+            {%if field.name == 'visa'%} <p>1. 비자 발급 방법</p>  {%endif%}
+            {%if field.name == 'lifestyle'%}<p>2. 현지생활 및 치안</p>   {%endif%}
+            {%if field.name == 'money'%} <p>3. 물가 및 체류 비용</p>  {%endif%}
+            {%if field.name == 'culture'%} <p>4. 문화적 특징</p> {%endif%}
+            {%if field.name == 'covid_info'%} <p>5. 코로나 정보</p> {%endif%}
+            
+            
+            <div class="form-group">
+                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
+            </div>
+            <input type="submit" value="저장하기" />
+            {% else %}
+            <div class="form-group">
+                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
+                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
+            </div>
+          
+            {%endif%}
+            {% endfor %}
+
+        </form>
+
+    </div>
+    </div>
+    </div>
+{%endblock%}
