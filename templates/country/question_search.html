@@ -15,6 +15,7 @@
             {% csrf_token %}
             <input type="text" placeholder="검색어를 입력하세요" name="q" value="{{q}}">
             <input type="submit" value="검색">
+            <a href="{% url 'country:question_list' country_id %}" class="btn btn-outline-dark btn-sm">돌아가기</a>
         </form>
         <table>
             <tr align='center'>
