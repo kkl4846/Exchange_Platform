@@ -18,6 +18,15 @@
             <button class="btn btn-sm btn-border" onclick="canIpost('{{ is_authenticated }}','{{ is_enrolled }}')"> 내 점수 등록 </button>
         </div>
         <hr>
+        <form class="d-flex justify-content-center" action="{% url 'domestic:credit_search' domestic.pk %}" method="post">
+            {% csrf_token %}
+            <select name="filter" value="{{ filter }}">
+                <option>단과대학</option>
+                <option>합격여부</option>
+            </select>
+            <input class="col-9" placeholder="검색" name="q" value="{{q}}">
+            <button class="btn btn-outline-success" type="submit">검색</button>
+        </form>
         <table>
             <tr align='center'>
                 <th width='150'>단과대학</th>
@@ -29,7 +38,7 @@
             </tr>
             {% for post in credit_posts %}
             <tr align='center'>
-                <td>{{ post.college  }}</td>
+                <td>{{ post.college }}</td>
                 <td>{{ post.credit }}</td>
                 <td>{{ post.grade_average }}</td>
                 <td>{{ post.apply_semester }}</td>

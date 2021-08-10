@@ -32,4 +32,5 @@ urlpatterns = [
 
     path('<int:domestic_id>/credit/', views.credit_list, name='credit_list'),
     path('<int:domestic_id>/credit/create', views.credit_create, name='credit_create'),
+    path('<int:domestic_id>/credit/search', views.credit_search, name='credit_search')
 ]

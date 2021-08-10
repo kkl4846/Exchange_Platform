@@ -307,7 +307,6 @@ def question_search(request, domestic_id):
 
     ctx = {
         'domestic': domestic,
-        'questions': questions,
         'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
@@ -503,3 +502,34 @@ def credit_create(request, domestic_id):
             'domestic': domestic,
         }
         return render(request, template_name='domestic/credit_form.html', context=ctx)
+
+def credit_search(request, domestic_id):
+    domestic = Domestic.objects.get(id=domestic_id)
+    credit_posts = domestic.credit_set.all()
+
+    filter = request.POST.get('filter', "") 
+    q = request.POST.get('q', "")
+    if filter == '단과대학':
+        searched = credit_posts.filter(college__icontains=q)
+    elif filter == '합격여부':
+        searched = credit_posts.filter(pass_fail__icontains=q)
+
+    paginator = Paginator(searched, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
+
+    ctx = {
+        'domestic': domestic,
+        'page_obj':page_obj,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': is_enrolled,
+        'q': q,
+        'filter': filter
+    }
+    return render(request, template_name='domestic/credit_search.html', context=ctx)

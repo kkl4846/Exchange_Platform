@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="d-flex justify-content-evenly ">
     <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
@@ -10,32 +9,41 @@
             <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
         </ul>
     </div>
-    <div>
+    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>QnA</span>
+                <span>파견교별 학점컷</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="canIpost('{{ is_authenticated }}','{{ is_enrolled }}')"> 내 점수 등록 </button>
         </div>
         <hr>
-        <form class="d-flex justify-content-center" action="{% url 'domestic:question_search' domestic.pk %}" method="post">
+        <form class="d-flex justify-content-center" action="{% url 'domestic:credit_search' domestic.pk %}" method="post">
             {% csrf_token %}
-            
+            <select name="filter" value="{{ filter }}">
+                <option>단과대학</option>
+                <option>합격여부</option>
+            </select>
             <input class="col-9" placeholder="검색" name="q" value="{{q}}">
             <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
         <table>
             <tr align='center'>
-                <th width='50'>번호</th>
-                <th width='600' >제목</th>
-                <th>날짜</th>
+                <th width='150'>단과대학</th>
+                <th width='150'>이수학점</th>
+                <th width='150'>평점평균</th>
+                <th width='150'>지원시기</th>
+                <th width='150'>지원학교</th>
+                <th width='150'>합격여부</th>
             </tr>
-            {% for question in page_obj %}
-            <tr>
-                <td class="numbered" align='center'></td>
-                <td><a href="{% url 'domestic:question_detail' domestic.pk question.pk %}">{{ question.question_title }}</a></td>
-                <td>{{ question.created_at }}</td>
+            {% for post in page_obj %}
+            <tr align='center'>
+                <td>{{ post.college }}</td>
+                <td>{{ post.credit }}</td>
+                <td>{{ post.grade_average }}</td>
+                <td>{{ post.apply_semester }}</td>
+                <td>{{ post.away_university }}</td>
+                <td>{{ post.pass_fail }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -69,24 +77,8 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra %}
 <script>
-    function numbering(startnum){
-        var init = startnum;
-        var td_list = document.querySelectorAll(`.numbered`);
-        for(var i=0; i<td_list.length; i++){
-            if (i==0){
-                init=init+({{ page_obj.number }}-1)*15;
-            }
-            init++;
-            td_list[i].innerHTML= `${init}`;
-        }
-    }
-    numbering(0);
-
-    const canIPost = (is_authenticated, is_enrolled)=> {
+    const canIpost= (is_authenticated, is_enrolled)=> {
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
@@ -94,11 +86,9 @@
             if(is_enrolled == 'False'){
                 alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
             }else{
-                window.location.href='{% url "domestic:question_create" domestic.pk %}';
+                window.location.href=`create`; 
             }
         }
     };
-
 </script>
-
 {% endblock %}
