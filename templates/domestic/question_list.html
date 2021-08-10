@@ -25,7 +25,7 @@
                 <th width='600' >제목</th>
                 <th>날짜</th>
             </tr>
-            {% for question in questions %}
+            {% for question in page_objs %}
             <tr>
                 <td class="numbered" align='center'></td>
                 <td><a href="{% url 'domestic:question_detail' domestic.pk question.pk %}">{{ question.question_title }}</a></td>
@@ -33,6 +33,21 @@
             </tr>
             {% endfor %}
         </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
         <nav aria-label="Page navigation" class="d-flex justify-content-center">
             <ul class="pagination">
               <li class="page-item">

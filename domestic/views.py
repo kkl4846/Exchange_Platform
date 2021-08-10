@@ -1,14 +1,13 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from foreign.models import *
+from django.core.paginator import Paginator
 
 URL_LOGIN = '/login/'
-# Create your views here.
 
 
 def univ_list(request):
@@ -199,7 +198,7 @@ def question_list(request, domestic_id):
 
     paginator = Paginator(questions, 15)
     page_num = request.GET.get('page')
-    page_questions = paginator.get_page(page_num)
+    page_obj = paginator.get_page(page_num)
 
     user = request.user
     is_enrolled = 'False'
@@ -210,7 +209,7 @@ def question_list(request, domestic_id):
     ctx = {
         'domestic': domestic,
         'questions': questions,
-        'page_questions': page_questions,
+        'page_questions': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
     }
@@ -248,7 +247,7 @@ def question_create(request, domestic_id):
         form = DQuestionForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            post.author = user
             post.home_university = domestic
             post.save()
             return redirect('domestic:question_detail', domestic_id, post.pk)
@@ -283,8 +282,8 @@ def question_edit(request, domestic_id, pk):
 
 
 def question_delete(request, domestic_id, pk):
+    question = DQuestion.objects.get(id=pk)
     if request.method == 'POST':
-        question = DQuestion.objects.get(id=pk)
         question.delete()
 
     return redirect('domestic:question_list', domestic_id)
@@ -352,9 +351,9 @@ def comment_edit(request, domestic_id, comment_id):
 
 
 def comment_delete(request, domestic_id, comment_id):
+    comment = DComment.objects.get(id=comment_id)
+    question = comment.question
     if request.method == 'POST':
-        comment = DComment.objects.get(id=comment_id)
-        question = comment.question
         comment.delete()
 
     return redirect('domestic:question_detail', domestic_id, question.pk)
