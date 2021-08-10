@@ -486,10 +486,11 @@ def q_comment_edit(request, foreign_id, pk):
 
 
 def q_comment_delete(request, foreign_id, pk):
-    comment = FComment.objects.get(id=pk)
-    question = comment.question
-    comment.delete()
-    return redirect('foreign:question_detail', foreign_id, pk=question.pk)
+    if request.method == 'POST':
+        comment = FComment.objects.get(id=pk)
+        question = comment.question
+        comment.delete()
+    return redirect('foreign:question_detail', foreign_id, question.pk)
 
 
 # 댓글달기

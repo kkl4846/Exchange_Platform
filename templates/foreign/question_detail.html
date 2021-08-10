@@ -46,7 +46,10 @@
                         {{ comment.created_at }}
                         {% if comment.comment_author == user %}
                         <button onclick="location.href='{% url "foreign:q_comment_edit" foreign_id comment.pk%}'"> 수정  </button>
-                        <button onclick="location.href='{% url "foreign:q_comment_delete" foreign_id comment.pk%}'"> 삭제</button>
+                        <form action="{% url "foreign:q_comment_delete" foreign_id comment.pk %}" method="post" style="  display: inline; background: transparent">
+                            {% csrf_token %}
+                            <input type="submit" value="삭제" >
+                        </form>
                         {% endif %}
                     </div>
                 </div>
