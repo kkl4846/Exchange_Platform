@@ -15,4 +15,5 @@ urlpatterns = [
     path('search_school/', views.school_search, name='search_school'),
     path('users/<str:uidb64>/<str:token>', views.Activate.as_view()),
     path('myquestion/', views.myquestion, name="myquestion"),
+    path('reset_password/', views.reset_password, name="reset_password"),
 ]

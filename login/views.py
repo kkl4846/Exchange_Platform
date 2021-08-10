@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
-from . import models, tokens, text
+from . import models, tokens, text, helper
 from domestic.models import DQuestion
 from foreign.models import FQuestion
 from country.models import CQuestion
@@ -132,7 +132,7 @@ def certificate(request):
             token = tokens.school_certification_token.make_token(user)
             message_data = text.message(domain, uidb64, token)
 
-            mail_title = "학교 인증을 완료해주세요"
+            mail_title = "Uni Connect: 학교 인증을 완료해주세요"
             mail_to = email
             emailing = EmailMessage(mail_title, message_data, to=[mail_to])
             emailing.send()
@@ -206,3 +206,28 @@ def myquestion(request):
         'c_questions': c_questions,
     }
     return render(request, 'login/myquestion.html', context=ctx)
+
+
+def reset_password(request):
+    ctx = {}
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        try:
+            target_user = models.User.objects.get(
+                username=username, email=email)
+            auth_num = helper.email_auth_num()
+            target_user.set_password(auth_num)
+            target_user.save()
+            message_data = text.password_message(auth_num)
+
+            mail_title = "Uni Connect: 임시 비밀번호입니다."
+            mail_to = email
+            emailing = EmailMessage(mail_title, message_data, to=[mail_to])
+            emailing.send()
+            return render(request, 'login/send_email.html')
+        except:
+            reset_error = "회원 정보를 다시 확인해주세요."
+            ctx.update({'reset_error': reset_error})
+
+    return render(request, 'login/reset_password.html', context=ctx)
