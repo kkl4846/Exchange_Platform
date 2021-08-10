@@ -430,7 +430,7 @@ def credit_list(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
     credit_posts = domestic.credit_set.all()
 
-    paginator = Paginator(credit_posts, 15)
+    paginator = Paginator(credit_posts, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
