@@ -2,6 +2,7 @@ import country
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from jamo import h2j, j2hcj
+from django.core.paginator import Paginator
 from .models import *
 from .forms import *
 
@@ -163,15 +164,29 @@ def country_univ(request, pk):
 '''
 
 
+# def question_list(request, country_id):
+#     country = get_object_or_404(Country, pk=country_id)
+#     questions = country.cquestion_set.all()
+#     ctx = {
+#         'country': country,
+#         'questions': questions,
+#         'is_authenticated': request.user.is_authenticated
+#     }
+#     return render(request, template_name='country/question_list.html', context=ctx)
+
 def question_list(request, country_id):
     country = get_object_or_404(Country, pk=country_id)
-    questions = country.cquestion_set.all()
+    questions = CQuestion.objects.filter(country=country)
+    questions = questions.order_by('-created_at')
+    paginator = Paginator(questions, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     ctx = {
+        'page_obj': page_obj,
+        'country_id': country_id,
         'country': country,
-        'questions': questions,
-        'is_authenticated': request.user.is_authenticated
     }
-    return render(request, template_name='country/question_list.html', context=ctx)
+    return render(request, 'country/question_list.html', context=ctx)
 
 
 def question_detail(request, country_id, pk):
