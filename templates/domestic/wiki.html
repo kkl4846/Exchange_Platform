@@ -60,3 +60,10 @@
     };
 </script>
 {%endblock%}
+{% block extra %}
+    {% if certificate_error %}
+        <script>
+            alert("해당 학생만 이용할 수 있는 서비스입니다.");
+        </script>
+    {% endif %}
+{% endblock %}

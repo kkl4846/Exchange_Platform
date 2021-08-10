@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,6 @@ from jamo import h2j, j2hcj
 from foreign.models import *
 
 URL_LOGIN = '/login/'
-from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -53,14 +53,25 @@ def wiki(request, domestic_id):
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_apply(request, domestic_id):
+    user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if request.method == 'POST':
-        form = DomesticForm(request.POST, request.FILES, instance=domestic)
-        if form.is_valid():
-            domestic = form.save()
-            return redirect('domestic:wiki', domestic_id)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DomesticForm(request.POST, request.FILES, instance=domestic)
+            if form.is_valid():
+                domestic = form.save()
+                return redirect('domestic:wiki', domestic_id)
+        else:
+            form = DomesticForm(instance=domestic)
     else:
-        form = DomesticForm(instance=domestic)
+        is_enrolled = False
+        ctx = {
+            'univ': domestic,
+            'certificate_error': True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': is_enrolled,
+        }
+        return render(request, 'domestic/wiki.html', context=ctx)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -70,14 +81,25 @@ def wiki_edit_apply(request, domestic_id):
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_document(request, domestic_id):
+    user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if request.method == 'POST':
-        form = DomesticForm(request.POST, request.FILES, instance=domestic)
-        if form.is_valid():
-            domestic = form.save()
-            return redirect('domestic:wiki', domestic_id)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DomesticForm(request.POST, request.FILES, instance=domestic)
+            if form.is_valid():
+                domestic = form.save()
+                return redirect('domestic:wiki', domestic_id)
+        else:
+            form = DomesticForm(instance=domestic)
     else:
-        form = DomesticForm(instance=domestic)
+        is_enrolled = False
+        ctx = {
+            'univ': domestic,
+            'certificate_error': True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': is_enrolled,
+        }
+        return render(request, 'domestic/wiki.html', context=ctx)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -87,14 +109,25 @@ def wiki_edit_document(request, domestic_id):
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_semester(request, domestic_id):
+    user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if request.method == 'POST':
-        form = DomesticForm(request.POST, request.FILES, instance=domestic)
-        if form.is_valid():
-            domestic.save()
-            return redirect('domestic:wiki', domestic_id)
+    if user.school.certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DomesticForm(request.POST, request.FILES, instance=domestic)
+            if form.is_valid():
+                domestic.save()
+                return redirect('domestic:wiki', domestic_id)
+        else:
+            form = DomesticForm(instance=domestic)
     else:
-        form = DomesticForm(instance=domestic)
+        is_enrolled = False
+        ctx = {
+            'univ': domestic,
+            'certificate_error': True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': is_enrolled,
+        }
+        return render(request, 'domestic/wiki.html', context=ctx)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -104,14 +137,25 @@ def wiki_edit_semester(request, domestic_id):
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_scholarship(request, domestic_id):
+    user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if request.method == 'POST':
-        form = DomesticForm(request.POST, request.FILES, instance=domestic)
-        if form.is_valid():
-            domestic.save()
-            return redirect('domestic:wiki', domestic_id)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DomesticForm(request.POST, request.FILES, instance=domestic)
+            if form.is_valid():
+                domestic.save()
+                return redirect('domestic:wiki', domestic_id)
+        else:
+            form = DomesticForm(instance=domestic)
     else:
-        form = DomesticForm(instance=domestic)
+        is_enrolled = False
+        ctx = {
+            'univ': domestic,
+            'certificate_error': True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': is_enrolled,
+        }
+        return render(request, 'domestic/wiki.html', context=ctx)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -121,14 +165,25 @@ def wiki_edit_scholarship(request, domestic_id):
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_insurance(request, domestic_id):
+    user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if request.method == 'POST':
-        form = DomesticForm(request.POST, request.FILES, instance=domestic)
-        if form.is_valid():
-            domestic.save()
-            return redirect('domestic:wiki', domestic_id)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DomesticForm(request.POST, request.FILES, instance=domestic)
+            if form.is_valid():
+                domestic.save()
+                return redirect('domestic:wiki', domestic_id)
+        else:
+            form = DomesticForm(instance=domestic)
     else:
-        form = DomesticForm(instance=domestic)
+        is_enrolled = False
+        ctx = {
+            'univ': domestic,
+            'certificate_error': True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': is_enrolled,
+        }
+        return render(request, 'domestic/wiki.html', context=ctx)
     return render(request, 'domestic/wiki_edit.html', {
         'form': form,
         'univ': domestic,
@@ -212,7 +267,7 @@ def question_create(request, domestic_id):
 def question_edit(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = get_object_or_404(DQuestion, id=pk)
-    
+
     if request.method == 'POST':
         form = DQuestionForm(request.POST, instance=question)
         if form.is_valid():
@@ -329,7 +384,7 @@ def sister_list(request, domestic_id):
             last_alpha = this_alpha
         else:
             sisters_dict[this_alpha].append(sister)
-    if len(sisters_dict['A']) == 0: 
+    if len(sisters_dict['A']) == 0:
         del(sisters_dict['A'])
 
     ctx = {
@@ -365,7 +420,7 @@ def sister_add(request, domestic_id):
             'domestic': domestic,
             'is_authenticated': user.is_authenticated,
             'univs': univs,
-            'is_enrolled':is_enrolled,
+            'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/sister_add.html', context=ctx)
 
@@ -381,7 +436,7 @@ def credit_list(request, domestic_id):
     if user.is_authenticated:
         if user.university == domestic.home_name:
             is_enrolled = 'True'
-            
+
     ctx = {
         'domestic': domestic,
         'credit_posts': credit_posts,
