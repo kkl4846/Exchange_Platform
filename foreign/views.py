@@ -434,8 +434,9 @@ def question_edit(request, foreign_id, pk):
 
 
 def question_delete(request, foreign_id, pk):
-    question = get_object_or_404(FQuestion, id=pk)
-    question.delete()
+    if request.method == 'POST':
+        question = get_object_or_404(FQuestion, id=pk)
+        question.delete()
     return redirect('foreign:question_list', foreign_id)
 
 

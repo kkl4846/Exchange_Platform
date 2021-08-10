@@ -22,7 +22,10 @@
             </p>
             <div class="d-flex justify-content-end">
                 {% if question.author.pk == user.pk %}
-                <button onclick="location.href='{% url "foreign:question_delete" foreign_id question.pk %}'"> 삭제 </button>
+                <form action="{% url "foreign:question_delete" foreign_id question.pk %}" method="post" style="  display: inline; background: transparent">
+                    {% csrf_token %}
+                    <input type="submit" value="삭제" >
+                </form>
                 <button onclick="location.href='{% url "foreign:question_edit" foreign_id question.pk %}'"> 수정 </button>
                 {% endif %}
                 <button onclick="location.href='{% url "foreign:question_list" foreign_id%}'"> 목록 </button>

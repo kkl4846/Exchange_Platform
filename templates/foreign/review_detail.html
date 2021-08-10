@@ -15,9 +15,9 @@
 <p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
 <p>날짜: {{review.created_at}}</p>
 {% if request.user == review.post_author %}
-<form action="{% url "foreign:review_delete" foreign_id review.pk %}" method="post">
+<form action="{% url "foreign:review_delete" foreign_id review.pk %}" method="post" style="  display: inline; background: transparent">
     {% csrf_token %}
-    <input type="submit" value="삭제">
+    <input type="submit" value="삭제" >
 </form>
 <a href="{% url "foreign:review_update" foreign_id review.pk%}">수정</a>
 {% endif %}
