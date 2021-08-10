@@ -1,8 +1,10 @@
-import country
+import json
+from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from jamo import h2j, j2hcj
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .forms import *
 
@@ -203,11 +205,13 @@ def question_detail(request, country_id, pk):
     country = get_object_or_404(Country, pk=country_id)
     question = CQuestion.objects.get(id=pk)
     comments = question.ccomment_set.all()
+    undercomments = CUnderComment.objects.all()
     ctx = {
         'question': question,
         'comments': comments,
         'country': country,
-        'is_authenticated': request.user.is_authenticated
+        'is_authenticated': request.user.is_authenticated,
+        'undercomments': undercomments,
     }
     return render(request, template_name='country/question_detail.html', context=ctx)
 
@@ -314,3 +318,19 @@ def comment_delete(request, country_id, comment_id):
     if request.method == 'POST':
         comment.delete()
     return redirect('country:question_detail', country_id, question.pk)
+
+
+@csrf_exempt
+def undercomment_create(request, country_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    new_comment_content = req['comment_content']
+
+    new_undercomment = CUnderComment.objects.create(
+        comment=CComment.objects.get(id=comment_id),
+        comment_author=request.user,
+        comment_content=new_comment_content
+    )
+    new_undercomment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'undercomment_id': new_undercomment.id, 'undercomment_author': request.user.nickname, 'undercomment_content': new_comment_content})

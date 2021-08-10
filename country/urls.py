@@ -30,6 +30,9 @@ urlpatterns = [
          views.question_delete, name='question_delete'),
     path('<int:country_id>/qna/search/',
          views.question_search, name='question_search'),
+    path('<int:country_id>/qna/<int:pk>/undercomment_create/',
+         views.undercomment_create, name='undercomment_create'),
+
 
     path('<int:country_id>/qna/<int:pk>/comment/create/',
          views.comment_create, name='comment_create'),
@@ -37,5 +40,4 @@ urlpatterns = [
          views.comment_edit, name='comment_edit'),
     path('<int:country_id>/comment/<int:comment_id>/delete/',
          views.comment_delete, name='comment_delete'),
-
 ]

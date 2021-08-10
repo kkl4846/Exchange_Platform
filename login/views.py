@@ -143,7 +143,7 @@ def certificate(request):
             emailing.send()
             return render(request, 'login/send_email.html')
         else:
-            domain_error = "이메일을 확인해주세요."
+            domain_error = "이메일 도메인이 일치하지 않습니다."
             ctx = {
                 'domain_error': domain_error,
                 'school_names': school_names,

@@ -17,13 +17,13 @@
     <form class="mt-2" method="POST">
         {% csrf_token %}
         <div class="domain mt-2">
-    </form>
-    {% if domain_error %}
-        <div>
-            <span>{{ domain_error }}</span>
+            {% if domain_error %}
+                <div>
+                    <span>{{ domain_error }}</span>
+                </div>
+            {% endif %}
         </div>
-    {% endif %}
-    </div>
+    </form>
 </div>
 {% endblock %}
 
@@ -58,39 +58,5 @@
     {% if alert_flag %}
         <script>alert("이미 존재하는 이메일입니다.")</script>  
     {% endif %}
-<!-- <script>
-    //학교 이름 뜨게 하기
-    const endpoint = 'https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json'
-    const universities = [];
-
-    fetch(endpoint)
-    .then(blob => blob.json())
-    .then(data => universities.push(...data))
-
-    function findMatches(wordToMatch, universities) {
-        return universities.filter(university => {
-            const regex = new RegExp(wordToMatch, 'gi');
-            return university.name.match(regex)
-        });
-    }
-
-    function displayMatches() {
-        const matchArray = findMatches(this.value, universities);
-        const html = matchArray.map(university => {
-            const regex = new RegExp(this.value, 'gi');
-            const universityName = university.name.replace(regex, `<span class="hl">${this.value}</span>`);
-            return `
-            <li class="mt-1">
-                <a href="#" class="name">${universityName}</a>
-            </li>`
-        }).join('')
-        suggestions.innerHTML = html;
-    };
-
-    const searchInput = document.querySelector('.search_uni');
-    const suggestions = document.querySelector('.suggestions');
-
-    searchInput.addEventListener('change', displayMatches);
-    searchInput.addEventListener('keyup', displayMatches); -->
 </script>
 {% endblock %}
