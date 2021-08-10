@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
+from django.core.paginator import Paginator
 
 
 def univ_list(request):
@@ -281,11 +282,14 @@ def wiki_edit_away_scholarship(request, pk):
 
 def review_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
-    all_review = foreign.reviews.all()
+    all_review = foreign.reviews.order_by('-created_at')
+    paginator = Paginator(all_review, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     ctx = {
-        'all_review': all_review,
         'foreign_id': foreign_id,
         'univ': foreign,
+        'page_obj': page_obj,
     }
     return render(request, 'foreign/review_list.html', ctx)
 
