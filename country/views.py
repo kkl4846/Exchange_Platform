@@ -227,8 +227,10 @@ def question_edit(request, country_id, pk):
 
 
 def question_delete(request, country_id, pk):
-    question = CQuestion.objects.get(id=pk)
-    question.delete()
+    if request.method == 'POST':
+        question = CQuestion.objects.get(id=pk)
+        question.delete()
+
     return redirect('country:question_list', country_id)
 
 
@@ -284,5 +286,6 @@ def comment_edit(request, country_id, comment_id):
 def comment_delete(request, country_id, comment_id):
     comment = CComment.objects.get(id=comment_id)
     question = comment.question
-    comment.delete()
+    if request.method == 'POST':
+        comment.delete()
     return redirect('country:question_detail', country_id, question.pk)
