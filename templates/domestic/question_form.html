@@ -15,7 +15,7 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>QnA</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
         </div>
         <hr>
         <form action ="" method="POST" enctype="multipart/form-data">
@@ -27,12 +27,16 @@
 </div>
 
 <script>
-    const canIPost= (is_authenticated)=> {
+    const canIPost = (is_authenticated, is_enrolled)=> {
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
         }else{
-            window.location.href='{% url "domestic:question_create" domestic.pk %}';
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href='{% url "domestic:question_create" domestic.pk %}';
+            }
         }
     };
 

@@ -40,8 +40,6 @@ def wiki(request, domestic_id):
     if user.is_authenticated:
         if user.university == univ.home_name:
             is_enrolled = 'True'
-        else:
-            is_enrolled = 'False'
     ctx = {
         'univ': univ,
         'is_authenticated': user.is_authenticated,
@@ -135,10 +133,16 @@ def wiki_edit_insurance(request, domestic_id):
 def question_list(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     questions = domestic.dquestion_set.all()
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
     ctx = {
         'domestic': domestic,
         'questions': questions,
-        'is_authenticated': request.user.is_authenticated
+        'is_authenticated': request.user.is_authenticated,
+        'is_enrolled': is_enrolled,
     }
     return render(request, template_name='domestic/question_list.html', context=ctx)
 
@@ -147,17 +151,28 @@ def question_detail(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
     comments = question.dcomment_set.all()
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
     ctx = {
         'question': question,
         'comments': comments,
         'domestic': domestic,
-        'is_authenticated': request.user.is_authenticated
+        'is_authenticated': request.user.is_authenticated,
+        'is_enrolled': is_enrolled,
     }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
 
 def question_create(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
     if request.method == 'POST':
         form = DQuestionForm(request.POST)
         if form.is_valid():
@@ -172,6 +187,7 @@ def question_create(request, domestic_id):
             'form': form,
             'domestic': domestic,
             'is_authenticated': request.user.is_authenticated,
+            'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/question_form.html', context=ctx)
 
@@ -204,6 +220,11 @@ def question_delete(request, domestic_id, pk):
 def comment_create(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
     if request.method == 'POST':
         form = DCommentForm(request.POST)
         if form.is_valid():
@@ -219,6 +240,7 @@ def comment_create(request, domestic_id, pk):
             'question': question,
             'domestic': domestic,
             'is_authenticated': request.user.is_authenticated,
+            'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
@@ -227,6 +249,11 @@ def comment_edit(request, domestic_id, comment_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     comment = get_object_or_404(DComment, id=comment_id)
     question = comment.question
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
     if request.method == 'POST':
         form = DCommentForm(request.POST, instance=comment)
         if form.is_valid():
@@ -239,6 +266,7 @@ def comment_edit(request, domestic_id, comment_id):
             'question': comment.question,
             'domestic': domestic,
             'is_authenticated': request.user.is_authenticated,
+            'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
