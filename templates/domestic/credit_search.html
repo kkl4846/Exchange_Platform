@@ -27,6 +27,7 @@
             <input class="col-9" placeholder="검색" name="q" value="{{q}}">
             <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
+        {% if page_obj %}
         <table>
             <tr align='center'>
                 <th width='150'>단과대학</th>
@@ -47,6 +48,19 @@
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <table>
+            <tr align='center'>
+                <th width='150'>단과대학</th>
+                <th width='150'>이수학점</th>
+                <th width='150'>평점평균</th>
+                <th width='150'>지원시기</th>
+                <th width='150'>지원학교</th>
+                <th width='150'>합격여부</th>
+            </tr>
+        </table>
+        <p align='center'>검색 결과가 없습니다.</p>
+        {% endif %}
         <div style="text-align:center">
             <div class="pagination">
                 <div style="width:35%; margin: 5px;">
