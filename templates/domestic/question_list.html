@@ -25,7 +25,7 @@
                 <th width='600' >제목</th>
                 <th>날짜</th>
             </tr>
-            {% for question in page_objs %}
+            {% for question in page_obj %}
             <tr>
                 <td class="numbered" align='center'></td>
                 <td><a href="{% url 'domestic:question_detail' domestic.pk question.pk %}">{{ question.question_title }}</a></td>
@@ -33,38 +33,41 @@
             </tr>
             {% endfor %}
         </table>
-        <div class="pagination">
-            <span class="step-links">
+        <div style="text-align:center">
+            <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+                </li>
                 {% endif %}
-                    <span class="current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
+
+                {% for page_number in page_obj.paginator.page_range %}
+                    {% if page_number == page_obj.number %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                </li>
                 {% endif %}
-            </span>
+            </div>
         </div>
-        <nav aria-label="Page navigation" class="d-flex justify-content-center">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
     </div>
 </div>
 {% endblock %}
@@ -75,6 +78,9 @@
         var init = startnum;
         var td_list = document.querySelectorAll(`.numbered`);
         for(var i=0; i<td_list.length; i++){
+            if (i==0){
+                init=init+({{ page_obj.number }}-1)*15;
+            }
             init++;
             td_list[i].innerHTML= `${init}`;
         }

@@ -197,8 +197,8 @@ def question_list(request, domestic_id):
     questions = domestic.dquestion_set.all()
 
     paginator = Paginator(questions, 15)
-    page_num = request.GET.get('page')
-    page_obj = paginator.get_page(page_num)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     user = request.user
     is_enrolled = 'False'
@@ -209,7 +209,7 @@ def question_list(request, domestic_id):
     ctx = {
         'domestic': domestic,
         'questions': questions,
-        'page_questions': page_obj,
+        'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
     }
