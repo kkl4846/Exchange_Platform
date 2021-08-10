@@ -350,8 +350,8 @@ def review_create(request, foreign_id, post=None):
 
 
 def review_delete(request, pk, foreign_id):
+    review = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
-        review = get_object_or_404(Post, pk=pk)
         review.delete()
     return redirect('foreign:review_list', foreign_id)
 
@@ -434,8 +434,8 @@ def question_edit(request, foreign_id, pk):
 
 
 def question_delete(request, foreign_id, pk):
+    question = get_object_or_404(FQuestion, id=pk)
     if request.method == 'POST':
-        question = get_object_or_404(FQuestion, id=pk)
         question.delete()
     return redirect('foreign:question_list', foreign_id)
 
@@ -486,9 +486,9 @@ def q_comment_edit(request, foreign_id, pk):
 
 
 def q_comment_delete(request, foreign_id, pk):
+    comment = FComment.objects.get(id=pk)
+    question = comment.question
     if request.method == 'POST':
-        comment = FComment.objects.get(id=pk)
-        question = comment.question
         comment.delete()
     return redirect('foreign:question_detail', foreign_id, question.pk)
 
