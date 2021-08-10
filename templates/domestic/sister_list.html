@@ -15,7 +15,7 @@
                 <h1>{{ domestic.home_name }}</h1>
                 <span>자매 결연 대학</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="canIAdd('{{ is_authenticated }}')"> 학교 추가 </button>
+            <button class="btn btn-sm btn-border" onclick="canIAdd('{{ is_authenticated }}','{{ is_enrolled }}')"> 학교 추가 </button>
         </div>
         <hr>
         {% for key, val in sisters_dict.items %}
@@ -32,13 +32,18 @@
     </div>
 </div>
 <script>
-    const canIAdd= (is_authenticated)=> {
+    const canIAdd= (is_authenticated, is_enrolled)=> {
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
         }else{
-            window.location.href='{% url "domestic:sister_add" domestic.pk %}';
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href=`add`;            
+            }
         }
     };
+    
 </script>
 {% endblock %}
