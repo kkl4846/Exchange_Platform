@@ -53,7 +53,7 @@
         var td_list = document.querySelectorAll(`.numbered`);
         for(var i=0; i<td_list.length; i++){
             if (i==0){
-                init=init+({{ page_obj.number }}-1)*10;
+                init=init+({{ page_obj.number }}-1)*15;
             }
             init++;
             td_list[i].innerHTML= `${init}`;
