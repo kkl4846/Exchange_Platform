@@ -311,11 +311,17 @@ def review_detail(request, pk, foreign_id):
     all_comment = review.post_comment.all()
     foreign = get_object_or_404(
         Foreign, pk=foreign_id)  # 외국 대학과 국가 넘겨주기위해 받음
+    if request.user == review.post_author:
+        IsReviewAuthor = True
+    else:
+        IsReviewAuthor = False
+
     ctx = {
         'review': review,
         'foreign_id': foreign_id,
         'univ': foreign,
         'all_comment': all_comment,
+        'IsReviewAuthor': IsReviewAuthor,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
@@ -323,6 +329,7 @@ def review_detail(request, pk, foreign_id):
 @login_required(login_url=URL_LOGIN)
 def review_create(request, foreign_id, post=None):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
+    IsReviewAuthor = True
     if request.method == 'POST':
         form = ReviewForm(request.POST, request.FILES, instance=post)
         form.author_post = request.user
@@ -334,7 +341,8 @@ def review_create(request, foreign_id, post=None):
             return redirect('foreign:review_detail', foreign_id, review.pk)
     else:
         if post != None:                # 수정할 때
-            post.post_author = request.user
+            if request.user != post.post_author:
+                IsReviewAuthor = False
             post.save()
             type = 'update'
         else:                           # 새로 생성할 때
@@ -346,6 +354,7 @@ def review_create(request, foreign_id, post=None):
         'review': post,
         'type': type,
         'univ': foreign,
+        'IsReviewAuthor': IsReviewAuthor,
     })
 
 
@@ -359,6 +368,7 @@ def review_delete(request, pk, foreign_id):
 @login_required(login_url=URL_LOGIN)
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
+
     return review_create(request, foreign_id, post)
 
 # Q&A
@@ -421,17 +431,26 @@ def question_create(request, foreign_id):
 def question_edit(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = get_object_or_404(FQuestion, id=pk)
+    IsQuestionAuthor = True
     if request.method == 'POST':
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save()
             return redirect('foreign:question_detail', foreign_id, pk)
     else:
+        if question != None:                # 수정할 때
+            if request.user != question.author:
+                IsQuestionAuthor = False
+            type = 'update'
+        else:                           # 새로 생성할 때
+            type = 'create'
         form = QuestionForm(instance=question)
         ctx = {
             'form': form,
             'foreign_id': foreign_id,
             'univ': foreign,
+            'IsQuestionAuthor': IsQuestionAuthor,
+            'type': type,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 

@@ -1,5 +1,6 @@
 {%extends "foreign/foreign_base.html"%}
 {%block contents%}
+{% if type == 'create' or IsReviewAuthor == True %}
 <div style="width:750px;">
     <div class="d-flex justify-content-between ">
         <div class="d-flex align-items-center ">
@@ -9,7 +10,6 @@
         </div>
         </div>
         <hr>
-
         <div class="container">
             <div class="col-sm-12">
                 <form action="" method="post" enctype="multipart/form-data">
@@ -25,4 +25,10 @@
         </div>
 
 </div>
+{%else%}
+<script>
+        alert('이 게시글은 작성자만 수정 가능합니다.');
+        window.location.href='{% url "foreign:review_list" univ.pk  %}';
+</script>
+{%endif%}
 {%endblock%}

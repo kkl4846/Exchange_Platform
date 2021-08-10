@@ -17,7 +17,7 @@
 <p>내용: {{review.content}}</p>
 <p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
 <p>날짜: {{review.created_at}}</p>
-{% if request.user == review.post_author %}
+{% if IsReviewAuthor %}
 <form action="{% url "foreign:review_delete" foreign_id review.pk %}" method="post" style="  display: inline; background: transparent">
     {% csrf_token %}
     <input type="submit" value="삭제" >

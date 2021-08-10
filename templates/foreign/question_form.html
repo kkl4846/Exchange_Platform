@@ -1,7 +1,6 @@
 {% extends "foreign/foreign_base.html" %}
 {% block contents %}
-
-    
+{% if type != 'update' or IsQuestionAuthor == True %}
     <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <h1>{{univ.away_name}}</h1>
@@ -16,6 +15,11 @@
             <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
         </form>
     </div>
-
+{%else%}
+    <script>
+             alert('이 게시글은 작성자만 수정 가능합니다.');
+            window.location.href='{% url "foreign:question_list" univ.pk  %}';
+    </script>
+{%endif%}
 
 {% endblock %}
