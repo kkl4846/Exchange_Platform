@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Foreign(models.Model):
@@ -24,12 +25,13 @@ class Post(models.Model):
     post_author = models.ForeignKey(
         "login.User", on_delete=models.CASCADE, related_name="user_posts")
     CHOICES = (
-        ("1", "1"),
-        ("2", "2"),
+        ("1학기", "1학기"),
+        ("2학기", "2학기"),
     )
     title = models.CharField(max_length=50)
     content = models.TextField(blank=True)
-    away_year = models.IntegerField()
+    away_year = models.IntegerField(default=2020, validators=[
+        MinValueValidator(2000), MaxValueValidator(2100)])
     away_semester = models.CharField(
         max_length=10,
         choices=CHOICES
