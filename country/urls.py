@@ -32,6 +32,10 @@ urlpatterns = [
          views.question_search, name='question_search'),
     path('<int:country_id>/qna/<int:pk>/undercomment_create/',
          views.undercomment_create, name='undercomment_create'),
+    path('<int:country_id>/qna/<int:pk>/undercomment_update/',
+         views.undercomment_update, name='undercomment_update'),
+    path('<int:country_id>/qna/<int:pk>/undercomment_delete/',
+         views.undercomment_delete, name='undercomment_delete'),
 
 
     path('<int:country_id>/qna/<int:pk>/comment/create/',
