@@ -19,6 +19,7 @@ urlpatterns = [
     path('<int:domestic_id>/qna/<int:pk>/', views.question_detail, name='question_detail'),
     path('<int:domestic_id>/qna/<int:pk>/edit/', views.question_edit, name='question_edit'),
     path('<int:domestic_id>/qna/<int:pk>/delete/', views.question_delete, name='question_delete'),
+    path('<int:domestic_id>/qna/search/',views.question_search, name='question_search'),
 
     path('<int:domestic_id>/qna/<int:pk>/comment/create/', views.comment_create, name='comment_create'),
     path('<int:domestic_id>/comment/<int:comment_id>/edit/', views.comment_edit, name='comment_edit'),

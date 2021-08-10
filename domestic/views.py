@@ -288,6 +288,33 @@ def question_delete(request, domestic_id, pk):
 
     return redirect('domestic:question_list', domestic_id)
 
+def question_search(request, domestic_id):
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
+    questions = domestic.dquestion_set.all()
+
+    q = request.POST.get('q', "") 
+    searched = questions.filter(question_title__icontains=q)
+    
+    paginator = Paginator(searched, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == domestic.home_name:
+            is_enrolled = 'True'
+
+    ctx = {
+        'domestic': domestic,
+        'questions': questions,
+        'page_obj': page_obj,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': is_enrolled,
+        'q' : q
+    }
+    return render(request, template_name='domestic/question_search.html', context=ctx)
+
 
 # 답글댓글
 @login_required(login_url=URL_LOGIN)
