@@ -12,6 +12,9 @@
     <div>
         <div>
             <p>1. 파견로의 지원방법</p>
+            {% if univ.away_apply == ''%}
+            <p style="text-decoration:underline;">위키를 채워주세요!</p>
+            {% endif %}
             <pre>{{univ.away_apply}}</pre>  <!--textarea에 입력한대로 보여주는 pre tag-->
             <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','apply')">수정</button>
             <div>

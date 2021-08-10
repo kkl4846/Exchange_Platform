@@ -383,11 +383,14 @@ def question_detail(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
+    undercomments = FUnderComment.objects.all()
     ctx = {
         'question': question,
         'comments': comments,
         'foreign_id': foreign_id,
         'univ': foreign,
+        'is_authenticated': request.user.is_authenticated,
+        'undercomments': undercomments,
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -519,6 +522,23 @@ def q_comment_delete(request, foreign_id, pk):
     if request.method == 'POST':
         comment.delete()
     return redirect('foreign:question_detail', foreign_id, question.pk)
+
+
+# qna 대댓글
+@csrf_exempt
+def undercomment_create(request, foreign_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    new_comment_content = req['comment_content']
+
+    new_undercomment = FUnderComment.objects.create(
+        comment=FComment.objects.get(id=comment_id),
+        comment_author=request.user,
+        comment_content=new_comment_content
+    )
+    new_undercomment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'undercomment_id': new_undercomment.id, 'undercomment_author': request.user.nickname, 'undercomment_content': new_comment_content})
 
 
 # 댓글달기
