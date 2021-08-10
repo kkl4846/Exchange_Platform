@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-evenly ">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="{% url 'foreign:sister' univ.pk %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'foreign:wiki' univ.pk %}">위키</a></li>
+            <li><a href="{% url 'foreign:question_list' univ.pk %}">QnA</a></li>
+            <li><a href="{% url 'foreign:review_list' univ.pk %}">파견교 후기 공유</a></li>
+        </ul>
+    </div>
+    <div>
+        <div class="d-flex justify-content-between ">
+            <div class="d-flex align-items-center ">
+                <h1>{{ univ.away_name }}</h1>
+                <span>QnA</span>
+            </div>
+            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+        </div>
+        <hr>
+        <form class="d-flex justify-content-center" action="{% url 'foreign:question_search' univ.pk %}" method="post">
+            {% csrf_token %}
+            
+            <input class="col-9" placeholder="검색" name="q" value="{{q}}">
+            <button class="btn btn-outline-success" type="submit">검색</button>
+        </form>
+        {% if page_obj %}
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+            {% for question in page_obj %}
+            <tr>
+                <td class="numbered" align='center'></td>
+                <td><a href="{% url 'foreign:question_detail' univ.pk question.pk %}">{{ question.question_title }}</a></td>
+                <td>{{ question.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+        </table>
+        <p align='center'>검색 결과가 없습니다.</p>
+        {% endif %}
+        
+        <div style="text-align:center">
+            <div class="pagination">
+                <div style="width:35%; margin: 5px;">
+                    {% if page_obj.has_previous %}
+                    <a class="abutton" href="?page=1">맨 앞으로</a>
+                    <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
+                    {% endif %}
+                </div>
+                <div style="width:30%; margin: 5px;">
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                            <span class="{% if page == page_obj.number %}current{% endif %}">
+                                <a href="?page={{ page }}" {% if page == page_obj.number %}style="font-weight: bold;"{%endif%}>{{ page}}</a>
+                                
+                            </span>
+                        {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
+                            <span>..</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div style="width:35%; margin: 5px;">
+                    {% if page_obj.has_next %}
+                        <a class="abutton" href="?page={{ page_obj.next_page_number }}">다음</a>
+                        <a class="abutton" href="?page={{ page_obj.paginator.num_pages }}">맨 뒤로</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra %}
+<script>
+    function numbering(startnum){
+        var init = startnum;
+        var td_list = document.querySelectorAll(`.numbered`);
+        for(var i=0; i<td_list.length; i++){
+            if (i==0){
+                init=init+({{ page_obj.number }}-1)*15;
+            }
+            init++;
+            td_list[i].innerHTML= `${init}`;
+        }
+    }
+    numbering(0);
+
+    const canIPost = (is_authenticated, is_enrolled)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href='{% url "foreign:question_create" univ.pk %}';
+            }
+        }
+    };
+
+</script>
+
+{% endblock %}

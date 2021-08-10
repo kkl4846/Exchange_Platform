@@ -440,7 +440,35 @@ def question_delete(request, foreign_id, pk):
     return redirect('foreign:question_list', foreign_id)
 
 
+def question_search(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    questions = foreign.fquestion_set.all()
+
+    q = request.POST.get('q', "")
+    searched = questions.filter(question_title__icontains=q)
+
+    paginator = Paginator(searched, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    user = request.user
+    is_enrolled = 'False'
+    if user.is_authenticated:
+        if user.university == foreign.away_name:
+            is_enrolled = 'True'
+
+    ctx = {
+        'univ': foreign,
+        'page_obj': page_obj,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': is_enrolled,
+        'q': q
+    }
+    return render(request, template_name='foreign/question_search.html', context=ctx)
+
 # 답글댓글
+
+
 @login_required(login_url=URL_LOGIN)
 def q_comment_create(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
