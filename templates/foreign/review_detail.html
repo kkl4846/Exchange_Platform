@@ -11,6 +11,9 @@
 <hr>
 <p>작성자:{{review.post_author.nickname}}</p>
 <p>제목: {{review.title}}</p>
+{% if review.image %}
+<img src="{{review.image.url}}" style="width:700px"/>
+{% endif %}
 <p>내용: {{review.content}}</p>
 <p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
 <p>날짜: {{review.created_at}}</p>

@@ -30,6 +30,7 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=50)
     content = models.TextField(blank=True)
+    image = models.ImageField(blank=True, upload_to='review/%Y/%M/%d')
     away_year = models.IntegerField(default=2020, validators=[
         MinValueValidator(2000), MaxValueValidator(2100)])
     away_semester = models.CharField(
