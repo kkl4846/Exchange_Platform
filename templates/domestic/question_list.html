@@ -35,37 +35,30 @@
         </table>
         <div style="text-align:center">
             <div class="pagination">
-                {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled">
-                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
-                </li>
-                {% endif %}
-
-                {% for page_number in page_obj.paginator.page_range %}
-                    {% if page_number == page_obj.number %}
-                    <li class="page-item active" aria-current="page">
-                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-                    </li>
+                <div style="width:35%; margin: 5px;">
+                    {% if page_obj.has_previous %}
+                    <a class="abutton" href="?page=1">맨 앞으로</a>
+                    <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
                     {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled">
-                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
-                </li>
-                {% endif %}
+                </div>
+                <div style="width:30%; margin: 5px;">
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                            <span class="{% if page == page_obj.number %}current{% endif %}">
+                                <a href="?page={{ page }}" {% if page == page_obj.number %}style="font-weight: bold;"{%endif%}>{{ page}}</a>
+                                
+                            </span>
+                        {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
+                            <span>..</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div style="width:35%; margin: 5px;">
+                    {% if page_obj.has_next %}
+                        <a class="abutton" href="?page={{ page_obj.next_page_number }}">다음</a>
+                        <a class="abutton" href="?page={{ page_obj.paginator.num_pages }}">맨 뒤로</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

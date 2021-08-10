@@ -430,6 +430,10 @@ def credit_list(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
     credit_posts = domestic.credit_set.all()
 
+    paginator = Paginator(credit_posts, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated:
@@ -439,6 +443,7 @@ def credit_list(request, domestic_id):
     ctx = {
         'domestic': domestic,
         'credit_posts': credit_posts,
+        'page_obj':page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
     }
