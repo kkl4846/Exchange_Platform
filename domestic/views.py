@@ -212,6 +212,7 @@ def question_create(request, domestic_id):
 def question_edit(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = get_object_or_404(DQuestion, id=pk)
+    
     if request.method == 'POST':
         form = DQuestionForm(request.POST, instance=question)
         if form.is_valid():
@@ -227,8 +228,10 @@ def question_edit(request, domestic_id, pk):
 
 
 def question_delete(request, domestic_id, pk):
-    question = DQuestion.objects.get(id=pk)
-    question.delete()
+    if request.method == 'POST':
+        question = DQuestion.objects.get(id=pk)
+        question.delete()
+
     return redirect('domestic:question_list', domestic_id)
 
 
@@ -294,9 +297,11 @@ def comment_edit(request, domestic_id, comment_id):
 
 
 def comment_delete(request, domestic_id, comment_id):
-    comment = DComment.objects.get(id=comment_id)
-    question = comment.question
-    comment.delete()
+    if request.method == 'POST':
+        comment = DComment.objects.get(id=comment_id)
+        question = comment.question
+        comment.delete()
+
     return redirect('domestic:question_detail', domestic_id, question.pk)
 
 # 자매결연대학 목록
