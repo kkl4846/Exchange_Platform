@@ -106,7 +106,7 @@
 
     //비밀번호 변경시 팝업
     </script>
-    {% if alert_flag1 %}
-        <script>alert("비밀번호 변경이 완료되었습니다.")</script>  
+    {% if message %}
+    <script>alert('{{ message }}')</script>  
     {% endif %}
 {% endblock %}

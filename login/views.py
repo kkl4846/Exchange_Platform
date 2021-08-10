@@ -75,11 +75,11 @@ def mypage(request):
                 user.set_password(new_password)
                 user.save()
                 auth.login(request, user)
-                return render(request, 'login/mypage.html', {'alert_flag1': True})
+                context.update({'message': "비밀번호 변경이 완료되었습니다."})
             else:
-                context.update({'error': "새로운 비밀번호를 다시 확인해주세요."})
+                context.update({'message': "새로운 비밀번호를 다시 확인해주세요."})
         else:
-            context.update({'error': "현재 비밀번호가 일치하지 않습니다."})
+            context.update({'message': "현재 비밀번호가 일치하지 않습니다."})
     return render(request, 'login/mypage.html', context)
 
 
