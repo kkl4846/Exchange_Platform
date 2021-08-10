@@ -24,7 +24,7 @@
             <input class="col-9" placeholder="검색" name="q" value="{{q}}">
             <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
-
+        {% if page_obj %}
         <table>
             <tr align='center'>
                 <th width='50'>번호</th>
@@ -39,7 +39,19 @@
             </tr>
             {% endfor %}
         </table>
-        
+        {% else %}
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+        </table>
+        <div class='text-center m-5'>
+            <h5>등록된 정보가 없습니다</h5>
+            <h6>첫 번째로 정보를 등록해주세요!</h6>
+        </div>
+        {% endif %}
         <div style="text-align:center">
             <div class="pagination">
                 <div style="width:35%; margin: 5px;">

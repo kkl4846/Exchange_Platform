@@ -208,7 +208,6 @@ def question_list(request, domestic_id):
 
     ctx = {
         'domestic': domestic,
-        'questions': questions,
         'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
@@ -468,7 +467,6 @@ def credit_list(request, domestic_id):
 
     ctx = {
         'domestic': domestic,
-        'credit_posts': credit_posts,
         'page_obj':page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,

@@ -18,17 +18,24 @@
             <button class="btn btn-sm btn-border" onclick="canIAdd('{{ is_authenticated }}','{{ is_enrolled }}')"> 학교 추가 </button>
         </div>
         <hr>
-        {% for key, val in sisters_dict.items %}
-            <a href="#{{ key }}">{{ key }}</a>
-        {% endfor %}
-        {% for key, val in sisters_dict.items %}
-        <ul>
-            <h3 id="{{ key }}">{{ key }}</h3>
-            {% for sister in val %}
-                <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
+        {% if sisters_dict.items %}
+            {% for key, val in sisters_dict.items %}
+                <a href="#{{ key }}">{{ key }}</a>
             {% endfor %}
-        </ul>
-        {% endfor %}
+            {% for key, val in sisters_dict.items %}
+            <ul>
+                <h3 id="{{ key }}">{{ key }}</h3>
+                {% for sister in val %}
+                    <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        {% else %}
+            <div class='text-center m-5'>
+                <h5>등록된 정보가 없습니다</h5>
+                <h6>첫 번째로 정보를 등록해주세요!</h6>
+            </div>
+        {% endif %}
     </div>
 </div>
 <script>
