@@ -1,6 +1,7 @@
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import auth
@@ -16,6 +17,8 @@ from . import models, tokens, text, helper
 from domestic.models import DQuestion
 from foreign.models import FQuestion
 from country.models import CQuestion
+
+URL_LOGIN = '/login/'
 
 
 def user_main(request):
@@ -63,6 +66,7 @@ def login(request):
         return render(request, 'login/login.html')
 
 
+@login_required(login_url=URL_LOGIN)
 def mypage(request):
     context = {}
     if request.method == "POST":
@@ -95,6 +99,7 @@ def rename(request):
     return JsonResponse({'nickname': nickname})
 
 
+@login_required(login_url=URL_LOGIN)
 def certificate(request):
     f = open('config/univ.json', 'r')
     file = json.load(f)
@@ -152,6 +157,7 @@ def certificate(request):
         return render(request, 'login/certificate.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 @csrf_exempt
 def school_search(request):
     req = json.loads(request.body)
@@ -195,6 +201,7 @@ class Activate(View):
             return JsonResponse({"message": "INVALID_KEY"}, status=400)
 
 
+@login_required(login_url=URL_LOGIN)
 def myquestion(request):
     user = request.user
     d_questions = DQuestion.objects.filter(author=user)

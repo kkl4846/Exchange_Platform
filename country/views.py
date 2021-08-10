@@ -1,10 +1,11 @@
 import country
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
 from jamo import h2j, j2hcj
 from .models import *
 from .forms import *
 
-# Create your views here.
+URL_LOGIN = '/login/'
 
 
 def country_list(request):
@@ -16,7 +17,7 @@ def country_list(request):
     for c in countries:
         this_country = c.country_name
         country_cho = j2hcj(h2j(this_country[0]))[0]
-        if last_cho != country_cho:     # 직전 초성과 다른 초성   
+        if last_cho != country_cho:     # 직전 초성과 다른 초성
             countries_dict[country_cho] = []
             countries_dict[country_cho].append(c)
             last_cho = country_cho
@@ -30,10 +31,11 @@ def country_list(request):
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
 
 
-
 '''
  위키
 '''
+
+
 def country_wiki(request, pk):
     country = get_object_or_404(Country, pk=pk)
     return render(request, 'country/country_wiki.html', {
@@ -41,6 +43,7 @@ def country_wiki(request, pk):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_visa(request, pk):
     country = get_object_or_404(Country, pk=pk)
     if request.method == 'POST':
@@ -57,6 +60,7 @@ def wiki_edit_visa(request, pk):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_lifestyle(request, pk):
     country = get_object_or_404(Country, pk=pk)
     if request.method == 'POST':
@@ -73,6 +77,7 @@ def wiki_edit_lifestyle(request, pk):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_money(request, pk):
     country = get_object_or_404(Country, pk=pk)
     if request.method == 'POST':
@@ -89,6 +94,7 @@ def wiki_edit_money(request, pk):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_culture(request, pk):
     country = get_object_or_404(Country, pk=pk)
     if request.method == 'POST':
@@ -105,6 +111,7 @@ def wiki_edit_culture(request, pk):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_covid_info(request, pk):
     country = get_object_or_404(Country, pk=pk)
     if request.method == 'POST':
@@ -121,10 +128,11 @@ def wiki_edit_covid_info(request, pk):
     })
 
 
-
 '''
  대학 목록
 '''
+
+
 def country_univ(request, pk):
     country = get_object_or_404(Country, pk=pk)
     unives = country.country_univs.all().order_by('away_name')
@@ -153,13 +161,15 @@ def country_univ(request, pk):
 '''
  질문
 '''
+
+
 def question_list(request, country_id):
-    country= get_object_or_404(Country, pk=country_id)
+    country = get_object_or_404(Country, pk=country_id)
     questions = country.cquestion_set.all()
     ctx = {
         'country': country,
         'questions': questions,
-        'is_authenticated':request.user.is_authenticated
+        'is_authenticated': request.user.is_authenticated
     }
     return render(request, template_name='country/question_list.html', context=ctx)
 
@@ -169,35 +179,36 @@ def question_detail(request, country_id, pk):
     question = CQuestion.objects.get(id=pk)
     comments = question.ccomment_set.all()
     ctx = {
-        'question': question, 
+        'question': question,
         'comments': comments,
         'country': country,
-        'is_authenticated':request.user.is_authenticated
-        }
+        'is_authenticated': request.user.is_authenticated
+    }
     return render(request, template_name='country/question_detail.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def question_create(request, country_id):
     country = get_object_or_404(Country, pk=country_id)
     if request.method == 'POST':
         form = CQuestionForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author=request.user
-            post.country =country
+            post.author = request.user
+            post.country = country
             post.save()
             return redirect('country:question_detail', country_id, post.pk)
     else:
         form = CQuestionForm()
         ctx = {
             'form': form,
-            'country':country,
+            'country': country,
             'is_authenticated': request.user.is_authenticated,
-            }
+        }
         return render(request, template_name='country/question_form.html', context=ctx)
-        
 
 
+@login_required(login_url=URL_LOGIN)
 def question_edit(request, country_id, pk):
     country = get_object_or_404(Country, pk=country_id)
     question = get_object_or_404(CQuestion, id=pk)
@@ -205,13 +216,13 @@ def question_edit(request, country_id, pk):
         form = CQuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save()
-            return redirect('country:question_detail',country_id, pk)
+            return redirect('country:question_detail', country_id, pk)
     else:
         form = CQuestionForm(instance=question)
         ctx = {
             'form': form,
-            'country':country
-            }
+            'country': country
+        }
         return render(request, template_name='country/question_form.html', context=ctx)
 
 
@@ -224,28 +235,32 @@ def question_delete(request, country_id, pk):
 '''
  댓글
 '''
-def comment_create(request,country_id, pk):
+
+
+@login_required(login_url=URL_LOGIN)
+def comment_create(request, country_id, pk):
     country = get_object_or_404(Country, pk=country_id)
     question = CQuestion.objects.get(id=pk)
     if request.method == 'POST':
         form = CCommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.question=question
+            comment.question = question
             comment.comment_author = request.user
             comment.save()
-            return redirect('country:question_detail',country_id, pk)
+            return redirect('country:question_detail', country_id, pk)
     else:
         form = CCommentForm()
         ctx = {
             'form': form,
-            'question':question,
-            'country':country,
+            'question': question,
+            'country': country,
             'is_authenticated': request.user.is_authenticated,
-            }
+        }
         return render(request, template_name='country/comment_form.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def comment_edit(request, country_id, comment_id):
     country = get_object_or_404(Country, pk=country_id)
     comment = get_object_or_404(CComment, id=comment_id)
@@ -259,10 +274,10 @@ def comment_edit(request, country_id, comment_id):
         form = CCommentForm(instance=comment)
         ctx = {
             'form': form,
-            'question':comment.question,
-            'country':country,
+            'question': comment.question,
+            'country': country,
             'is_authenticated': request.user.is_authenticated,
-            }
+        }
         return render(request, template_name='country/comment_form.html', context=ctx)
 
 
@@ -270,4 +285,4 @@ def comment_delete(request, country_id, comment_id):
     comment = CComment.objects.get(id=comment_id)
     question = comment.question
     comment.delete()
-    return redirect('country:question_detail',country_id, question.pk)
+    return redirect('country:question_detail', country_id, question.pk)

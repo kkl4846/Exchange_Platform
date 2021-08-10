@@ -1,6 +1,7 @@
 import foreign
 import json
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 import json
@@ -9,6 +10,8 @@ from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from django.core.paginator import Paginator
+
+URL_LOGIN = '/login/'
 
 
 def univ_list(request):
@@ -35,6 +38,7 @@ def univ_list(request):
 # 해외 대학 추가
 
 
+@login_required(login_url=URL_LOGIN)
 def univ_search(request):
     if request.method == 'POST':  # newforeign폼 입력시
         form = NewForeignForm(request.POST)
@@ -78,6 +82,7 @@ def univ_search(request):
 
 
 # 해외 대학 추가 폼
+@login_required(login_url=URL_LOGIN)
 def univ_create(request, univ_name):
     if request.method == 'POST':
         form = NewForeignForm(request.POST)
@@ -126,6 +131,7 @@ def sister(request, foreign_id):
 # 자매대학 추가
 
 
+@login_required(login_url=URL_LOGIN)
 def create_sister(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     if request.method == 'POST':
@@ -154,6 +160,7 @@ def wiki(request, pk):
 # wiki 1번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_apply(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -172,6 +179,7 @@ def wiki_edit_apply(request, pk):
 # wiki 2번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_language_score(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -189,6 +197,7 @@ def wiki_edit_language_score(request, pk):
 # wiki 3번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_course_enroll(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -207,6 +216,7 @@ def wiki_edit_course_enroll(request, pk):
 # wiki 4번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_accommodation(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -225,6 +235,7 @@ def wiki_edit_accommodation(request, pk):
 # wiki 5번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_atmosphere(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -243,6 +254,7 @@ def wiki_edit_atmosphere(request, pk):
 # wiki 6번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_club(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -261,6 +273,7 @@ def wiki_edit_club(request, pk):
 # wiki 7번 항목
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_away_scholarship(request, pk):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
@@ -307,6 +320,7 @@ def review_detail(request, pk, foreign_id):
     return render(request, 'foreign/review_detail.html', ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def review_create(request, foreign_id, post=None):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     if request.method == 'POST':
@@ -342,6 +356,7 @@ def review_delete(request, pk, foreign_id):
     return redirect('foreign:review_list', foreign_id)
 
 
+@login_required(login_url=URL_LOGIN)
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
     return review_create(request, foreign_id, post)
@@ -377,6 +392,7 @@ def question_detail(request, foreign_id, pk):
     return render(request, 'foreign/question_detail.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def question_create(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     if request.method == 'POST':
@@ -398,6 +414,7 @@ def question_create(request, foreign_id):
         return render(request, template_name='foreign/question_form.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def question_edit(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = get_object_or_404(FQuestion, id=pk)
@@ -423,7 +440,7 @@ def question_delete(request, foreign_id, pk):
 
 
 # 답글댓글
-
+@login_required(login_url=URL_LOGIN)
 def q_comment_create(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = FQuestion.objects.get(id=pk)
@@ -447,6 +464,7 @@ def q_comment_create(request, foreign_id, pk):
         return render(request, template_name='foreign/comment_form.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def q_comment_edit(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     comment = FComment.objects.get(id=pk)

@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from foreign.models import *
 
-# Create your views here.
+URL_LOGIN = '/login/'
 
 
 def univ_list(request):
@@ -48,6 +49,7 @@ def wiki(request, domestic_id):
     return render(request, 'domestic/wiki.html', ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_apply(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -64,6 +66,7 @@ def wiki_edit_apply(request, domestic_id):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_document(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -80,6 +83,7 @@ def wiki_edit_document(request, domestic_id):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_semester(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -96,6 +100,7 @@ def wiki_edit_semester(request, domestic_id):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_scholarship(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -112,6 +117,7 @@ def wiki_edit_scholarship(request, domestic_id):
     })
 
 
+@login_required(login_url=URL_LOGIN)
 def wiki_edit_insurance(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -166,6 +172,7 @@ def question_detail(request, domestic_id, pk):
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def question_create(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     user = request.user
@@ -192,6 +199,7 @@ def question_create(request, domestic_id):
         return render(request, template_name='domestic/question_form.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def question_edit(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = get_object_or_404(DQuestion, id=pk)
@@ -216,7 +224,7 @@ def question_delete(request, domestic_id, pk):
 
 
 # 답글댓글
-
+@login_required(login_url=URL_LOGIN)
 def comment_create(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
@@ -245,6 +253,7 @@ def comment_create(request, domestic_id, pk):
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def comment_edit(request, domestic_id, comment_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     comment = get_object_or_404(DComment, id=comment_id)
@@ -306,6 +315,7 @@ def sister_list(request, domestic_id):
     return render(request, 'domestic/sister_list.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def sister_add(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
     if request.method == 'POST':
@@ -345,6 +355,7 @@ def credit_list(request, domestic_id):
     return render(request, template_name='domestic/credit_list.html', context=ctx)
 
 
+@login_required(login_url=URL_LOGIN)
 def credit_create(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
     if request.method == 'POST':
