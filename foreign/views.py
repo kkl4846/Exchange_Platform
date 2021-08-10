@@ -352,8 +352,12 @@ def review_update(request, pk, foreign_id):
 def question_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     questions = FQuestion.objects.filter(away_university=foreign)
+    questions = questions.order_by('-created_at')
+    paginator = Paginator(questions, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     ctx = {
-        'questions': questions,
+        'page_obj': page_obj,
         'foreign_id': foreign_id,
         'univ': foreign,
     }

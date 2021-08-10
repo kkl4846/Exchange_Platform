@@ -19,7 +19,7 @@
                 <th width='600' >제목</th>
                 <th>날짜</th>
             </tr>
-            {%for question in questions %}
+            {%for question in page_obj %}
             <tr>
                 <td class="numbered" align='center'></td>
                 <td><a href="{% url "foreign:question_detail" foreign_id question.pk %}">{{ question.question_title }}</a></td>
@@ -27,6 +27,21 @@
             </tr>
             {% endfor %}
         </table>
+        <div class="Qpagination">
+            <span class="Qstep-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
     </div>
 
 {% endblock %}
@@ -37,6 +52,9 @@
         var init = startnum;
         var td_list = document.querySelectorAll(`.numbered`);
         for(var i=0; i<td_list.length; i++){
+            if (i==0){
+                init=init+({{ page_obj.number }}-1)*10;
+            }
             init++;
             td_list[i].innerHTML= `${init}`;
         }
