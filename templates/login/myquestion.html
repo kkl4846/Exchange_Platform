@@ -14,7 +14,7 @@
                 </tr>
                 {% for question in d_questions %}
                 <tr>
-                    <td class="numbered" align='center'></td>
+                    <td class="numbered1" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'domestic:question_detail' question.home_university.pk question.pk %}">{{ question.question_title }}</a></td>
                     <td align="center">{{ question.created_at }}</td>
                 </tr>
@@ -30,7 +30,7 @@
                 </tr>
                 {% for question in f_questions %}
                 <tr>
-                    <td class="numbered" align='center'></td>
+                    <td class="numbered2" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'foreign:question_detail' question.away_university.pk question.pk %}">{{ question.question_title }}</a></td>
                     <td align="center">{{ question.created_at }}</td>
                 </tr>
@@ -46,7 +46,7 @@
                 </tr>
                 {% for question in c_questions %}
                 <tr>
-                    <td class="numbered" align='center'></td>
+                    <td class="numbered3" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'country:question_detail' question.country.pk question.pk %}">{{ question.question_title }}</a></td>
                     <td align="center">{{ question.created_at }}</td>
                 </tr>
@@ -60,13 +60,33 @@
 {% block extra %}
 <script>
     function numbering(startnum){
-        var init = startnum;
-        var td_list = document.querySelectorAll(`.numbered`);
-        for(var i=0; i<td_list.length; i++){
-            init++;
-            td_list[i].innerHTML= `${init}`;
+        var init1 = startnum;
+        var td_list1 = document.querySelectorAll(`.numbered`);
+        for(var i=0; i<td_list1.length; i++){
+            init1++;
+            td_list1[i].innerHTML= `${init1}`;
         }
     }
     numbering(0);
+
+    function numbering2(startnum){
+        var init2 = startnum;
+        var td_list2 = document.querySelectorAll(`.numbered2`);
+        for(var j=0; j<td_list2.length; j++){
+            init2++;
+            td_list2[j].innerHTML= `${init2}`;
+        }
+    }
+    numbering2(0);
+
+    function numbering3(startnum){
+        var init3 = startnum;
+        var td_list3 = document.querySelectorAll(`.numbered3`);
+        for(var k=0; k<td_list3.length; k++){
+            init3++;
+            td_list3[k].innerHTML= `${init3}`;
+        }
+    }
+    numbering3(0);
 </script>
 {% endblock %}
