@@ -26,3 +26,11 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra %}
+    {% if message %}
+        <script>
+            alert("{{ message }}")
+        </script>
+    {% endif %}
+{% endblock %}

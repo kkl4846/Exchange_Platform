@@ -6,6 +6,8 @@ from jamo import h2j, j2hcj
 from foreign.models import *
 
 # Create your views here.
+
+
 def univ_list(request):
     universities = Domestic.objects.all().order_by('home_name')
     universities_dict = {}
@@ -15,7 +17,7 @@ def univ_list(request):
     for university in universities:
         this_university = university.home_name
         university_cho = j2hcj(h2j(this_university[0]))[0]
-        if last_cho != university_cho:     # 직전 초성과 다른 초성   
+        if last_cho != university_cho:     # 직전 초성과 다른 초성
             universities_dict[university_cho] = []
             universities_dict[university_cho].append(university)
             last_cho = university_cho
@@ -26,16 +28,17 @@ def univ_list(request):
     if len(universities_dict[g_cho]) == 0:
         del(universities_dict[g_cho])
 
-    ctx={'universities_dict': universities_dict}
+    ctx = {'universities_dict': universities_dict}
 
     return render(request, 'domestic/univ_list.html', ctx)
 
+
 def wiki(request, domestic_id):
     univ = Domestic.objects.get(pk=domestic_id)
-    user=request.user
+    user = request.user
     is_enrolled = 'False'
     if user.is_authenticated:
-        if user.university == univ.home_name :
+        if user.university == univ.home_name:
             is_enrolled = 'True'
         else:
             is_enrolled = 'False'
@@ -45,6 +48,7 @@ def wiki(request, domestic_id):
         'is_enrolled': is_enrolled,
     }
     return render(request, 'domestic/wiki.html', ctx)
+
 
 def wiki_edit_apply(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
@@ -61,6 +65,7 @@ def wiki_edit_apply(request, domestic_id):
         'btn': 1,
     })
 
+
 def wiki_edit_document(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -75,6 +80,7 @@ def wiki_edit_document(request, domestic_id):
         'univ': domestic,
         'btn': 2,
     })
+
 
 def wiki_edit_semester(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
@@ -91,6 +97,7 @@ def wiki_edit_semester(request, domestic_id):
         'btn': 3,
     })
 
+
 def wiki_edit_scholarship(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if request.method == 'POST':
@@ -105,6 +112,7 @@ def wiki_edit_scholarship(request, domestic_id):
         'univ': domestic,
         'btn': 4,
     })
+
 
 def wiki_edit_insurance(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
@@ -122,13 +130,15 @@ def wiki_edit_insurance(request, domestic_id):
     })
 
 # QnA
+
+
 def question_list(request, domestic_id):
-    domestic= get_object_or_404(Domestic, pk=domestic_id)
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
     questions = domestic.dquestion_set.all()
     ctx = {
-        'domestic': domestic  ,
+        'domestic': domestic,
         'questions': questions,
-        'is_authenticated':request.user.is_authenticated
+        'is_authenticated': request.user.is_authenticated
     }
     return render(request, template_name='domestic/question_list.html', context=ctx)
 
@@ -138,11 +148,11 @@ def question_detail(request, domestic_id, pk):
     question = DQuestion.objects.get(id=pk)
     comments = question.dcomment_set.all()
     ctx = {
-        'question': question, 
+        'question': question,
         'comments': comments,
         'domestic': domestic,
-        'is_authenticated':request.user.is_authenticated
-        }
+        'is_authenticated': request.user.is_authenticated
+    }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
 
@@ -152,19 +162,18 @@ def question_create(request, domestic_id):
         form = DQuestionForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author=request.user
-            post.home_university =domestic
+            post.author = request.user
+            post.home_university = domestic
             post.save()
             return redirect('domestic:question_detail', domestic_id, post.pk)
     else:
         form = DQuestionForm()
         ctx = {
             'form': form,
-            'domestic':domestic,
+            'domestic': domestic,
             'is_authenticated': request.user.is_authenticated,
-            }
+        }
         return render(request, template_name='domestic/question_form.html', context=ctx)
-        
 
 
 def question_edit(request, domestic_id, pk):
@@ -174,13 +183,13 @@ def question_edit(request, domestic_id, pk):
         form = DQuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save()
-            return redirect('domestic:question_detail',domestic_id, pk)
+            return redirect('domestic:question_detail', domestic_id, pk)
     else:
         form = DQuestionForm(instance=question)
         ctx = {
             'form': form,
-            'domestic':domestic
-            }
+            'domestic': domestic
+        }
         return render(request, template_name='domestic/question_form.html', context=ctx)
 
 
@@ -192,25 +201,25 @@ def question_delete(request, domestic_id, pk):
 
 # 답글댓글
 
-def comment_create(request,domestic_id, pk):
+def comment_create(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
     if request.method == 'POST':
         form = DCommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.question=question
+            comment.question = question
             comment.comment_author = request.user
             comment.save()
-            return redirect('domestic:question_detail',domestic_id, pk)
+            return redirect('domestic:question_detail', domestic_id, pk)
     else:
         form = DCommentForm()
         ctx = {
             'form': form,
-            'question':question,
-            'domestic':domestic,
+            'question': question,
+            'domestic': domestic,
             'is_authenticated': request.user.is_authenticated,
-            }
+        }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
 
@@ -227,10 +236,10 @@ def comment_edit(request, domestic_id, comment_id):
         form = DCommentForm(instance=comment)
         ctx = {
             'form': form,
-            'question':comment.question,
-            'domestic':domestic,
+            'question': comment.question,
+            'domestic': domestic,
             'is_authenticated': request.user.is_authenticated,
-            }
+        }
         return render(request, template_name='domestic/comment_form.html', context=ctx)
 
 
@@ -238,12 +247,14 @@ def comment_delete(request, domestic_id, comment_id):
     comment = DComment.objects.get(id=comment_id)
     question = comment.question
     comment.delete()
-    return redirect('domestic:question_detail',domestic_id, question.pk)
+    return redirect('domestic:question_detail', domestic_id, question.pk)
 
-#자매결연대학 목록
-def sister_list(request,domestic_id):
-    domestic=Domestic.objects.get(id=domestic_id)
-    sisters=domestic.home_sister.all().order_by('away_name')
+# 자매결연대학 목록
+
+
+def sister_list(request, domestic_id):
+    domestic = Domestic.objects.get(id=domestic_id)
+    sisters = domestic.home_sister.all().order_by('away_name')
     sisters_dict = {}
     last_alpha = 'A'
     sisters_dict[last_alpha] = []
@@ -258,16 +269,17 @@ def sister_list(request,domestic_id):
             sisters_dict[this_alpha].append(sister)
     if len(sisters_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
         del(sisters_dict['A'])
-    ctx={
-        'domestic':domestic,
+    ctx = {
+        'domestic': domestic,
         'sisters': sisters,
         'sisters_dict': sisters_dict,
         'is_authenticated': request.user.is_authenticated,
-        }
-    return render(request, 'domestic/sister_list.html',context=ctx)
+    }
+    return render(request, 'domestic/sister_list.html', context=ctx)
+
 
 def sister_add(request, domestic_id):
-    domestic=Domestic.objects.get(id=domestic_id)
+    domestic = Domestic.objects.get(id=domestic_id)
     if request.method == 'POST':
         sister_name = request.POST['sister']
         sister = get_object_or_404(Foreign, away_name=sister_name)
@@ -284,38 +296,49 @@ def sister_add(request, domestic_id):
         }
         return render(request, template_name='domestic/sister_add.html', context=ctx)
 
-#학점컷
-def credit_list(request,domestic_id):
-    domestic=Domestic.objects.get(id=domestic_id)
-    credit_posts=domestic.credit_set.all()
-    user=request.user
+# 학점컷
+
+
+def credit_list(request, domestic_id):
+    domestic = Domestic.objects.get(id=domestic_id)
+    credit_posts = domestic.credit_set.all()
+    user = request.user
     is_enrolled = 'False'
     if user.is_authenticated:
-        if user.university == domestic.home_name :
+        if user.university == domestic.home_name:
             is_enrolled = 'True'
         else:
             is_enrolled = 'False'
-    ctx={
-        'domestic':domestic,
-        'credit_posts':credit_posts,
-        'is_enrolled':is_enrolled,
-        }
-    return render(request,template_name='domestic/credit_list.html',context=ctx)
+    ctx = {
+        'domestic': domestic,
+        'credit_posts': credit_posts,
+        'is_enrolled': is_enrolled,
+    }
+    return render(request, template_name='domestic/credit_list.html', context=ctx)
 
-def credit_create(request,domestic_id):
-    domestic=Domestic.objects.get(id=domestic_id)
+
+def credit_create(request, domestic_id):
+    domestic = Domestic.objects.get(id=domestic_id)
     if request.method == 'POST':
         form = CreditForm(request.POST)
         if form.is_valid():
             credit_post = form.save(commit=False)
             credit_post.home_school = domestic
-            credit_post.credit_author=request.user
+            credit_post.credit_author = request.user
             credit_post.save()
             return redirect('domestic:credit_list', domestic_id)
+        else:
+            form = CreditForm()
+            ctx = {
+                'form': form,
+                'domestic': domestic,
+                'message': "입력한 내용을 다시 확인해주세요.",
+            }
+            return render(request, template_name='domestic/credit_form.html', context=ctx)
     else:
         form = CreditForm()
         ctx = {
             'form': form,
             'domestic': domestic,
-            }
+        }
         return render(request, template_name='domestic/credit_form.html', context=ctx)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -52,8 +53,10 @@ class Credit(models.Model):
     home_school = models.ForeignKey(
         to='Domestic', on_delete=models.CASCADE, null=True, blank=True)
     college = models.CharField(max_length=20)
-    credit = models.IntegerField(default=1)
-    grade_average = models.FloatField(default=0.0)
+    credit = models.IntegerField(default=1, validators=[
+                                 MinValueValidator(1), MaxValueValidator(200)])
+    grade_average = models.FloatField(
+        default=0.0, validators=[MinValueValidator(0), MaxValueValidator(4.5)])
     apply_semester = models.CharField(
         max_length=20, choices=(("1학기", "1학기"), ("2학기", "2학기")))
     away_university = models.ForeignKey(
