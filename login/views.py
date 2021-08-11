@@ -14,9 +14,9 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
 from . import models, tokens, text, helper
-from domestic.models import DQuestion
-from foreign.models import FQuestion
-from country.models import CQuestion
+from domestic.models import *
+from foreign.models import *
+from country.models import *
 
 URL_LOGIN = '/login/'
 
@@ -207,12 +207,34 @@ def myquestion(request):
     d_questions = DQuestion.objects.filter(author=user)
     f_questions = FQuestion.objects.filter(author=user)
     c_questions = CQuestion.objects.filter(author=user)
+    d_comments = DComment.objects.filter(comment_author=user)
+    f_comments = FComment.objects.filter(comment_author=user)
+    c_comments = CComment.objects.filter(comment_author=user)
+
     ctx = {
         'd_questions': d_questions,
         'f_questions': f_questions,
         'c_questions': c_questions,
+        'd_comments': d_comments,
+        'f_comments': f_comments,
+        'c_comments': c_comments,
     }
     return render(request, 'login/myquestion.html', context=ctx)
+
+
+@login_required(login_url=URL_LOGIN)
+def mycomment(request):
+    user = request.user
+    d_comments = DComment.objects.filter(comment_author=user)
+    f_comments = FComment.objects.filter(comment_author=user)
+    c_comments = CComment.objects.filter(comment_author=user)
+
+    ctx = {
+        'd_comments': d_comments,
+        'f_comments': f_comments,
+        'c_comments': c_comments,
+    }
+    return render(request, 'login/mycomment.html', context=ctx)
 
 
 def reset_password(request):

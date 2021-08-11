@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="container ml-5 mt-3 mb-5 w-75">
+        <h4>내가 답변을 남긴 질문 목록</h4>
+        <hr />
+        <div class="d-flex flex-column">
+            <h5>국내대학별</h5>
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='600' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for comment in d_comments %}
+                <tr>
+                    <td class="numbered4" align='center'></td>
+                    <td style="padding-left: 30px;"><a href="{% url 'domestic:question_detail' comment.question.home_university.pk comment.question.pk %}">{{ comment.question.question_title }}</a></td>
+                    <td align="center">{{ comment.question.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr />
+            <h5>해외파견교별</h5>
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='600' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for comment in f_comments %}
+                <tr>
+                    <td class="numbered5" align='center'></td>
+                    <td style="padding-left: 30px;"><a href="{% url 'foreign:question_detail' comment.question.away_university.pk comment.question.pk %}">{{ comment.question.question_title }}</a></td>
+                    <td align="center">{{ comment.question.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr />
+            <h5>파견국가별</h5>
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='600' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for comment in c_comments %}
+                <tr>
+                    <td class="numbered6" align='center'></td>
+                    <td style="padding-left: 30px;"><a href="{% url 'country:question_detail' comment.question.country.pk comment.question.pk %}">{{ comment.question.question_title }}</a></td>
+                    <td align="center">{{ comment.question.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+    
+{% endblock %}
+
+{% block extra %}
+<script>
+    function numbering4(startnum){
+        var init4 = startnum;
+        var td_list4 = document.querySelectorAll(`.numbered4`);
+        for(var l=0; l<td_list4.length; l++){
+            init4++;
+            td_list4[l].innerHTML= `${init4}`;
+        }
+    }
+    numbering4(0);
+
+    function numbering5(startnum){
+        var init5 = startnum;
+        var td_list5 = document.querySelectorAll(`.numbered5`);
+        for(var m=0; m<td_list5.length; m++){
+            init5++;
+            td_list5[m].innerHTML= `${init5}`;
+        }
+    }
+    numbering5(0);
+
+    function numbering6(startnum){
+        var init6 = startnum;
+        var td_list6 = document.querySelectorAll(`.numbered6`);
+        for(var n=0; n<td_list6.length; n++){
+            init6++;
+            td_list6[n].innerHTML= `${init6}`;
+        }
+    }
+    numbering6(0);
+</script>
+{% endblock %}

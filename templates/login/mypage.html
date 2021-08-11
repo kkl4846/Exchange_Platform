@@ -4,7 +4,7 @@
     <div class="container ml-5 mt-4 w-75">
         <h2>내 정보 수정</h2>
         <hr />
-        <div class="d-flex flex-column">
+        <section class="d-flex flex-column">
             <div id="rename">
                 <h5>닉네임 변경</h5>
                 <span>닉네임 :</span>
@@ -44,35 +44,25 @@
                 <span>소속 대학 : {{ user.university }}</span>
                 {% endif %}
             </div>
-        </div>
+        </section>
         <br>
-        <div>
-            <h5>내가 쓴 글</h5>
-            <a href="{% url 'login:myquestion' %}" class="btn btn-secondary btn-sm">목록 보러 가기</a>
-        </div>
+        <section>
+            <div>
+                <h5>내가 쓴 질문</h5>
+                <a href="{% url 'login:myquestion' %}" class="btn btn-secondary btn-sm">목록 보러 가기</a>
+            </div>
+            <br />
+            <div>
+                <h5>내가 답변을 남긴 질문</h5>
+                <a href="{% url 'login:mycomment' %}" class="btn btn-secondary btn-sm">목록 보러 가기</a>
+            </div>
+        </section>
     </div>
 {% endblock %}
 
 {% block extra %}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        // 닉네임 변경 ajax
-        // const onClickNickname = async(nickname) => {
-        //     const url = '/rename/';
-        //     const {data} = await axios.post(url, {
-        //         nickname
-        //     });
-        //     nicknameHandleResponse(data.nickname);
-        //     alert('닉네임 수정이 완료되었습니다!');
-        // };
-
-        // const nicknameHandleResponse = (nickname) => {
-        //     const element = document.querySelector('#nickname');
-        //     const originHTML = element.innerHTML;
-            
-        //     element.innerHTML = '<input name="nickname" type="text" value="{{ user.nickname }}">'
-        // };
-
         const requestNickname = new XMLHttpRequest();
 
         const onClickNickname = (nickname) => {

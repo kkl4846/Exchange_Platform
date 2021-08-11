@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container ml-5 mt-4 w-75">
-        <h4>내가 쓴 글 목록</h4>
+    <section class="container ml-5 mt-4 w-75">
+        <h4>내가 쓴 질문 목록</h4>
         <hr />
         <div class="d-flex flex-column">
             <h5>국내대학별</h5>
@@ -53,7 +53,7 @@
                 {% endfor %}
             </table>
         </div>
-    </div>
+    </section>
     
 {% endblock %}
 
@@ -61,7 +61,7 @@
 <script>
     function numbering(startnum){
         var init1 = startnum;
-        var td_list1 = document.querySelectorAll(`.numbered`);
+        var td_list1 = document.querySelectorAll(`.numbered1`);
         for(var i=0; i<td_list1.length; i++){
             init1++;
             td_list1[i].innerHTML= `${init1}`;
