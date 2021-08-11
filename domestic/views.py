@@ -39,9 +39,8 @@ def wiki(request, domestic_id):
     univ = Domestic.objects.get(pk=domestic_id)
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == univ.home_name:
-            is_enrolled = 'True'
+    if user.is_authenticated and user.university == univ.home_name:
+        is_enrolled = 'True'
     ctx = {
         'univ': univ,
         'is_authenticated': user.is_authenticated,
@@ -203,9 +202,8 @@ def question_list(request, domestic_id):
 
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
+    if user.is_authenticated and user.university == domestic.home_name:
+        is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
@@ -222,8 +220,7 @@ def question_detail(request, domestic_id, pk):
     comments = question.dcomment_set.all()
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
+    if user.is_authenticated and user.university == domestic.home_name:
             is_enrolled = 'True'
     ctx = {
         'question': question,
@@ -428,9 +425,8 @@ def sister_list(request, domestic_id):
 
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
+    if user.is_authenticated and user.university == domestic.home_name:
+        is_enrolled = 'True'
 
     sisters = domestic.home_sister.all().order_by('away_name')
     sisters_dict = {}
@@ -461,29 +457,50 @@ def sister_list(request, domestic_id):
 @login_required(login_url=URL_LOGIN)
 def sister_add(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
-
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
-
-    if request.method == 'POST':
-        sister_name = request.POST['sister']
-        sister = get_object_or_404(Foreign, away_name=sister_name)
-        print(sister)
-        domestic.home_sister.add(sister.id)
-        return redirect('domestic:sister_list', domestic_id)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            sister_name = request.POST['sister']
+            sister = get_object_or_404(Foreign, away_name=sister_name)
+            domestic.home_sister.add(sister.id)
+            return redirect('domestic:sister_list', domestic_id)
+        else:
+            univs = Foreign.objects.all()
+            print(univs)
+            ctx = {
+                'domestic': domestic,
+                'is_authenticated': user.is_authenticated,
+                'univs': univs,
+                'is_enrolled': 'True',
+            }
+            return render(request, template_name='domestic/sister_add.html', context=ctx)
     else:
-        univs = Foreign.objects.all()
-        print(univs)
+        sisters = domestic.home_sister.all().order_by('away_name')
+        sisters_dict = {}
+        last_alpha = 'A'
+        sisters_dict[last_alpha] = []
+        for sister in sisters:
+            s = sister.away_name
+            this_alpha = s[0]
+            if last_alpha != this_alpha:
+                sisters_dict[this_alpha] = []
+                sisters_dict[this_alpha].append(sister)
+                last_alpha = this_alpha
+            else:
+                sisters_dict[this_alpha].append(sister)
+        if len(sisters_dict['A']) == 0:
+            del(sisters_dict['A'])
+
         ctx = {
             'domestic': domestic,
+            'sisters': sisters,
+            'sisters_dict': sisters_dict,
+            'certificate_error':True,
             'is_authenticated': user.is_authenticated,
-            'univs': univs,
-            'is_enrolled': is_enrolled,
+            'is_enrolled': 'False',
         }
-        return render(request, template_name='domestic/sister_add.html', context=ctx)
+        return render(request, 'domestic/sister_list.html', context=ctx)
+
 
 # 학점컷
 
@@ -498,9 +515,8 @@ def credit_list(request, domestic_id):
 
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
+    if user.is_authenticated and user.university == domestic.home_name:
+        is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
@@ -555,9 +571,8 @@ def credit_search(request, domestic_id):
 
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
+    if user.is_authenticated and user.university == domestic.home_name:
+        is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
