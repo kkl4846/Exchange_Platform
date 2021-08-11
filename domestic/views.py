@@ -62,6 +62,13 @@ def wiki_edit_apply(request, domestic_id):
                 return redirect('domestic:wiki', domestic_id)
         else:
             form = DomesticForm(instance=domestic)
+            ctx = {
+                'form': form,
+                'univ': domestic,
+                'btn': 1,
+            }
+            return render(request, 'domestic/wiki_edit.html', context=ctx)
+
     else:
         is_enrolled = False
         ctx = {
@@ -71,12 +78,6 @@ def wiki_edit_apply(request, domestic_id):
             'is_enrolled': is_enrolled,
         }
         return render(request, 'domestic/wiki.html', context=ctx)
-    return render(request, 'domestic/wiki_edit.html', {
-        'form': form,
-        'univ': domestic,
-        'btn': 1,
-    })
-
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_document(request, domestic_id):
@@ -90,6 +91,12 @@ def wiki_edit_document(request, domestic_id):
                 return redirect('domestic:wiki', domestic_id)
         else:
             form = DomesticForm(instance=domestic)
+            ctx= {
+                'form': form,
+                'univ': domestic,
+                'btn': 2,
+            }
+            return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
@@ -99,11 +106,6 @@ def wiki_edit_document(request, domestic_id):
             'is_enrolled': is_enrolled,
         }
         return render(request, 'domestic/wiki.html', context=ctx)
-    return render(request, 'domestic/wiki_edit.html', {
-        'form': form,
-        'univ': domestic,
-        'btn': 2,
-    })
 
 
 @login_required(login_url=URL_LOGIN)
@@ -118,6 +120,12 @@ def wiki_edit_semester(request, domestic_id):
                 return redirect('domestic:wiki', domestic_id)
         else:
             form = DomesticForm(instance=domestic)
+            ctx = {
+                'form': form,
+                'univ': domestic,
+                'btn': 3,
+            }
+            return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
@@ -127,12 +135,6 @@ def wiki_edit_semester(request, domestic_id):
             'is_enrolled': is_enrolled,
         }
         return render(request, 'domestic/wiki.html', context=ctx)
-    return render(request, 'domestic/wiki_edit.html', {
-        'form': form,
-        'univ': domestic,
-        'btn': 3,
-    })
-
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_scholarship(request, domestic_id):
@@ -146,6 +148,12 @@ def wiki_edit_scholarship(request, domestic_id):
                 return redirect('domestic:wiki', domestic_id)
         else:
             form = DomesticForm(instance=domestic)
+            ctx = {
+                'form': form,
+                'univ': domestic,
+                'btn': 4,
+            }
+            return render(request, 'domestic/wiki_edit.html', context= ctx)
     else:
         is_enrolled = False
         ctx = {
@@ -155,12 +163,6 @@ def wiki_edit_scholarship(request, domestic_id):
             'is_enrolled': is_enrolled,
         }
         return render(request, 'domestic/wiki.html', context=ctx)
-    return render(request, 'domestic/wiki_edit.html', {
-        'form': form,
-        'univ': domestic,
-        'btn': 4,
-    })
-
 
 @login_required(login_url=URL_LOGIN)
 def wiki_edit_insurance(request, domestic_id):
@@ -174,6 +176,12 @@ def wiki_edit_insurance(request, domestic_id):
                 return redirect('domestic:wiki', domestic_id)
         else:
             form = DomesticForm(instance=domestic)
+            ctx = {
+                'form': form,
+                'univ': domestic,
+                'btn': 5,
+            }
+            return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
@@ -183,12 +191,6 @@ def wiki_edit_insurance(request, domestic_id):
             'is_enrolled': is_enrolled,
         }
         return render(request, 'domestic/wiki.html', context=ctx)
-    return render(request, 'domestic/wiki_edit.html', {
-        'form': form,
-        'univ': domestic,
-        'btn': 5,
-    })
-
 # QnA
 
 
@@ -264,7 +266,7 @@ def question_create(request, domestic_id):
         ctx = {
             'domestic': domestic,
             'page_obj': page_obj,
-            'verification_error':True,
+            'certificate_error':True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': 'False',
         }
@@ -284,6 +286,11 @@ def question_edit(request, domestic_id, pk):
                 return redirect('domestic:question_detail', domestic_id, pk)
         else:
             form = DQuestionForm(instance=question)
+            ctx = {
+            'form': form,
+            'domestic': domestic
+            }
+            return render(request, template_name='domestic/question_form.html', context=ctx)
     else:
         is_enrolled = False
         comments = question.dcomment_set.all()
@@ -296,13 +303,6 @@ def question_edit(request, domestic_id, pk):
         'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/question_detail.html', context=ctx)
-
-    ctx = {
-        'form': form,
-        'domestic': domestic
-    }
-    return render(request, template_name='domestic/question_form.html', context=ctx)
-
 
 def question_delete(request, domestic_id, pk):
     question = DQuestion.objects.get(id=pk)
@@ -343,31 +343,37 @@ def question_search(request, domestic_id):
 def comment_create(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
-
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
-
-    if request.method == 'POST':
-        form = DCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.question = question
-            comment.comment_author = user
-            comment.save()
-            return redirect('domestic:question_detail', domestic_id, pk)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DCommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.question = question
+                comment.comment_author = user
+                comment.save()
+                return redirect('domestic:question_detail', domestic_id, pk)
+        else:
+            form = DCommentForm()
+            ctx = {
+                'form': form,
+                'question': question,
+                'domestic': domestic,
+                'is_authenticated': user.is_authenticated,
+                'is_enrolled': 'True',
+            }
+            return render(request, template_name='domestic/comment_form.html', context=ctx)
     else:
-        form = DCommentForm()
+        comments = question.dcomment_set.all()
         ctx = {
-            'form': form,
-            'question': question,
-            'domestic': domestic,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
+        'question': question,
+        'comments': comments,
+        'domestic': domestic,
+        'certificate_error':True,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': 'False',
         }
-        return render(request, template_name='domestic/comment_form.html', context=ctx)
+        return render(request, template_name='domestic/question_detail.html', context=ctx)
 
 
 @login_required(login_url=URL_LOGIN)
