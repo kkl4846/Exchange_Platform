@@ -17,7 +17,7 @@
     </div>
 {%else%}
     <script>
-             alert('이 게시글은 작성자만 수정 가능합니다.');
+            alert('이 게시글은 작성자만 수정 가능합니다.');
             window.location.href='{% url "foreign:question_list" univ.pk  %}';
     </script>
 {%endif%}

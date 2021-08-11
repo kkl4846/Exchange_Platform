@@ -482,14 +482,14 @@ def question_search(request, foreign_id):
     }
     return render(request, template_name='foreign/question_search.html', context=ctx)
 
-# 답글댓글
+# 답변
 
 
 @login_required(login_url=URL_LOGIN)
 def q_comment_create(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     question = FQuestion.objects.get(id=pk)
-    # comment = Comment.objects.create(question=question)
+    undercomments = FUnderComment.objects.all()
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -504,6 +504,7 @@ def q_comment_create(request, foreign_id, pk):
             'form': form,
             'question': question,
             'univ': foreign,
+            'undercomments': undercomments,
         }
         return render(request, template_name='foreign/comment_form.html', context=ctx)
 
@@ -512,6 +513,7 @@ def q_comment_create(request, foreign_id, pk):
 def q_comment_edit(request, foreign_id, pk):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     comment = FComment.objects.get(id=pk)
+    undercomments = FUnderComment.objects.all()
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
@@ -523,6 +525,7 @@ def q_comment_edit(request, foreign_id, pk):
             'form': form,
             'question': comment.question,
             'univ': foreign,
+            'undercomments': undercomments,
         }
         return render(request, template_name='foreign/comment_form.html', context=ctx)
 

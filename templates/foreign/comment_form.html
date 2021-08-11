@@ -16,7 +16,6 @@
                 <h4>{{ question.question_title }}</h4>
                 <p>작성자: {{ question.author.nickname}} 작성 시간: {{ question.created_at }}</p>
             </div>
-            <!-- <p>파견교: {{ question.away_university }} 파견 국가: {{ question.away_university.country }}</p> -->
             <p>
             {{ question.question_content }}
             </p>
@@ -45,6 +44,20 @@
                         <button onclick="location.href='{% url "foreign:q_comment_delete" univ.pk comment.pk%}'"> 삭제</button>
                     </div>
                 </div>
+                <div class="undercomment_list_{{ comment.pk }}">
+                    {% for undercomment in undercomments  %}
+                        {% if undercomment.comment == comment %}
+                        <div class="d-flex justify-content-between" id="undercomment_{{ undercomment.pk }}">
+                            <div>
+                                <span>👉 {{ undercomment.comment_author.nickname }}</span>
+                                <span style="margin-left: 30px;">{{ undercomment.comment_content }}</span>
+                            </div>
+                            
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="undercomment_{{ comment.pk }}"></div>
             {% endfor %}
             <hr>
             <form action ="" method="POST" enctype="multipart/form-data">
