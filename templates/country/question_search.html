@@ -11,26 +11,36 @@
             <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
         </div>
         <hr>
-        <form method="POST" action="{% url 'country:question_search' country.pk %}">
+        <form class="d-flex justify-content-center" action="{% url 'country:question_search' country.pk %}" method="post">
             {% csrf_token %}
-            <input type="text" placeholder="검색어를 입력하세요" name="q" value="{{q}}">
-            <input type="submit" value="검색">
-            <a href="{% url 'country:question_list' country_id %}" class="btn btn-outline-dark btn-sm">돌아가기</a>
+            <input class="col-9" placeholder="검색" name="q" value="{{q}}">
+            <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
+        {% if page_obj %}
         <table>
             <tr align='center'>
                 <th width='50'>번호</th>
                 <th width='600' >제목</th>
                 <th>날짜</th>
             </tr>
-            {%for question in page_obj %}
+            {% for question in page_obj %}
             <tr>
                 <td class="numbered" align='center'></td>
-                <td><a href="{% url "country:question_detail" country_id question.pk %}">{{ question.question_title }}</a></td>
-                <td>{{ question.created_at}}</td>
+                <td><a href="{% url 'country:question_detail' country_id question.pk %}">{{ question.question_title }}</a></td>
+                <td>{{ question.created_at }}</td>
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='600' >제목</th>
+                <th>날짜</th>
+            </tr>
+        </table>
+        <p align='center'>검색 결과가 없습니다.</p>
+        {% endif %}
         <div style="text-align:center">
             <div class="pagination">
             

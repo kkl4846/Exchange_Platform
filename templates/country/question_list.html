@@ -11,10 +11,10 @@
             <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
         </div>
         <hr>
-        <form method="POST" action="{% url 'country:question_search' country.pk %}">
+        <form class="d-flex justify-content-center" action="{% url 'country:question_search' country.pk %}" method="post">
             {% csrf_token %}
-            <input type="text" placeholder="검색어를 입력하세요" name="q" value="{{q}}">
-            <input type="submit" value="검색">
+            <input class="col-9" placeholder="검색" name="q" value="{{q}}">
+            <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
         <table>
             <tr align='center'>
