@@ -11,12 +11,14 @@
 <hr>
 <p>작성자:{{review.post_author.nickname}}</p>
 <p>제목: {{review.title}}</p>
-{% if review.image %}
-<img src="{{review.image.url}}" style="width:700px"/>
-{% endif %}
-<p>내용: {{review.content}}</p>
 <p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
 <p>날짜: {{review.created_at}}</p>
+<p>내용:
+     
+    {% if review.image %}
+    <div><img src="{{review.image.url}}" style="width:700px"/></div>
+    {% endif %}
+    {{review.content}}</p>
 {% if IsReviewAuthor %}
 <form action="{% url "foreign:review_delete" foreign_id review.pk %}" method="post" style="  display: inline; background: transparent">
     {% csrf_token %}
