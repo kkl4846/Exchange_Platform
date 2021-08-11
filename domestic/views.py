@@ -530,29 +530,44 @@ def credit_list(request, domestic_id):
 @login_required(login_url=URL_LOGIN)
 def credit_create(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
-    if request.method == 'POST':
-        form = CreditForm(request.POST)
-        if form.is_valid():
-            credit_post = form.save(commit=False)
-            credit_post.home_school = domestic
-            credit_post.credit_author = request.user
-            credit_post.save()
-            return redirect('domestic:credit_list', domestic_id)
+    user = request.user
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = CreditForm(request.POST)
+            if form.is_valid():
+                credit_post = form.save(commit=False)
+                credit_post.home_school = domestic
+                credit_post.credit_author = request.user
+                credit_post.save()
+                return redirect('domestic:credit_list', domestic_id)
+            else:
+                form = CreditForm()
+                ctx = {
+                    'form': form,
+                    'domestic': domestic,
+                    'message': "입력한 내용을 다시 확인해주세요.",
+                }
+                return render(request, template_name='domestic/credit_form.html', context=ctx)
         else:
             form = CreditForm()
             ctx = {
                 'form': form,
                 'domestic': domestic,
-                'message': "입력한 내용을 다시 확인해주세요.",
             }
             return render(request, template_name='domestic/credit_form.html', context=ctx)
     else:
-        form = CreditForm()
+        credit_posts = domestic.credit_set.all()
+        paginator = Paginator(credit_posts, 20)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         ctx = {
-            'form': form,
             'domestic': domestic,
+            'page_obj':page_obj,
+            'certificate_error':True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': 'False',
         }
-        return render(request, template_name='domestic/credit_form.html', context=ctx)
+        return render(request, template_name='domestic/credit_list.html', context=ctx)
 
 def credit_search(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
