@@ -22,9 +22,9 @@
             </p>
             <div class="d-flex justify-content-end">
                 {% if question.author == user %}
-                    <form action='{% url "country:question_delete" country.pk question.pk %}' method="post" style="  display: inline; background: transparent">
+                    <form action='{% url "country:question_delete" country.pk question.pk %}' method="post">
                         {% csrf_token %}
-                        <input type="submit" value="삭제" >
+                        <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit">삭제</button>
                     </form>
                     <button onclick="location.href='{% url "country:question_edit" country.pk question.pk %}'"> 수정 </button>
                 {% endif %}
@@ -41,12 +41,12 @@
                         <h5>{{ comment.comment_author.nickname }}</h5> 
                         {{ comment.comment_content }}
                     </div>
-                    <div>
+                    <div class="d-flex align-items-center">
                         {{ comment.created_at }}
                         {% if comment.comment_author == user %}
-                            <form action='{% url "country:comment_delete" country.pk comment.pk %}' method="post" style="  display: inline; background: transparent">
+                            <form action='{% url "country:comment_delete" country.pk comment.pk %}' method="post">
                                 {% csrf_token %}
-                                <input type="submit" value="삭제" >
+                                <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit">삭제</button>
                             </form>
                             <button onclick="location.href='{% url "country:comment_edit" country.pk comment.pk %}'"> 수정  </button>
                         {% endif %}
