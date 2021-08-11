@@ -68,7 +68,6 @@ def wiki_edit_apply(request, domestic_id):
                 'btn': 1,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
-
     else:
         is_enrolled = False
         ctx = {
@@ -298,7 +297,7 @@ def question_edit(request, domestic_id, pk):
         'question': question,
         'comments': comments,
         'domestic': domestic,
-        'verification_error': True,
+        'q_verification_error': True,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
         }
@@ -390,19 +389,27 @@ def comment_edit(request, domestic_id, comment_id):
                 return redirect('domestic:question_detail', domestic_id, question.pk)
         else:
             form = DCommentForm(instance=comment)
-    else: 
-        is_enrolled = 'False'
-        if user.is_authenticated:
-            if user.university == domestic.home_name:
-                is_enrolled = 'True'
-        ctx = {
+            ctx = {
             'form': form,
             'question': comment.question,
             'domestic': domestic,
             'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
+            'is_enrolled': 'True',
+            }
+            return render(request, template_name='domestic/comment_form.html', context=ctx)
+    else: 
+        is_enrolled = False
+        comments = question.dcomment_set.all()
+        ctx = {
+        'question': question,
+        'comments': comments,
+        'domestic': domestic,
+        'c_verification_error': True,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': is_enrolled,
         }
-        return render(request, template_name='domestic/comment_form.html', context=ctx)
+        return render(request, template_name='domestic/question_detail.html', context=ctx)
+        
 
 
 def comment_delete(request, domestic_id, comment_id):
