@@ -31,7 +31,7 @@
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
                     id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
             </div>
-            <input type="submit" value="저장하기" />
+            <input type="submit" value="저장하기" onclick="onClickEditWiki()"/>
             {% else %}
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
@@ -43,5 +43,13 @@
     </div>
 
 </div>
+<script>
+    const onClickEditWiki= () => {  
+        alert('위키 수정이 완료되었습니다');
         
+        window.location.href='{% url "domestic:wiki" univ.pk%}';
+        
+        
+    };
+</script>
 {% endblock %}
