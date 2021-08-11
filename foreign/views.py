@@ -562,7 +562,6 @@ def undercomment_create(request, foreign_id, pk):
 
 @csrf_exempt
 def undercomment_update(request, foreign_id, pk):
-    print('dddddddddddd')
     req = json.loads(request.body)
     comment_id = req['comment_id']
     undercomment_id = req['undercomment_id']
@@ -597,6 +596,18 @@ def comment_create(request, foreign_id, pk):
         comment_author=request.user, comment_content=content, post=post)
     new_comment.save()
     return JsonResponse({'post_id': Post_id, 'comment_content': content, 'comment_id': new_comment.id})
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+def comment_update(request, foreign_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    comment = Comment.objects.get(id=comment_id)
+    content = req['comment_content']
+    comment.comment_content = content
+    comment.save()
+    nickname = comment.comment_author.nickname
+    return JsonResponse({'comment_id': comment_id, 'comment_content': content, 'nickname': nickname, })
 
 
 @method_decorator(csrf_exempt, name="dispatch")

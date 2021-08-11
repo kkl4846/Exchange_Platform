@@ -36,7 +36,10 @@
     {{comment.comment_author.nickname}} &#160; &#160; 
     {{comment.comment_content}}
     {% if request.user == comment.comment_author %}
-    <div class="btn btn-outline-secondary delete " onclick="onClickDelete({{comment.id}} )">삭제</div>
+    <div>
+    <button class="btn btn-outline-secondary update " onclick="EditComment({{comment.id}} ,'{{comment.comment_content}}')">수정</button>
+    <button class="btn btn-outline-secondary delete " onclick="onClickDelete({{comment.id}} )">삭제</button>
+    </div>
     {%endif%}
 </div>
 {%endfor%}
@@ -77,13 +80,56 @@
         const element=document.querySelector(`.post_${post_id}`)
         const newDiv = document.createElement('div')
         newDiv.className = `comment_${comment_id} d-flex justify-content-between`;
-        newDiv.innerHTML = `{{request.user.nickname}} &#160; &#160; ${comment_content}<div class="btn btn-outline-secondary delete" onclick="onClickDelete(${comment_id})">삭제</div>`
+        newDiv.innerHTML = `
+        {{request.user.nickname}} &#160; &#160; ${comment_content}
+        <div>
+        <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+        <div class="btn btn-outline-secondary delete" onclick="onClickDelete(${comment_id})">삭제</div>
+        </div>`
         element.appendChild(newDiv)
         //댓글 입력창 비워주기
         const input_content = document.querySelector(`#comment_${post_id}`)
         input_content.value = null
     }
     
+    //댓글 수정
+    const EditComment = (comment_id,comment_content)=>{
+        const element = document.querySelector(`.comment_${comment_id}`);
+        element.innerHTML = ` 
+            <input type="text" id="edit_comment" value=${comment_content} class="w-75"/>
+            <button class="btn btn-sm btn-outline-dark" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">수정</button>
+            `
+
+    }
+    const onClickUpdate= async(comment_id,comment_content) => { 
+        const allowance =  confirm('수정하시겠습니까?'); 
+        if (allowance == true) {
+        const url = './comment_update/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({comment_id:comment_id, comment_content:comment_content})
+        }); 
+        const {comment_id:id, comment_content:content, nickname:nickname} = await res.json();        
+        UpdateHandleResponse(id,content,nickname);
+    };
+    };
+
+    const UpdateHandleResponse = (comment_id,comment_content,nickname)=>{
+        const element = document.querySelector(`.comment_${comment_id}`)
+        element.innerHTML = `
+        ${nickname} &#160; &#160; 
+        ${comment_content}
+        <div>
+        <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+        <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
+        </div>
+        `
+    }
+
+
     //댓글 삭제
     const onClickDelete= async(comment_id) => { 
         const allowance =  confirm('정말로 삭제하시겠습니까?'); 
