@@ -20,13 +20,13 @@
     {% endif %}
     {{review.content}}</p>
 {% if IsReviewAuthor %}
-<form action="{% url "foreign:review_delete" foreign_id review.pk %}" method="post" style="  display: inline; background: transparent">
+<form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" style="  display: inline; background: transparent">
     {% csrf_token %}
     <input type="submit" value="삭제" >
 </form>
-<a href="{% url "foreign:review_update" foreign_id review.pk%}">수정</a>
+<a href="{% url "foreign:review_update" univ.pk review.pk%}">수정</a>
 {% endif %}
-<a href="{% url "foreign:review_list" foreign_id %}">목록</a>
+<a href="{% url "foreign:review_list" univ.pk %}">목록</a>
 <hr>
 <p>댓글</p>
 <div class="post_{{review.id}} post">

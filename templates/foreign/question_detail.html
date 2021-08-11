@@ -22,13 +22,13 @@
             </p>
             <div class="d-flex justify-content-end">
                 {% if question.author.pk == user.pk %}
-                <form action="{% url "foreign:question_delete" foreign_id question.pk %}" method="post" style="  display: inline; background: transparent">
+                <form action="{% url "foreign:question_delete" univ.pk question.pk %}" method="post" style="  display: inline; background: transparent">
                     {% csrf_token %}
                     <input type="submit" value="삭제" >
                 </form>
-                <button onclick="location.href='{% url "foreign:question_edit" foreign_id question.pk %}'"> 수정 </button>
+                <button onclick="location.href='{% url "foreign:question_edit" univ.pk question.pk %}'"> 수정 </button>
                 {% endif %}
-                <button onclick="location.href='{% url "foreign:question_list" foreign_id%}'"> 목록 </button>
+                <button onclick="location.href='{% url "foreign:question_list" univ.pk %}'"> 목록 </button>
             </div>
             <hr>
             <div class="d-flex justify-content-between">
@@ -45,8 +45,8 @@
                     <div>
                         {{ comment.created_at }}
                         {% if comment.comment_author == user %}
-                        <button onclick="location.href='{% url "foreign:q_comment_edit" foreign_id comment.pk%}'"> 수정  </button>
-                        <form action="{% url "foreign:q_comment_delete" foreign_id comment.pk %}" method="post" style="  display: inline; background: transparent">
+                        <button onclick="location.href='{% url "foreign:q_comment_edit" univ.pk comment.pk%}'"> 수정  </button>
+                        <form action="{% url "foreign:q_comment_delete" univ.pk comment.pk %}" method="post" style="  display: inline; background: transparent">
                             {% csrf_token %}
                             <input type="submit" value="삭제" >
                         </form>
@@ -84,7 +84,7 @@
                 alert('로그인이 필요한 서비스입니다.');
                 window.location.href='{% url "login:login" %}';
             }else{
-                window.location.href='{% url "foreign:question_create" foreign_id %}';
+                window.location.href='{% url "foreign:question_create" univ.pk %}';
             }
         };
     
@@ -93,7 +93,7 @@
                 alert('로그인이 필요한 서비스입니다.');
                 window.location.href='{% url "login:login" %}';
             }else{
-                window.location.href='{% url "foreign:q_comment_create" foreign_id question.pk %}';
+                window.location.href='{% url "foreign:q_comment_create" univ.pk question.pk %}';
             }
         };
         

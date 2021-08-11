@@ -7,7 +7,7 @@
             <span>파견교 후기 공유</span>
             <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
         </div>
-        <div><a href="{% url "foreign:review_create" foreign_id%}">글쓰기</a></div>
+        <div><a href="{% url "foreign:review_create" univ.pk%}">글쓰기</a></div>
         </div>
         <hr>
         <table>
@@ -20,7 +20,7 @@
             {%for review in page_obj %}
                     <tr>
                         <td class="numbered" align='center'></td>
-                        <td><a href="{% url "foreign:review_detail" foreign_id review.pk %}">{{ review.title }}</a></td>
+                        <td><a href="{% url "foreign:review_detail" univ.pk review.pk %}">{{ review.title }}</a></td>
                         <td align="center">{{review.away_year}}-{{review.away_semester}}</td>
                         <td align="center">{{ review.created_at }}</td>
                     </tr>

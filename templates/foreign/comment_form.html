@@ -8,7 +8,7 @@
                 <h1>{{question.away_university}}</h1>
                 <span>QnA</span>
             </div>
-            <button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:question_create" foreign_id %}'"> 글쓰기 </button>
+            <button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:question_create" univ.pk %}'"> 글쓰기 </button>
         </div>
         <hr>
         <div>
@@ -22,15 +22,15 @@
             </p>
             <div class="d-flex justify-content-end">
                 {% if question.author == user %}
-                <button onclick="location.href='{% url "foreign:question_delete" foreign_id question.pk %}'"> 삭제 </button>
-                <button onclick="location.href='{% url "foreign:question_edit" foreign_id question.pk %}'"> 수정 </button>
+                <button onclick="location.href='{% url "foreign:question_delete" univ.pk question.pk %}'"> 삭제 </button>
+                <button onclick="location.href='{% url "foreign:question_edit" univ.pk question.pk %}'"> 수정 </button>
                 {% endif %}
-                <button onclick="location.href='{% url "foreign:question_list" foreign_id %}'"> 목록 </button>
+                <button onclick="location.href='{% url "foreign:question_list" univ.pk %}'"> 목록 </button>
             </div>
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-                <button onclick="location.href='{% url "foreign:q_comment_create" foreign_id question.pk %}'">답변 달기</button>
+                <button onclick="location.href='{% url "foreign:q_comment_create" univ.pk question.pk %}'">답변 달기</button>
             </div>
             {% for comment in question.fcomment_set.all %}
                 <div class="d-flex justify-content-between">
@@ -41,8 +41,8 @@
                     </div>
                     <div>
                         {{ comment.created_at }}
-                        <button onclick="location.href='{% url "foreign:q_comment_edit" foreign_id comment.pk%}'"> 수정  </button>
-                        <button onclick="location.href='{% url "foreign:q_comment_delete" foreign_id comment.pk%}'"> 삭제</button>
+                        <button onclick="location.href='{% url "foreign:q_comment_edit" univ.pk comment.pk%}'"> 수정  </button>
+                        <button onclick="location.href='{% url "foreign:q_comment_delete" univ.pk comment.pk%}'"> 삭제</button>
                     </div>
                 </div>
             {% endfor %}
@@ -51,7 +51,7 @@
                 {% csrf_token %}
                 {{form.as_p}}
                 <input type="submit" value="저장하기"/>
-                <a href="{% url 'foreign:question_detail' foreign_id question.pk %}" class="btn btn-primary btn-sm">취소</a>
+                <a href="{% url 'foreign:question_detail' univ.pk question.pk %}" class="btn btn-primary btn-sm">취소</a>
             </form>
             </div>
     </div>

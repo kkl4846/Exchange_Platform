@@ -28,7 +28,7 @@
             {%for question in page_obj %}
             <tr>
                 <td class="numbered" align='center'></td>
-                <td><a href="{% url "foreign:question_detail" foreign_id question.pk %}">{{ question.question_title }}</a></td>
+                <td><a href="{% url "foreign:question_detail" univ.pk question.pk %}">{{ question.question_title }}</a></td>
                 <td>{{ question.created_at}}</td>
             </tr>
             {% endfor %}
@@ -103,7 +103,7 @@
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
         }else{
-            window.location.href='{% url "foreign:question_create" foreign_id %}';
+            window.location.href='{% url "foreign:question_create" univ.pk %}';
         }
     };
 </script>

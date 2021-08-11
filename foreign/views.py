@@ -299,7 +299,6 @@ def review_list(request, foreign_id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     ctx = {
-        'foreign_id': foreign_id,
         'univ': foreign,
         'page_obj': page_obj,
     }
@@ -318,7 +317,6 @@ def review_detail(request, pk, foreign_id):
 
     ctx = {
         'review': review,
-        'foreign_id': foreign_id,
         'univ': foreign,
         'all_comment': all_comment,
         'IsReviewAuthor': IsReviewAuthor,
@@ -383,7 +381,6 @@ def question_list(request, foreign_id):
     page_obj = paginator.get_page(page_number)
     ctx = {
         'page_obj': page_obj,
-        'foreign_id': foreign_id,
         'univ': foreign,
     }
     return render(request, 'foreign/question_list.html', context=ctx)
@@ -397,7 +394,6 @@ def question_detail(request, foreign_id, pk):
     ctx = {
         'question': question,
         'comments': comments,
-        'foreign_id': foreign_id,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
@@ -421,7 +417,6 @@ def question_create(request, foreign_id):
         form = QuestionForm()
         ctx = {
             'form': form,
-            'foreign_id': foreign_id,
             'univ': foreign,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
@@ -447,7 +442,6 @@ def question_edit(request, foreign_id, pk):
         form = QuestionForm(instance=question)
         ctx = {
             'form': form,
-            'foreign_id': foreign_id,
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
@@ -509,7 +503,6 @@ def q_comment_create(request, foreign_id, pk):
         ctx = {
             'form': form,
             'question': question,
-            'foreign_id': foreign_id,
             'univ': foreign,
         }
         return render(request, template_name='foreign/comment_form.html', context=ctx)
@@ -529,7 +522,6 @@ def q_comment_edit(request, foreign_id, pk):
         ctx = {
             'form': form,
             'question': comment.question,
-            'foreign_id': foreign_id,
             'univ': foreign,
         }
         return render(request, template_name='foreign/comment_form.html', context=ctx)
