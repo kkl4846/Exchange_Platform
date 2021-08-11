@@ -13,7 +13,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
-from . import models, tokens, text, helper
+from . import tokens, text, helper
+from .models import *
 from domestic.models import *
 from foreign.models import *
 from country.models import *
@@ -35,7 +36,7 @@ def signup(request):
         else:
             if password1 == password2:
                 try:
-                    new_user = models.User.objects.create_user(
+                    new_user = User.objects.create_user(
                         username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
                     auth.login(request, new_user)
                     return redirect('login:user_main')
@@ -185,7 +186,7 @@ class Activate(View):
     def get(self, request, uidb64, token):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            user = models.User.objects.get(pk=uid)
+            user = User.objects.get(pk=uid)
             if user is not None and tokens.school_certification_token.check_token(user, token):
                 user.school_certificate = 1
                 user.save()
@@ -233,7 +234,7 @@ def reset_password(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         try:
-            target_user = models.User.objects.get(
+            target_user = User.objects.get(
                 username=username, email=email)
             auth_num = helper.email_auth_num()
             target_user.set_password(auth_num)
