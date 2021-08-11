@@ -20,11 +20,8 @@
         <hr>
         {% if sisters_dict.items %}
             {% for key, val in sisters_dict.items %}
-                <a href="#{{ key }}">{{ key }}</a>
-            {% endfor %}
-            {% for key, val in sisters_dict.items %}
             <ul>
-                <h3 id="{{ key }}">{{ key }}</h3>
+                <h3>{{ key }}</h3>
                 {% for sister in val %}
                     <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
                 {% endfor %}
@@ -53,9 +50,9 @@
     };
     
 </script>
-{% if certificate_error %}
-    <script>
-        alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
-    </script>
-{% endif %}
+    {% if certificate_error %}
+        <script>
+            alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+        </script>
+    {% endif %}
 {% endblock %}

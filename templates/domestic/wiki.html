@@ -19,26 +19,26 @@
         <hr>
         <div>
             <p>1. 지원 방법</p>
-            <pre>{{univ.home_apply}}</pre>
+            <p>{{univ.home_apply}}</p>
             <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
             <div>
                 <p>2. 필요 서류</p>
-                <pre>{{univ.home_document}}</pre>
+                <p>{{univ.home_document}}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
             </div>
             <div>
                 <p>3. 수학 가능 학기</p>
-                <pre>{{univ.semester}}</pre>
+                <p>{{univ.semester}}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
             </div>
             <div>
                 <p>4. 교내 장학금 정보</p>
-                <pre>{{univ.home_scholarship}}</pre>
+                <p>{{univ.home_scholarship}}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
             </div>
             <div>
                 <p>5. 유학생 보험 준비</p>
-                <pre>{{univ.insurance}}</pre>
+                <p>{{univ.insurance}}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
             </div>
         </div>
@@ -59,11 +59,9 @@
         }
     };
 </script>
-{%endblock%}
-{% block extra %}
     {% if certificate_error %}
         <script>
             alert("해당 학생만 이용할 수 있는 서비스입니다.");
         </script>
     {% endif %}
-{% endblock %}
+{%endblock%}

@@ -21,7 +21,7 @@
         <div>
             <div class="d-flex justify-content-between">
                 <h4>{{ question.question_title }}</h4>
-                <p>작성자: {{ question.author.nickname }} 작성 시간: {{ question.created_at }}</p>
+                <p>작성자: {{ question.author.nickname }} 작성일: {{ question.created_at }}</p>
             </div>
             {{ question.question_content }}
             </p>
@@ -216,10 +216,8 @@
     };
 
 </script>
-{% endblock %}
-{% block extra %}
 
-    {% if certificate_error %}
+{% if certificate_error %}
     <script>
         alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
     </script>
@@ -236,5 +234,4 @@
             alert("작성자 본인만 댓글을 수정할 수 있습니다.");
         </script>
     {% endif %}
-
 {% endblock %}

@@ -20,8 +20,9 @@
         <hr>
         <form action ="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
+            <p><input name="question_title" placeholder="제목을 입력하세요" required></p>
+            <p><textarea name="question_content" placeholder="내용을 입력하세요" required></textarea></p>
+            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"></div>
         </form>
     </div>
 </div>

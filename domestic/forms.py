@@ -6,6 +6,13 @@ class DomesticForm(forms.ModelForm):
         model = Domestic
         fields = ['home_apply', 'home_document', 'semester',
                   'home_scholarship', 'insurance']
+        labels = {
+            'home_apply' : '지원 방법',
+            'home_document': '필요 서류',
+            'semester' : '수학 가능 학기',
+            'home_scholarship' :' 교내 장학금 정보',
+            'insurance' : '유학생 보험 준비'
+        }
 class DQuestionForm(forms.ModelForm):
     class Meta:
         model = DQuestion
@@ -41,6 +48,3 @@ class AddSisterForm(forms.ModelForm):
     class Meta:
         model = Domestic
         fields=['home_sister']
-        widgets={
-            'home_sister':forms.CheckboxSelectMultiple
-        }
