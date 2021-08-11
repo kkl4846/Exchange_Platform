@@ -560,6 +560,31 @@ def undercomment_create(request, foreign_id, pk):
     return JsonResponse({'comment_id': comment_id, 'undercomment_id': new_undercomment.id, 'undercomment_author': request.user.nickname, 'undercomment_content': new_comment_content})
 
 
+@csrf_exempt
+def undercomment_update(request, foreign_id, pk):
+    print('dddddddddddd')
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    undercomment_id = req['undercomment_id']
+    edit_comment_content = req['comment_content']
+
+    edit_comment = FUnderComment.objects.get(id=undercomment_id)
+    edit_comment.comment_content = edit_comment_content
+    edit_comment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'undercomment_id': undercomment_id, 'undercomment_author': edit_comment.comment_author.nickname, 'undercomment_content': edit_comment_content})
+
+
+@csrf_exempt
+def undercomment_delete(request, foreign_id, pk):
+    req = json.loads(request.body)
+    undercomment_id = req['undercomment_id']
+    delete_comment = FUnderComment.objects.get(id=undercomment_id)
+    delete_comment.delete()
+
+    return JsonResponse({'undercomment_id': undercomment_id})
+
+
 # 댓글달기
 
 @method_decorator(csrf_exempt, name="dispatch")

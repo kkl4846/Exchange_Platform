@@ -51,6 +51,10 @@ urlpatterns = [
     path('<int:foreign_id>/question/<int:pk>/undercomment_create/',
          views.undercomment_create, name='undercomment_create'),
 
+    path('<int:foreign_id>/question/<int:pk>/undercomment_update/',
+         views.undercomment_update, name='undercomment_update'),
+    path('<int:foreign_id>/question/<int:pk>/undercomment_delete/',
+         views.undercomment_delete, name='undercomment_delete'),
 
     path('<int:foreign_id>/review/detail/<int:pk>/comment_create/',
          views.comment_create, name="comment_create"),

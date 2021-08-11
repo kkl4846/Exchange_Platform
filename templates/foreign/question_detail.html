@@ -64,8 +64,8 @@
                             </div>
                             {% if undercomment.comment_author == request.user %}
                             <div>
-                                <button>수정</button>
-                                <button>삭제</button>
+                                <button onclick="editComment('{{ comment.pk }}', '{{ undercomment.pk }}','{{ undercomment.comment_content }}')">수정</button>
+                                <button onclick="onClickDeleteUnder('{{ undercomment.pk }}')">삭제</button>
                             </div>
                             {% endif %}
                         </div>
@@ -97,6 +97,8 @@
             }
         };
         
+        //대댓글 생성
+
         const commentPlus = (comment_id) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
         const originHTML = element.innerHTML;
@@ -137,10 +139,68 @@
                 </div>
                 `
                 element.appendChild(newDiv)
-                const input_content = document.querySelector('#new-undercomment')
-                input_content.value = null
+                const input_content = document.querySelector(`.undercomment_${comment_id}`);
+                input_content.innerHTML = '';
             };
             
+            //대댓글 수정
+        const editComment = (comment_id, undercomment_id, undercomment_content) => {
+        const element = document.querySelector(`.undercomment_${comment_id}`);
+        const originHTML = element.innerHTML;
+            
+        element.innerHTML = `
+            <input type="text" id="edit-undercomment" value=${undercomment_content} class="w-75"/>
+            <button class="btn btn-sm btn-outline-dark" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">수정</button>
+        `
+    }
+
+    const onClickEditUnder= async(comment_id, undercomment_id, comment_content) => {  
+        const url = './undercomment_update/';
+        const {data} = await axios.post(url, {
+            comment_id,
+            undercomment_id,
+            comment_content,
+        });
+        underEditHandleResponse(data.comment_id, data.undercomment_id, data.undercomment_author, data.undercomment_content);
+        
+    };
+
+    const underEditHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
+        const element = document.querySelector(`#undercomment_${undercomment_id}`);
+        const originHTML = element.innerHTML;
+
+        element.innerHTML = `
+        <div>
+            <span>👉 ${undercomment_author}</span>
+            <span style="margin-left: 30px;">${undercomment_content}</span>
+        </div>
+        <div>
+            <button onclick="editComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
+            <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
+        </div>
+        `
+        const editInput = document.querySelector(`.undercomment_${comment_id}`);
+        editInput.innerHTML = '';
+    };
+
+   // 대댓글 삭제
+
+    const onClickDeleteUnder= async(undercomment_id) => {
+        const allowance =  confirm('정말로 삭제하시겠습니까?');
+        if (allowance == true) {
+            const url = './undercomment_delete/';
+        const {data} = await axios.post(url, {
+            undercomment_id,
+        });
+        underDeleteHandleResponse(data.undercomment_id);
+        }
+    };
+
+    const underDeleteHandleResponse = (undercomment_id) => {
+        const element = document.querySelector(`#undercomment_${undercomment_id}`);
+
+        element.innerHTML = ``;
+    };
 
     </script>
 
