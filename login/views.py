@@ -105,13 +105,9 @@ def certificate(request):
     file = json.load(f)
 
     school_names = []
-    school_domains = []
     for university_dicts in file:
         for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'ko-name' in key):
             school_names.append(university_name)
-        for key in university_dicts.keys():
-            if 'ko-name' in key:
-                school_domains.append(university_dicts.get('domains')[0])
     school_names.sort()
 
     if request.method == 'POST':
