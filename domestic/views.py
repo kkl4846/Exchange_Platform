@@ -1,11 +1,13 @@
+import json
 from django.core.paginator import Paginator
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from jamo import h2j, j2hcj
 from .models import *
 from .forms import *
-from jamo import h2j, j2hcj
 from foreign.models import *
-from django.core.paginator import Paginator
 
 URL_LOGIN = '/login/'
 
@@ -218,6 +220,7 @@ def question_detail(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
     comments = question.dcomment_set.all()
+    undercomments = DUnderComment.objects.all()
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
@@ -225,6 +228,7 @@ def question_detail(request, domestic_id, pk):
     ctx = {
         'question': question,
         'comments': comments,
+        'undercomments':undercomments,
         'domestic': domestic,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
@@ -339,6 +343,7 @@ def question_search(request, domestic_id):
 def comment_create(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = DQuestion.objects.get(id=pk)
+    undercomments = DUnderComment.objects.all()
     user = request.user
     if user.school_certificate == True and user.university == domestic.home_name:
         if request.method == 'POST':
@@ -354,6 +359,7 @@ def comment_create(request, domestic_id, pk):
             ctx = {
                 'form': form,
                 'question': question,
+                'undercomments': undercomments,
                 'domestic': domestic,
                 'is_authenticated': user.is_authenticated,
                 'is_enrolled': 'True',
@@ -365,6 +371,7 @@ def comment_create(request, domestic_id, pk):
         'question': question,
         'comments': comments,
         'domestic': domestic,
+        'undercomments': undercomments,
         'certificate_error':True,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': 'False',
@@ -376,6 +383,7 @@ def comment_create(request, domestic_id, pk):
 def comment_edit(request, domestic_id, comment_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     comment = get_object_or_404(DComment, id=comment_id)
+    undercomments = DUnderComment.objects.all()
     question = comment.question
     user = request.user
     if user == comment.comment_author :
@@ -389,6 +397,7 @@ def comment_edit(request, domestic_id, comment_id):
             ctx = {
             'form': form,
             'question': comment.question,
+            'undercomments': undercomments,
             'domestic': domestic,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': 'True',
@@ -406,8 +415,6 @@ def comment_edit(request, domestic_id, comment_id):
         'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/question_detail.html', context=ctx)
-        
-
 
 def comment_delete(request, domestic_id, comment_id):
     comment = DComment.objects.get(id=comment_id)
@@ -416,6 +423,49 @@ def comment_delete(request, domestic_id, comment_id):
         comment.delete()
 
     return redirect('domestic:question_detail', domestic_id, question.pk)
+
+# qna 대댓글
+@csrf_exempt
+def undercomment_create(request, domestic_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    new_comment_content = req['comment_content']
+
+    new_undercomment = DUnderComment.objects.create(
+        comment=DComment.objects.get(id=comment_id),
+        comment_author=request.user,
+        comment_content=new_comment_content
+    )
+    new_undercomment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'undercomment_id': new_undercomment.id, 'undercomment_author': request.user.nickname, 'undercomment_content': new_comment_content})
+
+
+@csrf_exempt
+def undercomment_update(request, domestic_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    undercomment_id = req['undercomment_id']
+    edit_comment_content = req['comment_content']
+
+    edit_comment = DUnderComment.objects.get(id=undercomment_id)
+    edit_comment.comment_content = edit_comment_content
+    edit_comment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'undercomment_id': undercomment_id, 'undercomment_author': edit_comment.comment_author.nickname, 'undercomment_content': edit_comment_content})
+
+
+@csrf_exempt
+def undercomment_delete(request, domestic_id, pk):
+    req = json.loads(request.body)
+    undercomment_id = req['undercomment_id']
+    delete_comment = DUnderComment.objects.get(id=undercomment_id)
+    delete_comment.delete()
+
+    return JsonResponse({'undercomment_id': undercomment_id})
+
+
+
 
 # 자매결연대학 목록
 

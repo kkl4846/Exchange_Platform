@@ -25,6 +25,10 @@ urlpatterns = [
     path('<int:domestic_id>/comment/<int:comment_id>/edit/', views.comment_edit, name='comment_edit'),
     path('<int:domestic_id>/comment/<int:comment_id>/delete/', views.comment_delete, name='comment_delete'),
 
+    path('<int:domestic_id>/qna/<int:pk>/undercomment_create/', views.undercomment_create, name='undercomment_create'),
+    path('<int:domestic_id>/qna/<int:pk>/undercomment_update/', views.undercomment_update, name='undercomment_update'),
+    path('<int:domestic_id>/qna/<int:pk>/undercomment_delete/', views.undercomment_delete, name='undercomment_delete'),
+
 
     path('<int:domestic_id>/sister/', views.sister_list, name='sister_list'),
     path('<int:domestic_id>/sister/add',views.sister_add, name='sister_add'),

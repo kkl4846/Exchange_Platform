@@ -45,7 +45,14 @@ class DComment(models.Model):
     def __str__(self):
         return self.comment_content
 
+class DUnderComment(models.Model):
+    comment = models.ForeignKey('DComment', on_delete=models.CASCADE)
+    comment_author = models.ForeignKey('login.User', on_delete=models.CASCADE)
+    comment_content = models.TextField(blank=True)
 
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    
 class Credit(models.Model):
     credit_author = models.ForeignKey(
         to='login.User', on_delete=models.CASCADE)
