@@ -236,29 +236,39 @@ def question_detail(request, domestic_id, pk):
 
 @login_required(login_url=URL_LOGIN)
 def question_create(request, domestic_id):
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
-    if request.method == 'POST':
-        form = DQuestionForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = user
-            post.home_university = domestic
-            post.save()
-            return redirect('domestic:question_detail', domestic_id, post.pk)
-    else:
-        form = DQuestionForm()
-        ctx = {
+    domestic = get_object_or_404(Domestic, pk=domestic_id)
+    if user.school_certificate == True and user.university == domestic.home_name:
+        if request.method == 'POST':
+            form = DQuestionForm(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = user
+                post.home_university = domestic
+                post.save()
+                return redirect('domestic:question_detail', domestic_id, post.pk)
+        else:
+            form = DQuestionForm()
+            ctx = {
             'form': form,
             'domestic': domestic,
             'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
+            'is_enrolled': 'True',
+            }
+            return render(request, template_name='domestic/question_form.html', context=ctx)
+    else:
+        questions = domestic.dquestion_set.all()
+        paginator = Paginator(questions, 15)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        ctx = {
+            'domestic': domestic,
+            'page_obj': page_obj,
+            'verification_error':True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': 'False',
         }
-        return render(request, template_name='domestic/question_form.html', context=ctx)
+        return render(request, template_name='domestic/question_list.html', context=ctx)
 
 
 @login_required(login_url=URL_LOGIN)
@@ -365,20 +375,20 @@ def comment_edit(request, domestic_id, comment_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     comment = get_object_or_404(DComment, id=comment_id)
     question = comment.question
-
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
-
-    if request.method == 'POST':
-        form = DCommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            comment = form.save()
-            return redirect('domestic:question_detail', domestic_id, question.pk)
-    else:
-        form = DCommentForm(instance=comment)
+    if user == comment.comment_author :
+        if request.method == 'POST':
+            form = DCommentForm(request.POST, instance=comment)
+            if form.is_valid():
+                comment = form.save()
+                return redirect('domestic:question_detail', domestic_id, question.pk)
+        else:
+            form = DCommentForm(instance=comment)
+    else: 
+        is_enrolled = 'False'
+        if user.is_authenticated:
+            if user.university == domestic.home_name:
+                is_enrolled = 'True'
         ctx = {
             'form': form,
             'question': comment.question,
