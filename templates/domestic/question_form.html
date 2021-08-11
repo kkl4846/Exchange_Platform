@@ -21,7 +21,7 @@
         <form action ="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="d-flex justify-content-end"><input onclick="return alert('수정이 완료되었습니다.')" type="submit" value="저장하기"/></div>
+            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
         </form>
     </div>
 </div>
