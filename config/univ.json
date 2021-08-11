@@ -43849,7 +43849,7 @@
       "web_pages": [
         "http://www.tu-berlin.de/"
       ],
-      "name": "Technische Universität Berlin",
+      "name": "Technical University of Berlin",
       "alpha_two_code": "DE",
       "state-province": null,
       "domains": [
@@ -43969,7 +43969,7 @@
       "web_pages": [
         "http://www.tum.de/"
       ],
-      "name": "Technische Universität München",
+      "name": "Technical University of Munich",
       "alpha_two_code": "DE",
       "state-province": null,
       "domains": [
@@ -44463,7 +44463,7 @@
         "http://www.lmu.de/",
         "http://www.uni-muenchen.de/"
       ],
-      "name": "Ludwig-Maximilians-Universität München",
+      "name": "Ludwig Maximilian University of Munich",
       "alpha_two_code": "DE",
       "state-province": null,
       "domains": [
@@ -64874,7 +64874,7 @@
       "web_pages": [
         "http://www.u-tokyo.ac.jp/"
       ],
-      "name": "Tokyo University",
+      "name": "The University of Tokyo",
       "alpha_two_code": "JP",
       "state-province": null,
       "domains": [
@@ -117059,5 +117059,125 @@
         "fom-net.de"
       ],
       "country": "Germany"
+    },
+    {
+      "web_pages": [
+        "www.nycu.edu.tw"
+      ],
+      "name": "National Yang Ming Chiao Tung University",
+      "alpha_two_code": "TW",
+      "state-province": "Tainan City",
+      "domains": [
+        "nycu.edu.tw"
+      ],
+      "country": "Taiwan"
+    },
+    {
+      "web_pages": [
+        "www.ku.dk"
+      ],
+      "name": "University of Copenhagen",
+      "alpha_two_code": "DK",
+      "state-province": "Copenhagen",
+      "domains": [
+        "ku.dk"
+      ],
+      "country": "Denmark"
+    },
+    {
+      "web_pages": [
+        "www.uni-bonn.de"
+      ],
+      "name": "Bonn University",
+      "alpha_two_code": "DE",
+      "state-province": "Bonn",
+      "domains": [
+        "uni-bonn.de"
+      ],
+      "country": "Germany"
+    },
+    {
+      "web_pages": [
+        "uni-tuebingen.de"
+      ],
+      "name": "University of Tubingen",
+      "alpha_two_code": "DE",
+      "state-province": "Tubingen",
+      "domains": [
+        "uni-tuebingen.de"
+      ],
+      "country": "Germany"
+    },
+    {
+      "web_pages": [
+        "www.stonybrook.edu"
+      ],
+      "name": "Stony Brook University",
+      "alpha_two_code": "US",
+      "state-province": "New York",
+      "domains": [
+        "stonybrook.edu"
+      ],
+      "country": "United States"
+    },
+    {
+      "web_pages": [
+        "www.gu.se"
+      ],
+      "name": "Gothenburg University",
+      "alpha_two_code": "SE",
+      "state-province": "Gothenburg",
+      "domains": [
+        "gu.se"
+      ],
+      "country": "Sweden"
+    },
+    {
+      "web_pages": [
+        "www.epfl.ch"
+      ],
+      "name": "Ecole Polytechnique Federale de Lausanne",
+      "alpha_two_code": "CH",
+      "state-province": "Lausanne",
+      "domains": [
+        "epfl.ch"
+      ],
+      "country": "Swiss"
+    },
+    {
+      "web_pages": [
+        "www.sorbonne-universite.fr"
+      ],
+      "name": "Sorbonne Université",
+      "alpha_two_code": "FR",
+      "state-province": null,
+      "domains": [
+        "sorbonne-universite.fr"
+      ],
+      "country": "France"
+    },
+    {
+      "web_pages": [
+        "www.u-paris.fr"
+      ],
+      "name": "Université de Paris",
+      "alpha_two_code": "FR",
+      "state-province": null,
+      "domains": [
+        "u-paris.fr"
+      ],
+      "country": "France"
+    },
+    {
+      "web_pages": [
+        "www.pantheonsorbonne.fr"
+      ],
+      "name": "Université de Paris:Pantheon-Sorbonne",
+      "alpha_two_code": "FR",
+      "state-province": null,
+      "domains": [
+        "pantheonsorbonne.fr"
+      ],
+      "country": "France"
     }
   ]
