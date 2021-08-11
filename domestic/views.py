@@ -110,7 +110,7 @@ def wiki_edit_document(request, domestic_id):
 def wiki_edit_semester(request, domestic_id):
     user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school.certificate == True and user.university == domestic.home_name:
+    if user.school_certificate == True and user.university == domestic.home_name:
         if request.method == 'POST':
             form = DomesticForm(request.POST, request.FILES, instance=domestic)
             if form.is_valid():
@@ -265,19 +265,33 @@ def question_create(request, domestic_id):
 def question_edit(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = get_object_or_404(DQuestion, id=pk)
-
-    if request.method == 'POST':
-        form = DQuestionForm(request.POST, instance=question)
-        if form.is_valid():
-            question = form.save()
-            return redirect('domestic:question_detail', domestic_id, pk)
+    user = request.user
+    if user == question.author :
+        if request.method == 'POST':
+            form = DQuestionForm(request.POST, instance=question)
+            if form.is_valid():
+                question = form.save()
+                return redirect('domestic:question_detail', domestic_id, pk)
+        else:
+            form = DQuestionForm(instance=question)
     else:
-        form = DQuestionForm(instance=question)
+        is_enrolled = False
+        comments = question.dcomment_set.all()
         ctx = {
-            'form': form,
-            'domestic': domestic
+        'question': question,
+        'comments': comments,
+        'domestic': domestic,
+        'verification_error': True,
+        'is_authenticated': user.is_authenticated,
+        'is_enrolled': is_enrolled,
         }
-        return render(request, template_name='domestic/question_form.html', context=ctx)
+        return render(request, template_name='domestic/question_detail.html', context=ctx)
+
+    ctx = {
+        'form': form,
+        'domestic': domestic
+    }
+    return render(request, template_name='domestic/question_form.html', context=ctx)
 
 
 def question_delete(request, domestic_id, pk):

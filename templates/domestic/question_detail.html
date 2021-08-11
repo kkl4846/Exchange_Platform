@@ -59,6 +59,7 @@
     </div>
 </div>
 <script>
+    
     const canIPost = (is_authenticated, is_enrolled)=> {
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
@@ -86,4 +87,11 @@
     };
     
 </script>
+{% endblock %}
+{% block extra %}
+    {% if verification_error %}
+        <script>
+            alert("작성자 본인만 글을 수정할 수 있습니다.");
+        </script>
+    {% endif %}
 {% endblock %}
