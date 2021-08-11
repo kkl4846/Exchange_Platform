@@ -44,8 +44,11 @@
                     <div>
                         {{ comment.created_at }}
                         {% if comment.comment_author == user %}
+                            <form action='{% url "country:comment_delete" country.pk comment.pk %}' method="post" style="  display: inline; background: transparent">
+                                {% csrf_token %}
+                                <input type="submit" value="삭제" >
+                            </form>
                             <button onclick="location.href='{% url "country:comment_edit" country.pk comment.pk %}'"> 수정  </button>
-                            <button onclick="location.href='{% url "country:comment_delete" country.pk comment.pk %}'"> 삭제</button>
                         {% endif %}
                         <button id='undercomment' onclick="commentPlus('{{comment.pk}}')">댓글</button><br/>
                     </div>
