@@ -272,6 +272,7 @@ def question_delete(request, country_id, pk):
 def comment_create(request, country_id, pk):
     country = get_object_or_404(Country, pk=country_id)
     question = CQuestion.objects.get(id=pk)
+    undercomments = CUnderComment.objects.all()
     if request.method == 'POST':
         form = CCommentForm(request.POST)
         if form.is_valid():
@@ -287,6 +288,7 @@ def comment_create(request, country_id, pk):
             'question': question,
             'country': country,
             'is_authenticated': request.user.is_authenticated,
+            'undercomments': undercomments,
         }
         return render(request, template_name='country/comment_form.html', context=ctx)
 
@@ -295,6 +297,7 @@ def comment_create(request, country_id, pk):
 def comment_edit(request, country_id, comment_id):
     country = get_object_or_404(Country, pk=country_id)
     comment = get_object_or_404(CComment, id=comment_id)
+    undercomments = CUnderComment.objects.all()
     question = comment.question
     if request.method == 'POST':
         form = CCommentForm(request.POST, instance=comment)
@@ -308,6 +311,7 @@ def comment_edit(request, country_id, comment_id):
             'question': comment.question,
             'country': country,
             'is_authenticated': request.user.is_authenticated,
+            'undercomments': undercomments,
         }
         return render(request, template_name='country/comment_form.html', context=ctx)
 

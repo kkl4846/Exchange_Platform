@@ -46,6 +46,18 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="undercomment_list_{{ comment.pk }}">
+                {% for undercomment in undercomments  %}
+                    {% if undercomment.comment == comment %}
+                    <div class="d-flex justify-content-between" id="undercomment_{{ undercomment.pk }}">
+                        <div>
+                            <span>👉 {{ undercomment.comment_author.nickname }}</span>
+                            <span style="margin-left: 30px;">{{ undercomment.comment_content }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endfor %}
         <hr>
         <form action ="" method="POST" enctype="multipart/form-data">
