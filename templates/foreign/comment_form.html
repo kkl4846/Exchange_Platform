@@ -7,6 +7,7 @@
             <div class="d-flex align-items-center ">
                 <h1>{{question.away_university}}</h1>
                 <span>QnA</span>
+                <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
             </div>
             <button class="btn btn-sm btn-border" onclick="location.href='{% url "foreign:question_create" univ.pk %}'"> 글쓰기 </button>
         </div>
