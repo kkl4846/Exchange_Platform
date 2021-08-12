@@ -308,6 +308,7 @@ def review_list(request, foreign_id):
 def review_detail(request, pk, foreign_id):
     review = get_object_or_404(Post, pk=pk)
     all_comment = review.post_comment.all()
+    recomments = FReComment.objects.all()
     foreign = get_object_or_404(
         Foreign, pk=foreign_id)  # 외국 대학과 국가 넘겨주기위해 받음
     if request.user == review.post_author:
@@ -320,6 +321,7 @@ def review_detail(request, pk, foreign_id):
         'univ': foreign,
         'all_comment': all_comment,
         'IsReviewAuthor': IsReviewAuthor,
+        'recomments': recomments,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
@@ -368,6 +370,7 @@ def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
 
     return review_create(request, foreign_id, post)
+
 
 # Q&A
 
@@ -612,3 +615,44 @@ def comment_delete(request, foreign_id, pk):
     comment = Comment.objects.get(id=comment_id)
     comment.delete()
     return JsonResponse({'comment_id': comment_id})
+
+
+# review 대댓글
+@csrf_exempt
+def Rrecomment_create(request, foreign_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    new_comment_content = req['comment_content']
+
+    new_recomment = FReComment.objects.create(
+        comment=Comment.objects.get(id=comment_id),
+        comment_author=request.user,
+        comment_content=new_comment_content
+    )
+    new_recomment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'recomment_id': new_recomment.id, 'recomment_author': request.user.nickname, 'recomment_content': new_comment_content})
+
+
+@csrf_exempt
+def Rrecomment_update(request, foreign_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    recomment_id = req['recomment_id']
+    edit_comment_content = req['comment_content']
+
+    edit_comment = FReComment.objects.get(id=recomment_id)
+    edit_comment.comment_content = edit_comment_content
+    edit_comment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'recomment_id': recomment_id, 'recomment_author': edit_comment.comment_author.nickname, 'recomment_content': edit_comment_content})
+
+
+@csrf_exempt
+def Rrecomment_delete(request, foreign_id, pk):
+    req = json.loads(request.body)
+    recomment_id = req['recomment_id']
+    delete_comment = FReComment.objects.get(id=recomment_id)
+    delete_comment.delete()
+
+    return JsonResponse({'recomment_id': recomment_id})
