@@ -1,23 +1,27 @@
 {%extends "base.html"%} 
-
-
 {% block content %}
-<div class="mx-5 mt-5">
+<div class="lbody">
     {% autoescape off %}
-    <div>
+    <div class="lbar d-flex align-items-center">
+        <div class="lforeign_list d-flex justify-content-around text-center ">
         {% for key, val in countries_dict.items %}
         <a href="#{{ key }}">{{ key }}</a>
         {% endfor %}
+        </div>
     </div>
-    <div class="mx-4">
+    <div>
         {% for key, val in countries_dict.items %}
-            <h3 id="{{ key }}">{{ key }}</h3>
+        <div class="lgroup d-flex">
+            <div class="lalpha" id="{{ key }}">{{ key }}</div>
+            <div class="lforeign_name ">
             {% for country in val %}
                 <a href="{% url 'country:country_wiki' pk=country.pk %}">
                     {{ country.country_name }}
                 </a>
             {% endfor %}
+            </div>
             <br>
+        </div>
         {% endfor %}
     </div>
     {% endautoescape %}
