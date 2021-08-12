@@ -21,64 +21,70 @@
         <div>
             <div class="d-flex justify-content-between">
                 <h4>{{ question.question_title }}</h4>
-                <p>작성자: {{ question.author.nickname }} 작성일: {{ question.created_at }}</p>
+                <p>작성자: {{ question.author.nickname}} 작성일: {{ question.created_at }}</p>
             </div>
+            <p>
             {{ question.question_content }}
             </p>
             <div class="d-flex justify-content-end">
-                {% if question.author == user %}
-                    <form action='{% url "domestic:question_delete" domestic.pk question.pk %}' method="post" >
-                        {% csrf_token %}
-                        <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
-                    </form>
-                    <button onclick="location.href='{% url "domestic:question_edit" domestic.pk question.pk %}'"> 수정 </button>
+                {% if question.author.pk == user.pk %}
+                <form action="{% url "domestic:question_delete" domestic.pk question.pk %}" method="post" >
+                    {% csrf_token %}
+                    <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
+                </form>
+                <button onclick="location.href='{% url "domestic:question_edit" domestic.pk question.pk %}'"> 수정 </button>
                 {% endif %}
                 <button onclick="location.href='{% url "domestic:question_list" domestic.pk %}'"> 목록 </button>
             </div>
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-                <button onclick="canIAnswer('{{ is_authenticated }}','{{ is_enrolled }}')">답변 달기</button>
             </div>
-            {% for comment in comments %}
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h5>{{ comment.comment_author.nickname }}</h5> 
-                    {{ comment.comment_content }}
+        </div>
+        <div>
+            <div class="post_{{question.id}} post">
+                {%for comment in comments %}
+                <div class="comment_{{comment.id}} d-flex justify-content-between">
+                    {{comment.comment_author.nickname}} &#160; &#160; 
+                    {{comment.comment_content}}
+                    <div>
+                    {% if request.user == comment.comment_author %}
+                    <button class="btn btn-outline-secondary update " onclick="EditComment('{{ comment.id }}' ,'{{ comment.comment_content }}')">수정</button>
+                    <button class="btn btn-outline-secondary delete " onclick="onClickDelete('{{ comment.id }}' )">삭제</button>
+                    {%endif%}
+                    <button id='undercomment' onclick="undercommentPlus('{{ comment.id }}')">댓글</button><br/>
+                    </div>
                 </div>
-                <div class="d-flex align-items-center">
-                    {{ comment.created_at }}
-                    {% if comment.comment_author == user %}
-                    <button onclick="location.href='{% url "domestic:comment_edit" domestic.pk comment.pk%}'"> 수정  </button>
-                    <form action="{% url "domestic:comment_delete" domestic.pk comment.pk %}" method="post">
-                        {% csrf_token %}
-                        <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
-                    </form>
-                    {% endif %}
-                    <button id='undercomment' onclick="commentPlus('{{comment.pk}}')">댓글</button><br/>
-                </div>
-            </div>
-            <div class="undercomment_list_{{ comment.pk }}">
-                {% for undercomment in undercomments  %}
-                    {% if undercomment.comment == comment %}
-                    <div class="d-flex justify-content-between" id="undercomment_{{ undercomment.pk }}">
-                        <div>
-                            <span>👉 {{ undercomment.comment_author.nickname }}</span>
-                            <span style="margin-left: 30px;">{{ undercomment.comment_content }}</span>
-                        </div>
-                        {% if undercomment.comment_author == request.user %}
-                        <div>
-                            <button onclick="editComment('{{ comment.pk }}', '{{ undercomment.pk }}','{{ undercomment.comment_content }}')">수정</button>
-                            <button onclick="onClickDeleteUnder('{{ undercomment.pk }}')">삭제</button>
+                <div class="undercomment_list_{{ comment.pk }}">
+                    {% for undercomment in undercomments  %}
+                        {% if undercomment.comment == comment %}
+                        <div class="d-flex justify-content-between" id="undercomment_{{ undercomment.pk }}">
+                            <div>
+                                <span>👉 {{ undercomment.comment_author.nickname }}</span>
+                                <span style="margin-left: 30px;">{{ undercomment.comment_content }}</span>
+                            </div>
+                            {% if undercomment.comment_author == request.user %}
+                            <div>
+                                <button onclick="editUnderComment('{{ comment.pk }}', '{{ undercomment.pk }}','{{ undercomment.comment_content }}')">수정</button>
+                                <button onclick="onClickDeleteUnder('{{ undercomment.pk }}')">삭제</button>
+                            </div>
+                            {% endif %}
                         </div>
                         {% endif %}
-                    </div>
-                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="undercomment_{{ comment.pk }}">여기</div>
                 {% endfor %}
-            </div>
-            <div class="undercomment_{{ comment.pk }}"></div>
-        {% endfor %}
-            </div>
+                </div>
+                <form action="./comment_create/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="comment_content" id="comment_{{question.id}}" placeholder='댓글달기...' style="width: 80%;"/>
+                    <div class="btn btn-outline-dark submit" onclick="onClickComment('{{user.is_authenticated}}',{{question.id}}, document.querySelector('#comment_{{question.id}}').value)">
+                        submit
+                    </div>
+                </form>
+                </div>
+        </div>
     </div>
 </div>
 
@@ -97,70 +103,158 @@
         }
     };
 
-    const canIAnswer= (is_authenticated, is_enrolled)=> {
-        if (is_authenticated == 'False') {
-            alert('로그인이 필요한 서비스입니다.');
-            window.location.href='{% url "login:login" %}';
+ //댓글
+    const onClickComment= async(is_authenticated, question_id, comment_content) => {  
+        console.log(is_authenticated)
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
         }else{
-            if(is_enrolled == 'False'){
-                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
-            }else{
-                window.location.href='{% url "domestic:comment_create" domestic.pk question.pk %}';
-            }
-        }
-    };
+        const url = './comment_create/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content})
+        }); 
     
- //대댓글 생성
+        const {question_id:id, comment_content:content, comment_id:c_id}= await res.json();        
+        commentHandleResponse(id, content, c_id);
+    }
+    };
 
-    const commentPlus = (comment_id) => {
+    const commentHandleResponse=(question_id, comment_content, comment_id) => {
+        const element=document.querySelector(`.post_${question_id}`)
+        element.innerHTML += `
+        <div class="comment_${comment_id} d-flex justify-content-between">
+            {{request.user.nickname}} &#160; &#160; ${comment_content}
+            <div>
+            <button class="btn btn-outline-secondary update " onclick="EditComment('${comment_id}', '${comment_content}')">수정</button>
+            <div class="btn btn-outline-secondary delete" onclick="onClickDelete('${comment_id}')">삭제</div>
+            <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+            </div>
+        </div>
+        <div class="undercomment_${comment_id}">여기</div>
+        <div class="undercomment_list_${comment_id}"></div>
+        `
+        const input_content = document.querySelector(`#comment_${question_id}`)
+        input_content.value = null
+    }
+    
+    //댓글 수정
+    const EditComment = (comment_id,comment_content)=>{
+        const element = document.querySelector(`.comment_${comment_id}`);
+        element.innerHTML = ` 
+        {{request.user.nickname}}
+            <input type="text" id="edit_comment" value=${comment_content} class="w-75"/>
+            <button class="btn btn-sm btn-outline-dark" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">수정</button>
+            `
+
+    }
+    const onClickUpdate= async(comment_id,comment_content) => { 
+        const allowance =  confirm('수정하시겠습니까?'); 
+        if (allowance == true) {
+        const url = './comment_update/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({comment_id:comment_id, comment_content:comment_content})
+        }); 
+        const {comment_id:id, comment_content:content, nickname:nickname} = await res.json();        
+        UpdateHandleResponse(id,content,nickname);
+    };
+    };
+
+    const UpdateHandleResponse = (comment_id,comment_content,nickname)=>{
+        const element = document.querySelector(`.comment_${comment_id}`)
+        element.innerHTML = `
+        ${nickname} &#160; &#160; 
+        ${comment_content}
+        <div>
+        <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+        <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
+        <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+        </div>
+        `
+    }
+
+
+    //댓글 삭제
+    const onClickDelete= async(comment_id) => { 
+        const allowance =  confirm('정말로 삭제하시겠습니까?'); 
+        if (allowance == true) {
+        const url = './comment_delete/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({comment_id:comment_id})
+        }); 
+        const {comment_id:id} = await res.json();       
+        deleteHandleResponse(id);
+    };
+    };
+
+    const deleteHandleResponse = (comment_id)=>{
+    
+        const element = document.querySelector(`.comment_${comment_id}`)
+        const element_comment = element.closest('.post')
+        console.log(element_comment)
+        element_comment.removeChild(element)
+    }
+
+  //대댓글 생성
+
+    const undercommentPlus = (comment_id) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
-        const originHTML = element.innerHTML;
-            
+        console.log(element)
         element.innerHTML = `
             <input type="text" id="new-undercomment" placeholder="댓글을 입력해주세요." class="w-75"/>
             <button class="btn btn-sm btn-outline-dark" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-undercomment').value)">확인</button>
         `
         }
         
-        const onClickUnderComment= async(is_authenticated, comment_id, comment_content) => {  
-            if (is_authenticated == 'False') {
-                    alert('로그인이 필요한 서비스입니다.');
-                    window.location.href='{% url "login:login" %}';
-            } else {
-            const url = './undercomment_create/';
-            const {data} = await axios.post(url, {
-                comment_id,
-                comment_content,
-            });
-            underCommentHandleResponse(data.comment_id, data.undercomment_id, data.undercomment_author, data.undercomment_content);
-            }
-        };
+    const onClickUnderComment= async(is_authenticated, comment_id, comment_content) => { 
+        if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
+        } else {
+        const url = './undercomment_create/';
+        const {data} = await axios.post(url, {
+            comment_id,
+            comment_content,
+        });
+        underCommentHandleResponse(data.comment_id, data.undercomment_id, data.undercomment_author, data.undercomment_content);
+        }
+    };
         const underCommentHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
-                const element = document.querySelector(`.undercomment_list_${comment_id}`);
-                const newDiv = document.createElement('div')
-                newDiv.className = "d-flex justify-content-between";
-                newDiv.id = `undercomment_${undercomment_id}`
+                const element = document.querySelector(`.undercomment_${comment_id}`);
+                console.log(element)
+                element.innerHTML = `
+                <div class="d-flex justify-content-between" id="undercomment_${undercomment_id}">
+                        <div>
+                        <span>👉 ${undercomment_author}</span>
+                        <span style="margin-left: 30px;">${undercomment_content}</span>
+                    </div>
+                    <div>
+                        <button onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
+                        <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
+                    </div>
+                </div>
                 
-                newDiv.innerHTML = `
-                <div>
-                    <span>👉 ${undercomment_author}</span>
-                    <span style="margin-left: 30px;">${undercomment_content}</span>
-                </div>
-                <div>
-                    <button onclick="editComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
-                    <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
-                </div>
                 `
-                element.appendChild(newDiv)
-                const input_content = document.querySelector(`.undercomment_${comment_id}`);
-                input_content.innerHTML = '';
+            
             };
             
             //대댓글 수정
-        const editComment = (comment_id, undercomment_id, undercomment_content) => {
+    const editUnderComment = (comment_id, undercomment_id, undercomment_content) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
+        console.log(element)
         const originHTML = element.innerHTML;
-            
         element.innerHTML = `
             <input type="text" id="edit-undercomment" value=${undercomment_content} class="w-75"/>
             <button class="btn btn-sm btn-outline-dark" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">수정</button>
@@ -179,16 +273,15 @@
     };
 
     const underEditHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
-        const element = document.querySelector(`#undercomment_${undercomment_id}`);
-        const originHTML = element.innerHTML;
-
-        element.innerHTML = `
+        const element = document.querySelector(`.undercomment_list_${comment_id}`);
+        console.log(element)
+        element.innerHTML += `
         <div>
             <span>👉 ${undercomment_author}</span>
             <span style="margin-left: 30px;">${undercomment_content}</span>
         </div>
         <div>
-            <button onclick="editComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
+            <button onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
             <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
         </div>
         `
@@ -214,7 +307,6 @@
 
         element.innerHTML = ``;
     };
-
 </script>
 
 {% if certificate_error %}
