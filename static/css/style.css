@@ -4,6 +4,7 @@
 @import "variables.css";
 
 /* Components */
+@import "components/header.css";
 
 /* Pages */
 
