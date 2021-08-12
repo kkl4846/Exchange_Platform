@@ -13,6 +13,7 @@
 @import "pages/login.css";
 @import "pages/signup.css";
 @import "pages/certificate.css";
+@import "pages/myquestion.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;
