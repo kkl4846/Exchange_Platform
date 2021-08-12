@@ -1,3 +1,93 @@
 .each-input {
   margin-top: 20px;
 }
+
+.mypage h5 {
+  font-size: 20px;
+}
+
+#repassword,
+#school-certificate,
+.mypage-list {
+  margin-top: 40px;
+}
+
+#nickname {
+  border-radius: 10px;
+  border: none;
+  padding: 9px 0px 9px 12px;
+  margin-left: 15px;
+  font-size: 15px;
+  width: 295px;
+  height: 35px;
+  margin-top: 10px;
+  color: var(--d-gray);
+}
+
+#nickname:focus {
+  outline: none;
+}
+
+.mypage-input {
+  border-radius: 10px;
+  border: none;
+  padding: 9px 0px 9px 12px;
+  margin-left: 15px;
+  font-size: 15px;
+  width: 344px;
+  height: 35px;
+  margin-top: 10px;
+  color: var(--d-gray);
+}
+
+.mypage-input::placeholder {
+  color: var(--m-gray);
+}
+
+.mypage-input:focus {
+  outline: none;
+}
+
+.mypage-btn {
+  width: 84px;
+  height: 35px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+}
+
+.mypage-title {
+  font-size: 15px;
+  color: var(--m-gray);
+}
+
+.change-btn {
+  margin-left: 366px;
+  margin-top: 18px;
+}
+
+.mypage-school {
+  margin-top: 10px;
+}
+
+.mypage-list {
+  height: 38px;
+}
+
+.mypage-btn2 {
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 6px 13px;
+  margin-left: 210px;
+}
+
+.mypage-btn3 {
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 10px 13px;
+}
+
+.mypage-btn2:hover,
+.mypage-btn3:hover {
+  color: white;
+}
