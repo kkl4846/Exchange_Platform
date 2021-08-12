@@ -42,7 +42,7 @@
             </div>
         </div>
         <div>
-            <div class="post_{{question.id}} post">
+            <div class="post_{{question.id}}">
                 {%for comment in comments %}
                 <div class="comment_{{comment.id}} d-flex justify-content-between">
                     {{comment.comment_author.nickname}} &#160; &#160; 
@@ -73,7 +73,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="undercomment_{{ comment.pk }}">여기</div>
+                <div class="undercomment_{{ comment.pk }}"></div>
                 {% endfor %}
                 </div>
                 <form action="./comment_create/" method="POST">
@@ -105,7 +105,6 @@
 
  //댓글
     const onClickComment= async(is_authenticated, question_id, comment_content) => {  
-        console.log(is_authenticated)
             if (is_authenticated == 'False') {
                 alert('로그인이 필요한 서비스입니다.');
                 window.location.href='{% url "login:login" %}';
@@ -200,10 +199,11 @@
     };
 
     const deleteHandleResponse = (comment_id)=>{
-    
+        const undercomment = document.querySelector(`.undercomment_list_${comment_id}`);
+        undercomment.innerHTML = '';
         const element = document.querySelector(`.comment_${comment_id}`)
-        const element_comment = element.closest('.post')
-        element_comment.removeChild(element)
+        element.innerHTML='';
+        
     }
 
   //대댓글 생성
@@ -270,7 +270,6 @@
 
     const underEditHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
         const element = document.querySelector(`#undercomment_${undercomment_id}`);
-        console.log(element)
         element.innerHTML = `
         <div>
             <span>👉 ${undercomment_author}</span>
