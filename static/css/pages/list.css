@@ -35,7 +35,7 @@
   font-weight: bold;
 }
 
-.lgbtn {
+.lgbtn-gray {
   width: 74px;
   height: 28px;
   font-size: 14px;
@@ -48,7 +48,6 @@
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  font-weight: normal;
   color: black;
   background-color: var(--m-gray);
   text-align: center;

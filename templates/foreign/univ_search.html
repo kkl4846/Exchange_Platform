@@ -5,6 +5,10 @@
         .autocomplete {
             position: relative;
             display: inline-block;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            margin-top: 35px;
         }
         .autocomplete-items {
             position: absolute;
@@ -33,24 +37,28 @@
 {% endblock %}
 
 {%block content%}
-<div>
-    <h5>파견교 추가</h5>
+<div class="containers">
+    <div class="space-between">
+    <div class="addForeign-top">파견교 추가</div>
+    <input class="lgbtn-blue" type="submit" onclick="document.getElementById('frm').submit();" value="저장하기">
+    </div>
     <hr />
     <form autocomplete="off">
-        <h5>대학 검색</h5>
         <div class="autocomplete">
-            <span>해외학교명 : </span>
-            <input style="width: 300px;" type="text" id="myInput" name="newUniversity" placeholder="해외 학교명" autocomplete="off">
+            <span class="foreign-name">해외학교명</span>
+            <input class="foreign-search" type="text" id="myInput" name="newUniversity" placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다." autocomplete="off">
             <input type="submit" value="확인" style="display: none;">
         </div>
     </form>
-    <small>영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다.</small>
-    <form method="POST" enctype="multipart/form-data" class="form" >
+    <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='frm'>
         {% csrf_token %}
         <input name="away_name" style="display: none;" id="formUniversity">
-        <p>국가: {{form.country}}</p>
-        <p>자매 결연 대학:{{form.domestics}}</p>
-        <input type="submit" value="저장하기" class="btn btn-primary" />
+        <div class="addForeign-group">
+        <p class="addForeign-country">해당 국가</p> {{form.country}}
+        </div>
+        <div class="addForeign-group">
+        <p class="addForeign-sister">자매 결연 대학</p> {{form.domestics}}
+        </div>
     </form>
 </div>
 
