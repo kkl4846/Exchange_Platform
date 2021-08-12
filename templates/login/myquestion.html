@@ -12,7 +12,7 @@
                     <th width='600' >제목</th>
                     <th>날짜</th>
                 </tr>
-                {% for question in d_questions %}
+                {% for question in page_obj1 %}
                 <tr>
                     <td class="numbered1" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'domestic:question_detail' question.home_university.pk question.pk %}">{{ question.question_title }}</a></td>
@@ -20,6 +20,34 @@
                 </tr>
                 {% endfor %}
             </table>
+            <div style="text-align:center">
+                <div class="pagination">
+                    <div style="width:35%; margin: 5px;">
+                        {% if page_obj1.has_previous %}
+                        <a class="abutton" href="?page1=1">맨 앞으로</a>
+                        <a class="abutton" href="?page1={{ bpage_obj.previous_page_number }}">이전</a>
+                        {% endif %}
+                    </div>
+                    <div style="width:30%; margin: 5px;">
+                        {% for page1 in page_obj1.paginator.page_range %}
+                            {% if page1 >= page_obj1.number|add:-2 and page1 <= page_obj1.number|add:2 %}
+                                <span class="{% if page1 == page_obj1.number %}current{% endif %}">
+                                    <a href="?page1={{ page1 }}" {% if page1 == page_obj1.number %}style="font-weight: bold;"{%endif%}>{{ page1 }}</a>
+                                    
+                                </span>
+                            {% elif page1 >= page_obj1.number|add:-3 and page1 <= page_obj1.number|add:3 %}
+                                <span>..</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div style="width:35%; margin: 5px;">
+                        {% if page_obj1.has_next %}
+                            <a class="abutton" href="?page1={{ page_obj1.next_page_number }}">다음</a>
+                            <a class="abutton" href="?page1={{ page_obj1.paginator.num_pages }}">맨 뒤로</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
             <hr />
             <h5>해외파견교별</h5>
             <table>
@@ -28,7 +56,7 @@
                     <th width='600' >제목</th>
                     <th>날짜</th>
                 </tr>
-                {% for question in f_questions %}
+                {% for question in page_obj2 %}
                 <tr>
                     <td class="numbered2" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'foreign:question_detail' question.away_university.pk question.pk %}">{{ question.question_title }}</a></td>
@@ -36,6 +64,34 @@
                 </tr>
                 {% endfor %}
             </table>
+            <div style="text-align:center">
+                <div class="pagination">
+                    <div style="width:35%; margin: 5px;">
+                        {% if page_obj2.has_previous %}
+                        <a class="abutton" href="?page=1">맨 앞으로</a>
+                        <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
+                        {% endif %}
+                    </div>
+                    <div style="width:30%; margin: 5px;">
+                        {% for page2 in page_obj2.paginator.page_range %}
+                            {% if page2 >= page_obj2.number|add:-2 and page2 <= page_obj2.number|add:2 %}
+                                <span class="{% if page2 == page_obj2.number %}current{% endif %}">
+                                    <a href="?page2={{ page2 }}" {% if page2 == page_obj2.number %}style="font-weight: bold;"{%endif%}>{{ page2 }}</a>
+                                    
+                                </span>
+                            {% elif page2 >= page_obj2.number|add:-3 and page2 <= page_obj2.number|add:3 %}
+                                <span>..</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div style="width:35%; margin: 5px;">
+                        {% if page_obj2.has_next %}
+                            <a class="abutton" href="?page2={{ page_obj2.next_page_number }}">다음</a>
+                            <a class="abutton" href="?page2={{ page_obj2.paginator.num_pages }}">맨 뒤로</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
             <hr />
             <h5>파견국가별</h5>
             <table>
@@ -44,7 +100,7 @@
                     <th width='600' >제목</th>
                     <th>날짜</th>
                 </tr>
-                {% for question in c_questions %}
+                {% for question in page_obj3 %}
                 <tr>
                     <td class="numbered3" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'country:question_detail' question.country.pk question.pk %}">{{ question.question_title }}</a></td>
@@ -52,6 +108,34 @@
                 </tr>
                 {% endfor %}
             </table>
+            <div style="text-align:center">
+                <div class="pagination">
+                    <div style="width:35%; margin: 5px;">
+                        {% if page_obj3.has_previous %}
+                        <a class="abutton" href="?page3=1">맨 앞으로</a>
+                        <a class="abutton" href="?page3={{ bpage_obj3.previous_page_number }}">이전</a>
+                        {% endif %}
+                    </div>
+                    <div style="width:30%; margin: 5px;">
+                        {% for page3 in page_obj3.paginator.page_range %}
+                            {% if page3 >= page_obj3.number|add:-2 and page3 <= page_obj3.number|add:2 %}
+                                <span class="{% if page3 == page_obj3.number %}current{% endif %}">
+                                    <a href="?page3={{ page3 }}" {% if page3 == page_obj3.number %}style="font-weight: bold;"{%endif%}>{{ page3 }}</a>
+                                    
+                                </span>
+                            {% elif page3 >= page_obj3.number|add:-3 and page3 <= page_obj3.number|add:3 %}
+                                <span>..</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div style="width:35%; margin: 5px;">
+                        {% if page_obj3.has_next %}
+                            <a class="abutton" href="?page3={{ page_obj3.next_page_number }}">다음</a>
+                            <a class="abutton" href="?page3={{ page_obj3.paginator.num_pages }}">맨 뒤로</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     
@@ -63,6 +147,9 @@
         var init1 = startnum;
         var td_list1 = document.querySelectorAll(`.numbered1`);
         for(var i=0; i<td_list1.length; i++){
+            if (i==0){
+                init1=init1+({{ page_obj1.number }}-1)*15;
+            }
             init1++;
             td_list1[i].innerHTML= `${init1}`;
         }
@@ -73,6 +160,9 @@
         var init2 = startnum;
         var td_list2 = document.querySelectorAll(`.numbered2`);
         for(var j=0; j<td_list2.length; j++){
+            if (j==0){
+                init2=init2+({{ page_obj2.number }}-1)*15;
+            }
             init2++;
             td_list2[j].innerHTML= `${init2}`;
         }
@@ -83,6 +173,9 @@
         var init3 = startnum;
         var td_list3 = document.querySelectorAll(`.numbered3`);
         for(var k=0; k<td_list3.length; k++){
+            if (k==0){
+                init3=init3+({{ page_obj3.number }}-1)*15;
+            }
             init3++;
             td_list3[k].innerHTML= `${init3}`;
         }
