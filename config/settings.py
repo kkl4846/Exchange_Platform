@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'country',
     'domestic',
     'foreign',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,22 @@ EMAIL_PORT = my_settings.EMAIL['EMAIL_PORT']
 EMAIL_HOST = my_settings.EMAIL['EMAIL_HOST']
 EMAIL_HOST_USER = my_settings.EMAIL['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = my_settings.EMAIL['EMAIL_HOST_PASSWORD']
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+SUMMERNOTE_CONFIG = {
+    'toolbar': [
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['fontname', ['fontname']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture', 'video']],
+    ],
+    'summernote': {
+        'width': '100%'
+    }
+}
