@@ -78,8 +78,8 @@
                 </div>
                 <form action="./comment_create/" method="POST">
                     {% csrf_token %}
-                    <input type="text" name="comment_content" id="comment_{{question.id}}" placeholder='댓글달기...' style="width: 80%;"/>
-                    <div class="btn btn-outline-dark submit" onclick="onClickComment('{{user.is_authenticated}}',{{question.id}}, document.querySelector('#comment_{{question.id}}').value)">
+                    <input type="text" name="comment_content" id="comment_{{ question.id }}" placeholder='댓글달기...' style="width: 80%;"/>
+                    <div class="btn btn-outline-dark submit" onclick="onClickComment('{{ user.is_authenticated }}',{{ question.id }}, document.querySelector('#comment_{{question.id}}').value)">
                         submit
                     </div>
                 </form>
@@ -249,9 +249,11 @@
             
             //대댓글 수정
     const editUnderComment = (comment_id, undercomment_id, undercomment_content) => {
+        
         const element = document.querySelector(`#undercomment_${undercomment_id}`);
         const originHTML = element.innerHTML;
         element.innerHTML = `
+        {{request.user.nickname}}
             <input type="text" id="edit-undercomment" value=${undercomment_content} class="w-75"/>
             <button class="btn btn-sm btn-outline-dark" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">수정</button>
         `
