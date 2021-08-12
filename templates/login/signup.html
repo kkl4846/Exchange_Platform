@@ -12,23 +12,14 @@
             <input type="text" name="username" max="30" autofocus required id="id_username" autocomplete="off"/>
             <span class="helptext">문자, 숫자 혹은 특수문자(@/./+/-/_)를 포함한 30자 이하.</span>
         </p>
-        {% if username_error %}
-            <span>이미 사용 중인 아이디입니다.</span>
-        {% endif %}
         <p>
             <label for="id_nickname">닉네임:</label>
             <input type="text" name="nickname" maxlength="20" required id="id_nickname" autocomplete="off">
         </p>
-        {% if nickname_error %}
-            <span>이미 사용 중인 닉네임입니다.</span>
-        {% endif %}
         <p>
             <label for="id_email">이메일:</label>
             <input type="email" name="email" maxlength="100" required id="id_email" autocomplete="off"/>
         </p>
-        {% if email_error %}
-            <span>이미 사용 중인 이메일입니다.</span>
-        {% endif %}
         <p>
             <label for="id_password1">비밀번호:</label>
             <input type="password" name="password1" autocomplete="new-password" required id="id_password1">
@@ -49,13 +40,13 @@
             <input type="password" name="password2" autocomplete="new-password" required id="id_password2">
             <span class="helptext">비밀번호 확인을 위해 다시 한 번 입력해주세요.</span>
         </p>
-        {% if password_error %}
-            <p>입력한 비밀번호가 일치하지 않습니다.</p>
-        {% endif %}
-        {% if length_error %}
-            <p>비밀번호를 8자 이상 작성해주세요.</p>
-        {% endif %}
         <input class="btn btn-primary" type="submit" value="회원가입" />
     </form>
 </div>
+{% endblock %}
+
+{% block extra %}
+    {% if error %}
+        <script>alert('{{ error }}')</script>
+    {% endif %}
 {% endblock %}

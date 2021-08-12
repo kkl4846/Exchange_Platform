@@ -13,6 +13,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 from . import tokens, text, helper
 from .models import *
 from domestic.models import *
@@ -32,7 +33,7 @@ def signup(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         if len(password1) < 8:
-            return render(request, 'login/signup.html', {'length_error': True})
+            return render(request, 'login/signup.html', {'error': "비밀번호를 8자 이상 작성해주세요."})
         else:
             if password1 == password2:
                 try:
@@ -42,13 +43,13 @@ def signup(request):
                     return redirect('login:user_main')
                 except IntegrityError as e:
                     if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
-                        return render(request, 'login/signup.html', {'username_error': True})
+                        return render(request, 'login/signup.html', {'error': "이미 사용 중인 아이디입니다."})
                     elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
-                        return render(request, 'login/signup.html', {'nickname_error': True})
+                        return render(request, 'login/signup.html', {'error': "이미 사용 중인 닉네임입니다."})
                     elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
-                        return render(request, 'login/signup.html', {'email_error': True})
+                        return render(request, 'login/signup.html', {'error': "이미 사용 중인 이메일입니다."})
             else:
-                return render(request, 'login/signup.html', {'password_error': True})
+                return render(request, 'login/signup.html', {'error': "입력한 비밀번호가 일치하지 않습니다."})
     else:
         return render(request, 'login/signup.html')
 
@@ -202,13 +203,24 @@ class Activate(View):
 def myquestion(request):
     user = request.user
     d_questions = DQuestion.objects.filter(author=user)
+    paginator1 = Paginator(d_questions, 10)
+    page_number1 = request.GET.get('page1')
+    page_obj1 = paginator1.get_page(page_number1)
+
     f_questions = FQuestion.objects.filter(author=user)
+    paginator2 = Paginator(f_questions, 10)
+    page_number2 = request.GET.get('page2')
+    page_obj2 = paginator2.get_page(page_number2)
+
     c_questions = CQuestion.objects.filter(author=user)
+    paginator3 = Paginator(c_questions, 10)
+    page_number3 = request.GET.get('page3')
+    page_obj3 = paginator3.get_page(page_number3)
 
     ctx = {
-        'd_questions': d_questions,
-        'f_questions': f_questions,
-        'c_questions': c_questions,
+        'page_obj1': page_obj1,
+        'page_obj2': page_obj2,
+        'page_obj3': page_obj3,
     }
     return render(request, 'login/myquestion.html', context=ctx)
 
@@ -217,13 +229,24 @@ def myquestion(request):
 def mycomment(request):
     user = request.user
     d_comments = DComment.objects.filter(comment_author=user)
+    paginator1 = Paginator(d_comments, 10)
+    page_number1 = request.GET.get('page1')
+    page_obj1 = paginator1.get_page(page_number1)
+
     f_comments = FComment.objects.filter(comment_author=user)
+    paginator2 = Paginator(f_comments, 10)
+    page_number2 = request.GET.get('page2')
+    page_obj2 = paginator2.get_page(page_number2)
+
     c_comments = CComment.objects.filter(comment_author=user)
+    paginator3 = Paginator(c_comments, 10)
+    page_number3 = request.GET.get('page3')
+    page_obj3 = paginator3.get_page(page_number3)
 
     ctx = {
-        'd_comments': d_comments,
-        'f_comments': f_comments,
-        'c_comments': c_comments,
+        'page_obj1': page_obj1,
+        'page_obj2': page_obj2,
+        'page_obj3': page_obj3,
     }
     return render(request, 'login/mycomment.html', context=ctx)
 

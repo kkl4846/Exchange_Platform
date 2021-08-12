@@ -35,13 +35,33 @@
 <div class="comment_{{comment.id}} d-flex justify-content-between">
     {{comment.comment_author.nickname}} &#160; &#160; 
     {{comment.comment_content}}
-    {% if request.user == comment.comment_author %}
     <div>
+    {% if request.user == comment.comment_author %}
     <button class="btn btn-outline-secondary update " onclick="EditComment({{comment.id}} ,'{{comment.comment_content}}')">수정</button>
     <button class="btn btn-outline-secondary delete " onclick="onClickDelete({{comment.id}} )">삭제</button>
-    </div>
     {%endif%}
+    <button id='recomment' onclick="recommentPlus('{{comment.pk}}')">댓글</button><br/>
+    </div>
 </div>
+<div class="recomment_list_{{ comment.pk }}">
+    {% for recomment in recomments  %}
+        {% if recomment.comment == comment %}
+        <div class="d-flex justify-content-between" id="recomment_{{ recomment.pk }}">
+            <div>
+                <span>👉 {{ recomment.comment_author.nickname }}</span>
+                <span style="margin-left: 30px;">{{ recomment.comment_content }}</span>
+            </div>
+            {% if recomment.comment_author == request.user %}
+            <div>
+                <button onclick="editReComment('{{ comment.pk }}', '{{ recomment.pk }}','{{ recomment.comment_content }}')">수정</button>
+                <button onclick="onClickDeleteUnder('{{ recomment.pk }}')">삭제</button>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+<div class="recomment_{{ comment.pk }}"></div>
 {%endfor%}
 {%endif%}
 </div>
@@ -55,6 +75,7 @@
 </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
         const onClickComment= async(is_authenticated,post_id, comment_content) => {  
         console.log(is_authenticated)
@@ -155,5 +176,109 @@
         element_comment.removeChild(element)
     }
 
+  //대댓글 생성
+
+  const recommentPlus = (comment_id) => {
+        const element = document.querySelector(`.recomment_${comment_id}`);
+        const originHTML = element.innerHTML;
+            
+        element.innerHTML = `
+            <input type="text" id="new-recomment" placeholder="댓글을 입력해주세요." class="w-75"/>
+            <button class="btn btn-sm btn-outline-dark" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-recomment').value)">확인</button>
+        `
+        }
+        
+        const onClickUnderComment= async(is_authenticated, comment_id, comment_content) => {  
+            if (is_authenticated == 'False') {
+                    alert('로그인이 필요한 서비스입니다.');
+                    window.location.href='{% url "login:login" %}';
+            } else {
+            const url = './recomment_create/';
+            const {data} = await axios.post(url, {
+                comment_id,
+                comment_content,
+            });
+            underCommentHandleResponse(data.comment_id, data.recomment_id, data.recomment_author, data.recomment_content);
+            }
+        };
+        const underCommentHandleResponse = (comment_id, recomment_id, recomment_author, recomment_content) => {
+                const element = document.querySelector(`.recomment_list_${comment_id}`);
+                const newDiv = document.createElement('div')
+                newDiv.className = "d-flex justify-content-between";
+                newDiv.id = `recomment_${recomment_id}`
+                
+                newDiv.innerHTML = `
+                <div>
+                    <span>👉 ${recomment_author}</span>
+                    <span style="margin-left: 30px;">${recomment_content}</span>
+                </div>
+                <div>
+                    <button onclick="editReComment('${comment_id}', '${recomment_id}','${recomment_content}')">수정</button>
+                    <button onclick="onClickDeleteUnder('${recomment_id}')">삭제</button>
+                </div>
+                `
+                element.appendChild(newDiv)
+                const input_content = document.querySelector(`.recomment_${comment_id}`);
+                input_content.innerHTML = '';
+            };
+            
+            //대댓글 수정
+    const editReComment = (comment_id, recomment_id, recomment_content) => {
+        const element = document.querySelector(`.recomment_${comment_id}`);
+        const originHTML = element.innerHTML;
+            
+        element.innerHTML = `
+            <input type="text" id="edit-recomment" value=${recomment_content} class="w-75"/>
+            <button class="btn btn-sm btn-outline-dark" onclick="onClickEditUnder('${comment_id}', '${recomment_id}', document.querySelector('#edit-recomment').value)">수정</button>
+        `
+    }
+
+    const onClickEditUnder= async(comment_id, recomment_id, comment_content) => {  
+        const url = './recomment_update/';
+        const {data} = await axios.post(url, {
+            comment_id,
+            recomment_id,
+            comment_content,
+        });
+        underEditHandleResponse(data.comment_id, data.recomment_id, data.recomment_author, data.recomment_content);
+        
+    };
+
+    const underEditHandleResponse = (comment_id, recomment_id, recomment_author, recomment_content) => {
+        const element = document.querySelector(`#recomment_${recomment_id}`);
+        const originHTML = element.innerHTML;
+
+        element.innerHTML = `
+        <div>
+            <span>👉 ${recomment_author}</span>
+            <span style="margin-left: 30px;">${recomment_content}</span>
+        </div>
+        <div>
+            <button onclick="editReComment('${comment_id}', '${recomment_id}','${recomment_content}')">수정</button>
+            <button onclick="onClickDeleteUnder('${recomment_id}')">삭제</button>
+        </div>
+        `
+        const editInput = document.querySelector(`.recomment_${comment_id}`);
+        editInput.innerHTML = '';
+    };
+
+   // 대댓글 삭제
+
+    const onClickDeleteUnder= async(recomment_id) => {
+        const allowance =  confirm('정말로 삭제하시겠습니까?');
+        if (allowance == true) {
+            const url = './recomment_delete/';
+        const {data} = await axios.post(url, {
+            recomment_id,
+        });
+        underDeleteHandleResponse(data.recomment_id);
+        }
+    };
+
+    const underDeleteHandleResponse = (recomment_id) => {
+        const element = document.querySelector(`#recomment_${recomment_id}`);
+
+        element.innerHTML = ``;
+    };
 </script>
 {%endblock%}

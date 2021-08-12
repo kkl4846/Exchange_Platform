@@ -59,9 +59,15 @@ urlpatterns = [
          views.comment_create, name="comment_create"),
     path('<int:foreign_id>/review/detail/<int:pk>/comment_update/',
          views.comment_update, name="comment_update"),
-
     path('<int:foreign_id>/review/detail/<int:pk>/comment_delete/',
          views.comment_delete, name="comment_delete"),
+    path('<int:foreign_id>/review/detail/<int:pk>/recomment_create/',
+         views.Rrecomment_create, name="Rrecomment_create"),
+    path('<int:foreign_id>/review/detail/<int:pk>/recomment_update/',
+         views.Rrecomment_update, name="Rrecomment_update"),
+    path('<int:foreign_id>/review/detail/<int:pk>/recomment_delete/',
+         views.Rrecomment_delete, name="Rrecomment_delete"),
+
 
     path('<int:foreign_id>/sister/',
          views.sister, name="sister"),

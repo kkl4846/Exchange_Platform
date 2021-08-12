@@ -91,3 +91,12 @@ class FUnderComment(models.Model):
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+
+
+class FReComment(models.Model):
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    comment_author = models.ForeignKey('login.User', on_delete=models.CASCADE)
+    comment_content = models.TextField(blank=True)
+
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
