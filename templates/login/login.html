@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
-<div class="container ml-5 mt-4">
+<div class="d-flex flex-column align-items-center container">
     <h3>로그인</h3>
+    <br />
     <hr />
-    <div class="d-flex justify-content-center">
-        <form method="POST">
-            {% csrf_token %}
-            아이디:
-            <br />
-            <input name="username" type="text" required/>
-            <br />
-            비밀번호:
-            <br />
-            <input name="password" type="password" required/>
-            <br />
-            {% if login_error %}
-                <div class="mt-1">
-                    <span>아이디 혹은 비밀번호를 확인해주세요.</span>
-                </div>
-            {% endif %}
-            <input class="btn btn-primary mt-2" type="submit" value="로그인" />
-            <a href="{% url 'login:reset_password' %}">비밀번호 재설정</a>
-        </form>
-    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <input class="login-input" name="username" type="text" placeholder="아이디" required/>
+        <br/>
+        <input class="login-input" name="password" type="password" placeholder="비밀번호" required/>
+        <br />
+        <div class="reset-password">
+            <a href="{% url 'login:reset_password' %}" class="reset-button">비밀번호 재설정</a>
+        </div>
+        <input class="login-btn blue-button" type="submit" value="로그인" />
+        
+    </form>
 </div>
+{% endblock %}
+
+{% block extra %}
+    {% if login_error %}
+        <script>alert("아이디 혹은 비밀번호를 확인해주세요.")</script>
+    {% endif %}
 {% endblock %}

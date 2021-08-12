@@ -1,0 +1,53 @@
+.login-container {
+  text-align: center;
+}
+
+h3 {
+  font-weight: bold;
+  font-size: 32px;
+  margin-top: 40px;
+  color: var(--d-gray);
+}
+
+hr {
+  height: 1px;
+  width: 100%;
+  color: var(--m-gray);
+}
+
+.login-input {
+  border-radius: 10px;
+  border: none;
+  padding: 9px 0px 9px 12px;
+  font-size: 15px;
+  width: 300px;
+  color: var(--m-gray);
+  margin-top: 10px;
+}
+
+.login-input:focus {
+  outline: none;
+}
+
+.reset-password {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.reset-button {
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--m-gray);
+}
+
+.reset-button:hover {
+  color: var(--m-gray);
+}
+
+.login-btn {
+  width: 300px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+}

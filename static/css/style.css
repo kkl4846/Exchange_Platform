@@ -6,12 +6,19 @@
 
 /* Components */
 @import "components/header.css";
+@import "components/button.css";
 
 /* Pages */
 @import "pages/main.css";
+@import "pages/login.css";
+@import "pages/signup.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;
   background-color: var(--bg);
   color: var(--d-gray);
+}
+
+.container {
+  width: 1040px;
 }
