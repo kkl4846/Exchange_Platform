@@ -135,8 +135,8 @@
             <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
             </div>
         </div>
-        <div class="undercomment_${comment_id}">여기</div>
         <div class="undercomment_list_${comment_id}"></div>
+        <div class="undercomment_${comment_id}"></div>
         `
         const input_content = document.querySelector(`#comment_${question_id}`)
         input_content.value = null
@@ -174,9 +174,9 @@
         ${nickname} &#160; &#160; 
         ${comment_content}
         <div>
-        <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
-        <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
-        <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+            <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+            <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
+            <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
         </div>
         `
     }
@@ -203,7 +203,6 @@
     
         const element = document.querySelector(`.comment_${comment_id}`)
         const element_comment = element.closest('.post')
-        console.log(element_comment)
         element_comment.removeChild(element)
     }
 
@@ -211,7 +210,6 @@
 
     const undercommentPlus = (comment_id) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
-        console.log(element)
         element.innerHTML = `
             <input type="text" id="new-undercomment" placeholder="댓글을 입력해주세요." class="w-75"/>
             <button class="btn btn-sm btn-outline-dark" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-undercomment').value)">확인</button>
@@ -232,9 +230,8 @@
         }
     };
         const underCommentHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
-                const element = document.querySelector(`.undercomment_${comment_id}`);
-                console.log(element)
-                element.innerHTML = `
+                const element = document.querySelector(`.undercomment_list_${comment_id}`);
+                element.innerHTML += `
                 <div class="d-flex justify-content-between" id="undercomment_${undercomment_id}">
                         <div>
                         <span>👉 ${undercomment_author}</span>
@@ -245,15 +242,14 @@
                         <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
                     </div>
                 </div>
-                
                 `
-            
+                const input_content = document.querySelector(`.undercomment_${comment_id}`);
+                    input_content.innerHTML = '';
             };
             
             //대댓글 수정
     const editUnderComment = (comment_id, undercomment_id, undercomment_content) => {
-        const element = document.querySelector(`.undercomment_${comment_id}`);
-        console.log(element)
+        const element = document.querySelector(`#undercomment_${undercomment_id}`);
         const originHTML = element.innerHTML;
         element.innerHTML = `
             <input type="text" id="edit-undercomment" value=${undercomment_content} class="w-75"/>
@@ -273,9 +269,9 @@
     };
 
     const underEditHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
-        const element = document.querySelector(`.undercomment_list_${comment_id}`);
+        const element = document.querySelector(`#undercomment_${undercomment_id}`);
         console.log(element)
-        element.innerHTML += `
+        element.innerHTML = `
         <div>
             <span>👉 ${undercomment_author}</span>
             <span style="margin-left: 30px;">${undercomment_content}</span>
@@ -285,8 +281,6 @@
             <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
         </div>
         `
-        const editInput = document.querySelector(`.undercomment_${comment_id}`);
-        editInput.innerHTML = '';
     };
 
    // 대댓글 삭제
@@ -304,7 +298,6 @@
 
     const underDeleteHandleResponse = (undercomment_id) => {
         const element = document.querySelector(`#undercomment_${undercomment_id}`);
-
         element.innerHTML = ``;
     };
 </script>
