@@ -1,35 +1,30 @@
 {%extends "base.html"%}
 {%block content%}
-<div class="d-flex flex-column justify-content-center" style="margin-left: 30px;">
-    <div class="foreign_list mt-5" >
-    
+<div class="mx-5 mt-5">
+    <div>
+    <span class="foreign_list mt-5">
     {% for key, val in univ_dict.items %}
     <a href="#{{ key }}" class="alpha">{{ key }}</a>
     {% endfor %}
-
+    </span>
 
     <button class="btn btn-sm btn-border btn-primary mx-5 addForeign" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+    </div>
+    <div class="mx-4">
     {% for key, val in univ_dict.items %}
-        <ul>
             <h3 id="{{ key }}">{{ key }}</h3>
             {% for univ in val %}
-
-            
-                    <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
-            
-
+                <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
             {% endfor %}
-        </ul>
         <br>
     {% endfor %}
-    </div>
+</div>
 </div>
 
 <script>
 function list(startAlpha){
     var parent = document.querySelector('.foreign_list')
     var foreign_list = document.querySelectorAll(`.foreign_list .alpha`);
-    var end = document.querySelector('.addForeign')
     var startnum =startAlpha.charCodeAt(0);
     
     for(i=0;i<foreign_list.length;i++){
@@ -45,7 +40,7 @@ function list(startAlpha){
     for(i=foreign_list[foreign_list.length-1].innerHTML.charCodeAt(0)+1;i<'Z'.charCodeAt(0)+1;i++){
         var newSpan = document.createElement('span');
         newSpan.textContent = String.fromCharCode(i);
-        parent.insertBefore(newSpan, end);
+        parent.insertBefore(newSpan, null);
     }
     
     
