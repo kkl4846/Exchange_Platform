@@ -1,6 +1,10 @@
+.righteous {
+  font-family: "Righteous", cursive;
+}
+
 .main__img {
   width: 100%;
-  height: 93vh;
+  height: 95vh;
   background-image: url("../img/main_bg.png");
   background-repeat: no-repeat;
   background-size: cover;
@@ -12,7 +16,6 @@
 }
 
 .main__img .main-title {
-  font-family: "Righteous", cursive;
   font-size: 65px;
 }
 .main__img .main-con {
@@ -33,7 +36,6 @@
   background-color: white;
 }
 .main__intro .quotation-mark {
-  font-family: "Righteous", cursive;
   font-size: 35px;
 }
 .main__intro .text {
@@ -42,4 +44,25 @@
   line-height: 20px;
   text-align: center;
   margin: 0px 37px;
+}
+
+.main__team {
+  height: 680px;
+}
+.main__team .team-title {
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  top: -45px;
+}
+
+.profile-set {
+  width: 1040px;
+  flex-wrap: wrap;
+}
+.profile-card {
+  background-color: white;
+  width: 510px;
+  height: 210px;
+  border-radius: 10px;
 }
