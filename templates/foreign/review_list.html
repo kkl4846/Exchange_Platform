@@ -3,15 +3,14 @@
 <div style="width:750px;">
     <div class="d-flex justify-content-between ">
         <div class="d-flex align-items-center ">
-            <h1>{{univ.away_name}}</h1>
-            <span>파견교 후기 공유</span>
+            <h3>{{univ.away_name}}</h3>
             <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
         </div>
         <div><a href="{% url "foreign:review_create" univ.pk%}">글쓰기</a></div>
         </div>
         <hr>
         <table>
-            <tr align='center'>
+            <tr align='center' class="review-table">
                 <th width='50'>번호</th>
                 <th width='400' >제목</th>
                 <th width='100'>파견 학기</th>
