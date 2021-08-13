@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="mx-5 mt-5">
+    <div class="cho_list">
     {% for key, val in universities_dict.items %}
-        <a href="#{{ key }}">{{ key }}</a>
+        <a id="{{ key }}" href="#{{ key }}" class="cho">{{ key }}</a>
     {% endfor %}
+    </div>
     {% for key, val in universities_dict.items %}
     <ul>
         <h3 id="{{ key }}">{{ key }}</h3>
@@ -14,4 +16,31 @@
     <br>
     {% endfor %}
 </div>
+{% endblock %}
+{% block extra %}
+<script>
+function list(){
+    var cho_list = document.querySelector('.cho_list');
+    var exist = document.querySelectorAll(`.cho`);
+    const compare = ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+    var j_value=0;
+    var j=0;
+    for( i=0; i<compare.length; i++ ){
+        for( j=j_value; j<exist.length; j++ ){
+            if(exist[j].innerHTML.charCodeAt(0)>compare[i].charCodeAt(0)){
+                var newSpan = document.createElement('span');
+                newSpan.textContent = compare[i];
+                cho_list.insertBefore(newSpan, exist[j]);
+                break;
+            }else if(exist[j].innerHTML.charCodeAt(0)==compare[i].charCodeAt(0)){
+                j_value++;
+                break;
+            }else{
+                j_value++;
+            };
+        };
+    };
+};
+list();
+</script>
 {% endblock %}

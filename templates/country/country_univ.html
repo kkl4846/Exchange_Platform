@@ -1,11 +1,10 @@
 {%extends "country/country_base.html"%} 
 
 {%block contents%}
-<div style="width: 750px">
+<div class="container category-detail">
   <div class="d-flex justify-content-between">
     <div class="d-flex align-items-center">
-      <h1>{{country.country_name}}</h1>
-      <span>학교 목록</span>
+      <h3>{{country.country_name}}</h3>
     </div>
   </div>
 
@@ -14,7 +13,7 @@
     <div>
         {% for key, val in univ_dict.items %}
         <ul>
-            <h3>{{ key }}</h3>
+            <h5>{{ key }}</h5>
             {% for univ in val %}
 
             
