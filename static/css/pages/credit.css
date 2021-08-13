@@ -8,7 +8,7 @@
   height: 28px;
   border-radius: 14px;
   border: none;
-  padding: 9px 0px 9px 12px;
+  padding: 9px 0px 9px 90px;
   font-size: 12px;
 }
 
@@ -16,14 +16,19 @@
   outline: none;
 }
 
+.credit-search:visited {
+  background-color: white;
+}
+
 .credit-option {
   border: none;
   height: 28px;
   font-size: 12px;
   position: absolute;
-  margin-right: 211px;
+  margin-right: 200px;
   width: 69px;
   padding: 0;
+  border-radius: 20px;
 }
 
 .credit-option:focus {
@@ -94,7 +99,7 @@
 }
 
 .credit-form input,
-select {
+.credit-form select {
   height: 35px;
   width: 879px;
   border-radius: 10px;
