@@ -1,66 +1,73 @@
 {%extends "base.html"%}
 
 {% block style %}
-    <style>
-        .autocomplete {
-            position: relative;
-            display: inline-block;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            margin-top: 35px;
-        }
-        .autocomplete-items {
-            position: absolute;
-            border: 1px solid #d4d4d4;
-            border-bottom: none;
-            border-top: none;
-            z-index: 99;
-            top: 100%;
-            left: 0;
-            right: 0;
-        }
-        .autocomplete-items div {
-            padding: 10px;
-            cursor: pointer;
-            background-color: #fff;
-            border-bottom: 1px solid #d4d4d4;
-        }
-        .autocomplete-items div:hover {
-            background-color: #e9e9e9;
-        }
-        .autocomplete-active {
-            background-color: dodgerblue !important;
-            color: #fff;
-        }
-    </style>
+<style>
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+        margin-top: 35px;
+        width: 100%;
+
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+    }
+
+    .autocomplete-active {
+        background-color: dodgerblue !important;
+        color: #fff;
+    }
+</style>
 {% endblock %}
 
 {%block content%}
 <div class="containers d-flex flex-column">
-    <div class="space-between">
-    <div class="addForeign-top">파견교 추가</div>
-    <input class="lgbtn-blue" type="submit" onclick="document.getElementById('frm').submit();" value="저장하기"/>
+    <div class="container">
+        <div class="marginy-40">
+            <div class="addForeign-top">파견교 추가</div>
+            <input class="lgbtn-blue" type="submit" onclick="document.getElementById('frm').submit();" value="저장하기" />
+        </div>
+        <hr />
+        <form autocomplete="off">
+            <div class="autocomplete">
+                <span class="foreign-name">해외학교명</span>
+                <input class="foreign-search" type="text" id="myInput" name="newUniversity"
+                    placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다." autocomplete="off">
+                <input type="submit" value="확인" style="display: none;">
+                <ion-icon name="search"></ion-icon>
+            </div>
+        </form>
+        <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='frm'>
+            {% csrf_token %}
+            <input name="away_name" style="display: none;" id="formUniversity">
+            <div class="addForeign-group">
+                <p class="addForeign-country">해당 국가</p> {{form.country}}
+            </div>
+            <div class="addForeign-group">
+                <p class="addForeign-sister">자매 결연 대학</p> {{form.domestics}}
+            </div>
+        </form>
     </div>
-    <hr />
-    <form autocomplete="off">
-        <div class="autocomplete">
-            <span class="foreign-name">해외학교명</span>
-            <input class="foreign-search" type="text" id="myInput" name="newUniversity" placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다." autocomplete="off">
-            <input type="submit" value="확인" style="display: none;">
-            <ion-icon name="search"></ion-icon>
-        </div>
-    </form>
-    <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='frm'>
-        {% csrf_token %}
-        <input name="away_name" style="display: none;" id="formUniversity">
-        <div class="addForeign-group">
-        <p class="addForeign-country">해당 국가</p> {{form.country}}
-        </div>
-        <div class="addForeign-group">
-        <p class="addForeign-sister">자매 결연 대학</p> {{form.domestics}}
-        </div>
-    </form>
 </div>
 
 <script>
@@ -69,21 +76,22 @@
     const university_names = [];
 
     fetch(endpoint)
-    .then(blob => blob.json())
-    .then(data => universities.push(...data))
-    .then(function() {
-        for(var i = 0; i < universities.length; i++) {
-        var university = universities[i];
-        university_names.push(university.name);}
-    })
-    
+        .then(blob => blob.json())
+        .then(data => universities.push(...data))
+        .then(function () {
+            for (var i = 0; i < universities.length; i++) {
+                var university = universities[i];
+                university_names.push(university.name);
+            }
+        })
+
 
     function autocomplete(inp, arr) {
         var currentFocus;
-        inp.addEventListener("input", function(e) {
+        inp.addEventListener("input", function (e) {
             var a, b, i, val = this.value;
             closeAllLists();
-            if (!val) { return false;}
+            if (!val) { return false; }
             currentFocus = -1;
             a = document.createElement("div");
             a.setAttribute("id", this.id + "autocomplete-list");
@@ -91,28 +99,28 @@
             this.parentNode.appendChild(a);
             for (i = 0; i < arr.length; i++) {
                 if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                b = document.createElement("div");
-                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].substr(val.length);
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                    b.addEventListener("click", function(e) {
-                    inp.value = this.getElementsByTagName("input")[0].value;
-                    const addUniversity = document.querySelector("#formUniversity");
-                    addUniversity.value = this.getElementsByTagName("input")[0].value;
-                    closeAllLists();
-                });
-                a.appendChild(b);
+                    b = document.createElement("div");
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        const addUniversity = document.querySelector("#formUniversity");
+                        addUniversity.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
                 }
             }
         });
-        
-        inp.addEventListener("keydown", function(e) {
+
+        inp.addEventListener("keydown", function (e) {
             var x = document.getElementById(this.id + "autocomplete-list");
             if (x) x = x.getElementsByTagName("div");
             if (e.keyCode == 40) {
                 currentFocus++;
                 addActive(x);
-            } else if (e.keyCode == 38) { 
+            } else if (e.keyCode == 38) {
                 currentFocus--;
                 addActive(x);
             } else if (e.keyCode == 13) {
@@ -131,7 +139,7 @@
         }
         function removeActive(x) {
             for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
+                x[i].classList.remove("autocomplete-active");
             }
         }
         function closeAllLists(elmnt) {

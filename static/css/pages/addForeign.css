@@ -1,11 +1,11 @@
 .containers {
-  width: 1040px; /*container로 바꾸기*/
   font-size: 15px;
 }
 
 .addForeign-top {
   font-size: 32px;
   font-weight: bold;
+  display: inline;
 }
 .foreign-name {
   color: var(--m-gray);
@@ -15,6 +15,8 @@
   width: 935px;
   height: 35px;
   border: none;
+  float: right;
+  display: inline-block;
 }
 .foreign-search::placeholder {
   color: black;
@@ -34,10 +36,7 @@
   margin-bottom: 20px;
   border: none;
 }
-.space-between {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.marginy-40 {
   margin-top: 40px;
   margin-bottom: 40px;
 }
@@ -50,4 +49,6 @@
   font-size: 14px;
   border-radius: 21px;
   border: none;
+  float: right;
+  display: inline-block;
 }
