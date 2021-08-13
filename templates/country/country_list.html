@@ -1,6 +1,7 @@
 {%extends "base.html"%} 
 {% block content %}
 <div class="lbody">
+    <div class="container">
     {% autoescape off %}
     <div class="lbar d-flex align-items-center">
         <div class="lforeign_list d-flex justify-content-around text-center ">
@@ -25,5 +26,6 @@
         {% endfor %}
     </div>
     {% endautoescape %}
+    </div>
 </div>
 {% endblock %}
