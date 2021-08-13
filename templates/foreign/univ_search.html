@@ -42,10 +42,10 @@
 
 {%block content%}
 <div class="containers d-flex flex-column">
-    <div class="container">
+    <div class="container" style="padding: 0%;">
         <div class="marginy-40">
             <div class="addForeign-top">파견교 추가</div>
-            <input class="blue-button lgbtn-blue" type="submit" onclick="document.getElementById('frm').submit();" value="저장하기" />
+            <input class="blue-button lgbtn-blue" type="submit" form="addForeign" value="저장하기" />
         </div>
         <hr />
         <form autocomplete="off">
@@ -57,7 +57,7 @@
                 <!-- <ion-icon name="search" class = "lsearch-icon"></ion-icon> -->
             </div>
         </form>
-        <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='frm'>
+        <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='addForeign'>
             {% csrf_token %}
             <input name="away_name" style="display: none;" id="formUniversity">
             <div class="addForeign-group">
