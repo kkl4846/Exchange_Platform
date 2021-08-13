@@ -17,6 +17,7 @@
   border: none;
   float: right;
   display: inline-block;
+  border-radius: 29px;
 }
 .foreign-search::placeholder {
   color: var(--d-gray);
@@ -35,6 +36,7 @@
   height: 35px;
   margin-bottom: 20px;
   border: none;
+  border-radius: 29px;
 }
 .marginy-40 {
   margin-top: 40px;
