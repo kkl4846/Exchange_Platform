@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-
+{% block style %}
+<script src="https://kit.fontawesome.com/67d418f4de.js" crossorigin="anonymous"></script>
+{% endblock %}
 {% block content%}
-    <div class="d-flex justify-content-evenly ">
+    <div class="d-flex  ">
         <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center"
             style="width:200px; height:150px;">
             <ul>
@@ -11,11 +13,9 @@
                 <li><a href="{% url "foreign:review_list" univ.pk%}">파견교 후기 공유</a></li>
             </ul>
         </div>
-        <div style="width:750px;">
-            
-    {% block contents %}
-    {% endblock %}
-        </div>
+                
+        {% block contents %}
+        {% endblock %}
     </div>
 
 {%endblock%}
