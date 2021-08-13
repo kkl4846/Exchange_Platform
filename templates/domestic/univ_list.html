@@ -5,14 +5,14 @@
         <div class="lbar d-flex align-items-center">
             <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
             {% for key, val in universities_dict.items %}
-                <a id="{{ key }}" href="#{{ key }}" class="cho">{{ key }}</a>
+                <a id="{{ key }}" href="#{{ key }}_list" class="cho">{{ key }}</a>
             {% endfor %}
             </div>
         </div>
         <div>
             {% for key, val in universities_dict.items %}
             <div class="lgroup ">
-                <h3 id="{{ key }}" class="lalpha">{{ key }}</h3>
+                <h3 id="{{ key }}_list" class="lalpha">{{ key }}</h3>
                 <div class="lforeign_name ">
                 {% for university in val %}
                     <a href="{% url 'domestic:wiki' university.pk %}">{{university.home_name}}</a>
