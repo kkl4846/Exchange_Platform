@@ -23,6 +23,7 @@
 @import "pages/signup.css";
 @import "pages/certificate.css";
 @import "pages/myquestion.css";
+@import "pages/credit.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;

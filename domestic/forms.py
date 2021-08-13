@@ -1,18 +1,22 @@
 from django import forms
 from .models import *
 from foreign.models import *
+
+
 class DomesticForm(forms.ModelForm):
     class Meta:
         model = Domestic
         fields = ['home_apply', 'home_document', 'semester',
                   'home_scholarship', 'insurance']
         labels = {
-            'home_apply' : '지원 방법',
+            'home_apply': '지원 방법',
             'home_document': '필요 서류',
-            'semester' : '수학 가능 학기',
-            'home_scholarship' :' 교내 장학금 정보',
-            'insurance' : '유학생 보험 준비'
+            'semester': '수학 가능 학기',
+            'home_scholarship': ' 교내 장학금 정보',
+            'insurance': '유학생 보험 준비'
         }
+
+
 class DQuestionForm(forms.ModelForm):
     class Meta:
         model = DQuestion
@@ -29,22 +33,28 @@ class DCommentForm(forms.ModelForm):
         fields = ['comment_content']
         labels = {'comment_content': '내용'}
 
+
 class CreditForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
     class Meta:
         model = Credit
         fields = [
-        'college','credit','grade_average','apply_semester','away_university','pass_fail'
+            'college', 'credit', 'grade_average', 'apply_semester', 'away_university', 'pass_fail'
         ]
         labels = {
             'college': '단과대학',
-            'credit': '이수 학점',
-            'grade_average': '평점 평균',
-            'apply_semester': '지원 시기',
-            'away_university': '지원 학교',
-            'pass_fail': '합격 여부'
+            'credit': '이수학점',
+            'grade_average': '평점평균',
+            'apply_semester': '지원시기',
+            'away_university': '지원학교',
+            'pass_fail': '합격여부'
         }
+
 
 class AddSisterForm(forms.ModelForm):
     class Meta:
         model = Domestic
-        fields=['home_sister']
+        fields = ['home_sister']

@@ -8,10 +8,11 @@
             <input class="blue-button create-btn md-btn" form="frm" type="submit" value="저장하기"/>
         </div>
         <hr>
-        <form id="frm" method="POST" enctype="multipart/form-data">
+        <form class="credit-form" id="frm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
         </form>
+    </div>
 {% endblock %}
 
 {% block extra %}
