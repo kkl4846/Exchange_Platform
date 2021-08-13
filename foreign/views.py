@@ -370,7 +370,6 @@ def review_delete(request, pk, foreign_id):
 @login_required(login_url=URL_LOGIN)
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
-
     return review_create(request, foreign_id, post)
 
 
@@ -576,6 +575,7 @@ def undercomment_delete(request, foreign_id, pk):
 
 @method_decorator(csrf_exempt, name="dispatch")
 def comment_create(request, foreign_id, pk):
+    print('11111111111111')
     req = json.loads(request.body)
     Post_id = req['post_id']
     post = Post.objects.get(id=Post_id)
