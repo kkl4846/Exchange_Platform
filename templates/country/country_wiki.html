@@ -1,5 +1,5 @@
-{%extends "country/country_base.html"%}
-{%block contents%}
+{% extends "country/country_base.html" %}
+{% block contents %}
 <div style="width:750px;">
     <div class="d-flex justify-content-between ">
         <div class="d-flex align-items-center ">
@@ -10,27 +10,29 @@
     <hr>
     <div>
         <div>
-            <p>1. 비자 발급 방법</p>
-            <pre>{{country.visa}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
-            <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','visa')">수정</button>
+            <div>
+                <p class="p-test">1. 비자 발급 방법</p>
+                <p>{{country.visa}}</p>                              <!--textarea에 입력한대로 보여주는 pre tag-->
+                <button class="m-btn light-button" onclick="Edit('{{ user.is_authenticated }}','visa')">수정</button>
+            </div>
             <div>
                 <p>2. 현지생활 및 치안</p>
-                <pre>{{country.lifestyle}}</pre>
+                <p>{{country.lifestyle}}</p>
                 <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','lifestyle')">수정</button>
             </div>
             <div>
                 <p>3. 물가 및 체류 비용</p>
-                <pre>{{country.money}}</pre>
+                <p>{{country.money}}</p>
                 <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','money')">수정</button>
             </div>
             <div>
                 <p>4. 문화적 특징</p>
-                <pre>{{country.culture}}</pre>
+                <p>{{country.culture}}</p>
                 <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','culture')">수정</button>
             </div>
             <div>
                 <p>5. 코로나 정보</p>
-                <pre>{{country.covid_info}}</pre>
+                <p>{{country.covid_info}}</p>
                 <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','covid_info')">수정</button>
             </div>
         </div>

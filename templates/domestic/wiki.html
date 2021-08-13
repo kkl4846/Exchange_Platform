@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{%block content%}
+{% block content %}
 <div class="d-flex justify-content-evenly ">
     <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
         <ul>
@@ -20,7 +20,7 @@
         <div>
             <p>1. 지원 방법</p>
             <p>{{univ.home_apply}}</p>
-            <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
+            <button class="m-btn light-button" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
             <div>
                 <p>2. 필요 서류</p>
                 <p>{{univ.home_document}}</p>
@@ -64,4 +64,4 @@
             alert("해당 학생만 이용할 수 있는 서비스입니다.");
         </script>
     {% endif %}
-{%endblock%}
+{% endblock %}
