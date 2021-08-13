@@ -1,0 +1,46 @@
+#school_list {
+  border-radius: 10px;
+  border: none;
+  background-color: white;
+  padding: 6px 0px 6px 12px;
+  margin: 0 6px 0 20px;
+  font-size: 15px;
+  width: 283px;
+}
+
+#school_list:focus {
+  outline: none;
+}
+
+.domain span {
+  font-size: 15px;
+  color: var(--m-gray);
+}
+
+.domain input {
+  border-radius: 10px;
+  border: none;
+  height: 35px;
+  font-size: 15px;
+}
+
+.domain input:first-child {
+  background-color: white;
+  padding: 6px 0px 6px 12px;
+  width: 337px;
+}
+
+.domain input:first-child:focus {
+  outline: none;
+}
+
+.domain input:nth-child(2) {
+  padding: 9px 0px;
+  margin-left: 10px;
+  width: 99px;
+}
+
+.sending-mail {
+  margin-top: 30px;
+  color: var(--m-gray);
+}

@@ -338,93 +338,44 @@ def question_search(request, domestic_id):
     return render(request, template_name='domestic/question_search.html', context=ctx)
 
 
-# 답글댓글
-@login_required(login_url=URL_LOGIN)
+# 댓글
+@csrf_exempt
 def comment_create(request, domestic_id, pk):
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    question = DQuestion.objects.get(id=pk)
-    undercomments = DUnderComment.objects.all()
-    user = request.user
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DCommentForm(request.POST)
-            if form.is_valid():
-                comment = form.save(commit=False)
-                comment.question = question
-                comment.comment_author = user
-                comment.save()
-                return redirect('domestic:question_detail', domestic_id, pk)
-        else:
-            form = DCommentForm()
-            ctx = {
-                'form': form,
-                'question': question,
-                'undercomments': undercomments,
-                'domestic': domestic,
-                'is_authenticated': user.is_authenticated,
-                'is_enrolled': 'True',
-            }
-            return render(request, template_name='domestic/comment_form.html', context=ctx)
-    else:
-        comments = question.dcomment_set.all()
-        ctx = {
-        'question': question,
-        'comments': comments,
-        'domestic': domestic,
-        'undercomments': undercomments,
-        'certificate_error':True,
-        'is_authenticated': user.is_authenticated,
-        'is_enrolled': 'False',
-        }
-        return render(request, template_name='domestic/question_detail.html', context=ctx)
+    req = json.loads(request.body)
+    question_id = req['question_id']
+    new_comment_content = req['comment_content']
 
+    new_comment = DComment.objects.create(
+        question=DQuestion.objects.get(id=question_id),
+        comment_content=new_comment_content,
+        comment_author=request.user
+    )
+    new_comment.save()
 
-@login_required(login_url=URL_LOGIN)
-def comment_edit(request, domestic_id, comment_id):
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    comment = get_object_or_404(DComment, id=comment_id)
-    undercomments = DUnderComment.objects.all()
-    question = comment.question
-    user = request.user
-    if user == comment.comment_author :
-        if request.method == 'POST':
-            form = DCommentForm(request.POST, instance=comment)
-            if form.is_valid():
-                comment = form.save()
-                return redirect('domestic:question_detail', domestic_id, question.pk)
-        else:
-            form = DCommentForm(instance=comment)
-            ctx = {
-            'form': form,
-            'question': comment.question,
-            'undercomments': undercomments,
-            'domestic': domestic,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': 'True',
-            }
-            return render(request, template_name='domestic/comment_form.html', context=ctx)
-    else: 
-        is_enrolled = False
-        comments = question.dcomment_set.all()
-        ctx = {
-        'question': question,
-        'comments': comments,
-        'domestic': domestic,
-        'c_verification_error': True,
-        'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
-        }
-        return render(request, template_name='domestic/question_detail.html', context=ctx)
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id,'comment_content': new_comment_content})
 
-def comment_delete(request, domestic_id, comment_id):
-    comment = DComment.objects.get(id=comment_id)
-    question = comment.question
-    if request.method == 'POST':
-        comment.delete()
+@csrf_exempt
+def comment_update(request, domestic_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    edit_comment_content = req['comment_content']
 
-    return redirect('domestic:question_detail', domestic_id, question.pk)
+    edit_comment = DComment.objects.get(id=comment_id)
+    edit_comment.comment_content = edit_comment_content
+    edit_comment.save()
 
-# qna 대댓글
+    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
+
+@csrf_exempt
+def comment_delete(request, domestic_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    delete_comment = DComment.objects.get(id=comment_id)
+    delete_comment.delete()
+
+    return JsonResponse({'comment_id': comment_id})
+
+#대댓글
 @csrf_exempt
 def undercomment_create(request, domestic_id, pk):
     req = json.loads(request.body)
@@ -446,13 +397,14 @@ def undercomment_update(request, domestic_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     undercomment_id = req['undercomment_id']
+    undercomment_author=request.user
     edit_comment_content = req['comment_content']
 
     edit_comment = DUnderComment.objects.get(id=undercomment_id)
     edit_comment.comment_content = edit_comment_content
     edit_comment.save()
 
-    return JsonResponse({'comment_id': comment_id, 'undercomment_id': undercomment_id, 'undercomment_author': edit_comment.comment_author.nickname, 'undercomment_content': edit_comment_content})
+    return JsonResponse({'comment_id': comment_id, 'undercomment_id': undercomment_id, 'undercomment_author': undercomment_author.nickname, 'undercomment_content': edit_comment_content})
 
 
 @csrf_exempt

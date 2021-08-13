@@ -27,3 +27,19 @@
   line-height: 25px;
   margin-top: 10px;
 }
+
+.main__intro {
+  height: 120px;
+  background-color: white;
+}
+.main__intro .quotation-mark {
+  font-family: "Righteous", cursive;
+  font-size: 35px;
+}
+.main__intro .text {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  margin: 0px 37px;
+}
