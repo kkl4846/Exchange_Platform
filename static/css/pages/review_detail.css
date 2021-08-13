@@ -39,6 +39,8 @@
   font-weight: 500;
   line-height: 35px;
   border: none;
+  display: inline;
+  text-align: center;
 }
 .review-comment-form {
   width: 100%;

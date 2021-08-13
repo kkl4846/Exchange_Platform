@@ -575,7 +575,6 @@ def undercomment_delete(request, foreign_id, pk):
 
 @method_decorator(csrf_exempt, name="dispatch")
 def comment_create(request, foreign_id, pk):
-    print('11111111111111')
     req = json.loads(request.body)
     Post_id = req['post_id']
     post = Post.objects.get(id=Post_id)

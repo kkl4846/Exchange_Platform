@@ -9,30 +9,35 @@
         <a href="{% url "foreign:review_list" univ.pk %}" class="m-btn light-button" style="text-decoration: none;">목록보기</a>
     </div>
 <hr>
-<p>작성자:{{review.post_author.nickname}}</p>
-<p>제목: {{review.title}}</p>
-<p>파견학기: {{review.away_year}}-{{review.away_semester}}</p>
-<p>날짜: {{review.created_at}}</p>
-<p>내용:
-     
-    {% if review.image %}
-    <div><img src="{{review.image.url}}" style="width:700px"/></div>
-    {% endif %}
-    {{review.content}}</p>
-{% if IsReviewAuthor %}
-<form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" class="ReviewDeleteForm" style="  display: inline; background: transparent">
-    {% csrf_token %}
-    <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
-</form>
-<a href="{% url "foreign:review_update" univ.pk review.pk%}">수정</a>
-{% endif %}
-<a href="{% url "foreign:review_list" univ.pk %}">목록</a>
-<hr>
-<p>댓글</p>
+<div class="review-detail-object">
+    <div class="d-flex justify-content-between align-items-end review-detail-top">
+        <div>
+        <span class="review-detail-title">{{review.title}}</span>
+        <span class="review-detail-date">{{review.away_year}} {{review.away_semester}}</span>
+        </div>
+        <div>
+        {% if IsReviewAuthor %}
+        <form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" class="ReviewDeleteForm" style="  display: inline; background: transparent">
+            {% csrf_token %}
+            <button class="light-button s-btn " onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
+        </form>
+        <button class="light-button s-btn ra_btn" onclick="location.href='{% url "foreign:review_update" univ.pk review.pk%}' ">수정</button>
+        {% endif %}
+        </div>
+    </div>
+    <div>
+    <span class="review-detail-name">{{review.post_author.nickname}}</span>
+    <span class="review-detail-date">{{review.created_at|date:"Y.m.d"}}</span>
+    </div>
+    {{review.content | safe}}
+</div>
+
+<hr class="review-detail-hr">
+
 <div class="post_{{review.id}} post">
 {%if all_comment %}
 {%for comment in all_comment %}
-<div>
+<div >
 <div class="comment_{{comment.id}} d-flex justify-content-between">
     {{comment.comment_author.nickname}} &#160; &#160; 
     {{comment.comment_content}}
@@ -68,12 +73,11 @@
 {%endif%}
 </div>
 
-<form action="./comment_create/" method="POST">
+<form action="./comment_create/" method="POST" class="d-flex justify-content-between align-items-end">
     {% csrf_token %}
     <input type="text" name="comment_content" id="comment_{{review.id}}" placeholder='댓글달기...' style="width: 80%;"/>
-    <div class="btn btn-outline-dark submit" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">
-        submit
-    </div>
+    <div type="submit" class="blue-button review-detail-submitbtn" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">등록</div>
+    <!-- 이유는 모르겠으나 div가 아닌 button,input이면 오류가 남,,, -->
 </form>
 </div>
 
