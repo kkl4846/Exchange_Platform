@@ -8,4 +8,9 @@
 .search-button {
   width: 14px;
   height: 14px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  margin-top: 5px;
+  margin-left: 200px;
 }
