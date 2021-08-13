@@ -1,14 +1,5 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="d-flex justify-content-evenly ">
-    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
-        <ul>
-            <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
-            <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
-            <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
-            <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
-        </ul>
-    </div>
+{% extends "domestic/domestic_base.html" %}
+{% block contents %}
     <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
@@ -93,24 +84,25 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    const canIpost= (is_authenticated, is_enrolled)=> {
-        if (is_authenticated == 'False') {
-            alert('로그인이 필요한 서비스입니다.');
-            window.location.href='{% url "login:login" %}';
-        }else{
-            if(is_enrolled == 'False'){
-                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
-            }else{
-                window.location.href=`create`; 
-            }
-        }
-    };
-</script>
-{% if certificate_error %}
+{% endblock %}
+{% block extra %}
     <script>
-        alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+        const canIpost= (is_authenticated, is_enrolled)=> {
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
+            }else{
+                if(is_enrolled == 'False'){
+                    alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+                }else{
+                    window.location.href=`create`; 
+                }
+            }
+        };
     </script>
-{% endif %}
+    {% if certificate_error %}
+        <script>
+            alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+        </script>
+    {% endif %}
 {% endblock %}
