@@ -5,7 +5,8 @@
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            <button class="light-button create-btn md-btn" onclick="location.href='{% url "domestic:question_list" domestic.pk %}'"> 목록보기 </button>
+            <!-- <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button> -->
         </div>
         <hr>
         <div>

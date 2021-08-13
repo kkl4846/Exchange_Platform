@@ -7,14 +7,12 @@
                 <h3>{{univ.away_name}}</h3>
                 <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
             </div>
-            
-            <button class="light-button create-btn sm-btn" onclick="canIPost('{{ user.is_authenticated }}')"> 글쓰기 </button>
+            <input class="blue-button create-btn md-btn" form="frm" type="submit" value="저장하기"/>
         </div>
         <hr>
-        <form action ="" method="POST" enctype="multipart/form-data">
+        <form id="frm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{form.as_p}}
-            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
         </form>
     </div>
 {%else%}
