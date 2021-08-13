@@ -1,13 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
 
 @import "reset.css";
 @import "variables.css";
 
 /* Components */
+@import "components/header.css";
+@import "components/button.css";
 
 /* Pages */
+@import "pages/main.css";
+@import "pages/login.css";
+@import "pages/signup.css";
+@import "pages/certificate.css";
+@import "pages/myquestion.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;
   background-color: var(--bg);
+  color: var(--d-gray);
+}
+
+.container {
+  width: 1040px;
 }

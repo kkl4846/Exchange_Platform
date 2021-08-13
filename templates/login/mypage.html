@@ -1,60 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container ml-5 mt-4 w-75">
-        <h2>마이페이지</h2>
+    <div class="container login" style="height: 900px;">
+        <h3>마이페이지</h3>
+        <br />
         <hr />
-        <section class="d-flex flex-column">
+        <section class="d-flex flex-column mypage">
             <div id="rename">
                 <h5>닉네임 변경</h5>
-                <span>닉네임 :</span>
-                <input id="nickname" type="text" value="{{ user.nickname }}">
-                <button class="btn btn-sm btn-primary" onclick="onClickNickname(document.getElementById('nickname').value)">닉네임 수정</button>
+                <div class="mt-2">
+                    <span class="mypage-title">닉네임</span>
+                    <input id="nickname" type="text" value="{{ user.nickname }}">
+                    <button class="blue-button mypage-btn" onclick="onClickNickname(document.getElementById('nickname').value)" style="margin-left: 8px;">수정하기</button>
+                </div>
             </div>
-            <br />
             <div id="repassword">
                 <h5>비밀번호 변경</h5>
                 <form method="POST">
                     {% csrf_token %}
                     <div class="mt-2">
-                        <span>기존 비밀번호 :</span>
-                        <input name="origin_password" type="password" />
+                        <span class="mypage-title">기존 비밀번호</span>
+                        <input name="origin_password" type="password" class="mypage-input"/>
                     </div>
                     <div class="mt-2">
-                        <span>새로운 비밀번호 :</span>
-                        <input name="password1" type="password" />
+                        <span class="mypage-title">변경 비밀번호</span>
+                        <input name="password1" type="password" class="mypage-input"/>
                     </div>
                     <div class="mt-2">
-                        <span>비밀번호 확인 :</span>
-                        <input name="password2" type="password" />
+                        <span class="mypage-title">비밀번호 확인</span>
+                        <input name="password2" type="password" class="mypage-input" />
                     </div>
-                    <input class="mt-2 btn btn-primary btn-sm" type="submit" value="비밀번호 변경" />
+                    <input class="blue-button mypage-btn change-btn" type="submit" value="변경하기" />
                 </form>
             </div>
-            <br />
             <div id="school-certificate">
                 <h5>학교 인증</h5>
-                <span>학교 인증 : </span>
                 {% if user.school_certificate == 0 %}
-                <span>학교 인증이 필요합니다.</span>
-                <a class="btn btn-sm btn-primary" href="{% url 'login:certificate' %}">학교 인증하러 가기</a>
+                <div class="mypage-school">
+                    <span class="mypage-title">학교 인증이 필요합니다.</span>
+                    <a class="blue-button mypage-btn2" href="{% url 'login:certificate' %}">인증하기</a>
+                </div>
                 {% else %}
-                <span>학교 인증이 완료되었습니다!</span>
-                <br />
-                <span>소속 대학 : {{ user.university }}</span>
+                <div class="mypage-school">
+                    <span class="mypage-title">학교 인증이 완료되었습니다!</span>
+                    <br />
+                    <p class="mypage-title" style="font-weight: 500; margin-top: 5px;">소속 대학 : {{ user.university }}</p>
+                </div>
                 {% endif %}
             </div>
-        </section>
-        <br>
-        <section>
-            <div>
+            <div class="mypage-list d-flex align-items-center">
                 <h5>내가 쓴 질문</h5>
-                <a href="{% url 'login:myquestion' %}" class="btn btn-secondary btn-sm">목록 보러 가기</a>
+                <a href="{% url 'login:myquestion' %}" class="blue-button mypage-btn3" style="margin-left: 262px;">보러가기</a>
             </div>
-            <br />
-            <div>
+            <div class="mypage-list d-flex align-items-center">
                 <h5>내가 답변을 남긴 질문</h5>
-                <a href="{% url 'login:mycomment' %}" class="btn btn-secondary btn-sm">목록 보러 가기</a>
+                <a href="{% url 'login:mycomment' %}" class="blue-button mypage-btn3" style="margin-left: 183px;">보러가기</a>
             </div>
         </section>
     </div>

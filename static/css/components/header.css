@@ -1,0 +1,22 @@
+header {
+  background-color: var(--blue);
+}
+.header {
+  height: 60px;
+  width: 1040px;
+  background-color: var(--blue);
+}
+
+.header .text {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.header .mg-right {
+  margin-right: 35px;
+}
+.header .mg-left {
+  margin-left: 35px;
+}
