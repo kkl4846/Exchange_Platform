@@ -99,13 +99,19 @@
     const commentHandleResponse=(post_id,comment_content,comment_id) => {
         const element=document.querySelector(`.post_${post_id}`)
         const newDiv = document.createElement('div')
-        newDiv.className = `comment_${comment_id} d-flex justify-content-between`;
         newDiv.innerHTML = `
+        <div class="comment_${comment_id} d-flex justify-content-between">
         {{request.user.nickname}} &#160; &#160; ${comment_content}
-        <div>
-        <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
-        <div class="btn btn-outline-secondary delete" onclick="onClickDelete(${comment_id})">삭제</div>
-        </div>`
+            <div>
+            <button class="btn btn-outline-secondary update " onclick="EditComment('${comment_id}', '${comment_content}')">수정</button>
+            <div class="btn btn-outline-secondary delete" onclick="onClickDelete('${comment_id}')">삭제</div>
+            <button id='recomment' onclick="recommentPlus('${comment_id}')">댓글</button><br/>
+            </div>
+        </div>
+        <div class="recomment_list_${comment_id}">
+            <div class="recomment_${comment_id}"></div>
+        </div>
+        `
         element.appendChild(newDiv)
         //댓글 입력창 비워주기
         const input_content = document.querySelector(`#comment_${post_id}`)
@@ -145,6 +151,7 @@
         <div>
         <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
         <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
+        <button id='recomment' onclick="recommentPlus('${comment_id}')">댓글</button><br/>
         </div>
         `
     }
@@ -169,10 +176,11 @@
 
     const deleteHandleResponse = (comment_id)=>{
     
-        const element = document.querySelector(`.comment_${comment_id}`)
-        const element_comment = element.closest('.post')
-        console.log(element_comment)
-        element_comment.removeChild(element)
+        const element = document.querySelector(`.comment_${comment_id}`);
+        const element_comment = element.closest('.post');
+        element_comment.removeChild(element);
+        const recomment_elements = document.querySelector(`.recomment_list_${ comment_id }`);
+        recomment_elements.innerHTML = '';
     }
 
   //대댓글 생성
