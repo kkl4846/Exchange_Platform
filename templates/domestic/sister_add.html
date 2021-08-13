@@ -5,17 +5,16 @@
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button class="light-button create-btn md-btn" onclick="canIAdd('{{ is_authenticated }}')"> 학교추가 </button>
+            <button form="frm" type="submit" class="blue-button create-btn md-btn"> 저장하기 </button>
         </div>
         <hr>
-        <form  action ="" method="POST"  enctype="multipart/form-data">
+        <form  id="frm" method="POST"  enctype="multipart/form-data">
             {% csrf_token %}
             <select name="sister">
                 {% for univ in univs %}
                 <option>{{ univ.away_name}}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-outline-danger"> 추가 </button>
         </form>
     </div>
 {% endblock %}

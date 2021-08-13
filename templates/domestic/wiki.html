@@ -7,29 +7,31 @@
             </div>
         </div>
         <hr>
-        <div>
-            <p>1. 지원 방법</p>
-            <p>{{ domestic.home_apply }}</p>
-            <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
+        <div class="wiki__content">
             <div>
-                <p>2. 필요 서류</p>
+                <h4>1. 지원 방법</h4>
+                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
+                <p>{{ domestic.home_apply }}</p>
+            </div>
+            <div>
+                <h4>2. 필요 서류</h4>
+                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
                 <p>{{ domestic.home_document }}</p>
-                <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
             </div>
             <div>
-                <p>3. 수학 가능 학기</p>
+                <h4>3. 수학 가능 학기</h4>
+                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
                 <p>{{ domestic.semester }}</p>
-                <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
             </div>
             <div>
-                <p>4. 교내 장학금 정보</p>
+                <h4>4. 교내 장학금 정보</h4>
+                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
                 <p>{{ domestic.home_scholarship }}</p>
-                <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
             </div>
             <div>
-                <p>5. 유학생 보험 준비</p>
+                <h4>5. 유학생 보험 준비</h4>
+                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
                 <p>{{ domestic.insurance }}</p>
-                <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
             </div>
         </div>
     </div>

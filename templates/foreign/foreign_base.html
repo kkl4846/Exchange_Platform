@@ -13,9 +13,10 @@
                 <li><a href="{% url "foreign:review_list" univ.pk%}">파견교 후기 공유</a></li>
             </ul>
         </div>
-                
-        {% block contents %}
-        {% endblock %}
+        <div>
+    {% block contents %}
+    {% endblock %}
+        </div>
     </div>
 
 {%endblock%}

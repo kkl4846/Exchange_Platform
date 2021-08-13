@@ -7,7 +7,7 @@
                 <h3>{{univ.away_name}}</h3>
                 <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
             </div>
-            <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
+            <button class="light-button create-btn md-btn" onclick="location.href='{% url "foreign:question_list" univ.pk %}'"> 목록보기 </button>
         </div>
         <hr>
         <div>

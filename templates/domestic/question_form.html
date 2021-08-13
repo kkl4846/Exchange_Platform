@@ -5,14 +5,13 @@
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button class="blue-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            <input class="blue-button create-btn md-btn" form="frm" type="submit" value="저장하기">
         </div>
         <hr>
-        <form action ="" method="POST" enctype="multipart/form-data">
+        <form id="frm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <p><input name="question_title" placeholder="제목을 입력하세요" required></p>
             <p><textarea name="question_content" placeholder="내용을 입력하세요" required></textarea></p>
-            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"></div>
         </form>
     </div>
 {% endblock %}
