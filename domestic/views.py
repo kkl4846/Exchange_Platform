@@ -38,13 +38,13 @@ def univ_list(request):
 
 
 def wiki(request, domestic_id):
-    univ = Domestic.objects.get(pk=domestic_id)
+    domestic = Domestic.objects.get(pk=domestic_id)
     user = request.user
     is_enrolled = 'False'
-    if user.is_authenticated and user.university == univ.home_name:
+    if user.is_authenticated and user.university == domestic.home_name:
         is_enrolled = 'True'
     ctx = {
-        'univ': univ,
+        'domestic': domestic,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
     }
@@ -65,14 +65,14 @@ def wiki_edit_apply(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 1,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
-            'univ': domestic,
+            'domestic': domestic,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': is_enrolled,
@@ -93,14 +93,14 @@ def wiki_edit_document(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx= {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 2,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
-            'univ': domestic,
+            'domestic': domestic,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': is_enrolled,
@@ -122,14 +122,14 @@ def wiki_edit_semester(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 3,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
-            'univ': domestic,
+            'domestic': domestic,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': is_enrolled,
@@ -150,14 +150,14 @@ def wiki_edit_scholarship(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 4,
             }
             return render(request, 'domestic/wiki_edit.html', context= ctx)
     else:
         is_enrolled = False
         ctx = {
-            'univ': domestic,
+            'domestic': domestic,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': is_enrolled,
@@ -178,14 +178,14 @@ def wiki_edit_insurance(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 5,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
         is_enrolled = False
         ctx = {
-            'univ': domestic,
+            'domestic': domestic,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': is_enrolled,
