@@ -10,6 +10,9 @@
 
 /* Pages */
 @import "pages/main.css";
+@import "pages/list.css";
+@import "pages/addForeign.css";
+@import "pages/foreignReview.css";
 @import "pages/login.css";
 @import "pages/signup.css";
 @import "pages/certificate.css";
