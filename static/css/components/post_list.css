@@ -14,3 +14,23 @@
   margin-top: 5px;
   margin-left: 200px;
 }
+
+.post-list hr {
+  margin-bottom: 15px;
+}
+
+.post-list th {
+  font-size: 14px;
+  color: var(--m-gray);
+  padding-bottom: 22px;
+}
+
+.post-list td {
+  font-size: 15px;
+  padding-bottom: 15px;
+  color: var(--d-gray);
+}
+.post-list td a {
+  text-decoration: none;
+  color: var(--d-gray);
+}
