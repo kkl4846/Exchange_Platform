@@ -1,10 +1,8 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>파견교별 학점컷</span>
             </div>
             <button class="btn btn-sm btn-border" onclick="location.href='{% url "domestic:credit_create" domestic.pk %}'"> 내 점수 등록 </button>
         </div>
@@ -14,7 +12,6 @@
             {{ form.as_p }}
             <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
         </form>
-    </div>
 {% endblock %}
 
 {% block extra %}

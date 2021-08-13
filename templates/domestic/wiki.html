@@ -1,10 +1,8 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>Wiki</span>
             </div>
         </div>
         <hr>
@@ -33,7 +31,6 @@
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
             </div>
         </div>
-    </div>
 {% endblock %}
 {% block extra %}
 <script>

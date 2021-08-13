@@ -1,10 +1,8 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>QnA</span>
             </div>
             <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
         </div>
@@ -15,7 +13,6 @@
             <p><textarea name="question_content" placeholder="내용을 입력하세요" required></textarea></p>
             <div class="d-flex justify-content-end"><input type="submit" value="저장하기"></div>
         </form>
-    </div>
 {% endblock %}
 {% block extra %}
 <script>

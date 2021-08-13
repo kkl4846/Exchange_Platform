@@ -1,10 +1,8 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>Wiki</span>
             </div>
         </div>
         <hr>
@@ -31,7 +29,6 @@
             {%endif%}
             {% endfor %}
         </form>
-    </div>
 {% endblock %}
 {% block extra %}
 <script>

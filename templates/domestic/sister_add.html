@@ -1,10 +1,8 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>자매 결연 대학</span>
             </div>
             <button class="btn btn-sm btn-border" onclick="canIAdd('{{ is_authenticated }}')"> 학교 추가 </button>
         </div>
@@ -18,5 +16,4 @@
             </select>
             <button type="submit" class="btn btn-outline-danger"> 추가 </button>
         </form>
-    </div>
 {% endblock %}

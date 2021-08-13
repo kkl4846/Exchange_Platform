@@ -1,10 +1,8 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div style="width:750px;">
         <div class="d-flex justify-content-between ">
             <div class="d-flex align-items-center ">
                 <h1>{{ domestic.home_name }}</h1>
-                <span>파견교별 학점컷</span>
             </div>
             <button class="btn btn-sm btn-border" onclick="canIpost('{{ is_authenticated }}','{{ is_enrolled }}')"> 내 점수 등록 </button>
         </div>
@@ -83,7 +81,6 @@
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
 {% block extra %}
     <script>
