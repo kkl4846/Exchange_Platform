@@ -1,0 +1,67 @@
+.search-input {
+  width: 250px;
+  height: 28px;
+  border-radius: 14px;
+  border: none;
+  padding: 9px 0px 9px 12px;
+}
+.search-button {
+  width: 14px;
+  height: 14px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  margin-top: 5px;
+  margin-left: 200px;
+}
+
+.post-list hr {
+  margin-bottom: 15px;
+}
+
+.post-list th {
+  font-size: 14px;
+  color: var(--m-gray);
+  padding-bottom: 22px;
+}
+
+.post-list td {
+  font-size: 15px;
+  padding-bottom: 15px;
+  color: var(--d-gray);
+}
+
+.post-list td a {
+  text-decoration: none;
+  color: var(--d-gray);
+}
+
+.post-list .page-number {
+  margin: 0 20px;
+}
+
+.post-list .numbering {
+  font-size: 17px;
+  border-radius: 14px;
+  background-color: var(--l-gray);
+  width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  margin: 0 3px;
+  text-decoration: none;
+  color: var(--d-gray);
+}
+
+.post-list .numbering:focus {
+  font-weight: normal;
+}
+
+.post-list .fa-chevron-right,
+.post-list .fa-chevron-left {
+  color: var(--m-gray);
+}
+
+.post-list .fa-chevron-right:hover,
+.post-list .fa-chevron-left:hover {
+  cursor: pointer;
+}
