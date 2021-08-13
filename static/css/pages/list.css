@@ -1,6 +1,3 @@
-.container {
-  width: 1040px;
-}
 .lbody {
   font-weight: normal;
 }
@@ -41,7 +38,6 @@
   height: 28px;
   font-size: 14px;
   border-radius: 21px;
-  background-color: var(--l-gray);
   border: none;
 }
 
