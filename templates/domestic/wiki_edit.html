@@ -1,19 +1,9 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="d-flex justify-content-evenly ">
-    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
-        <ul>
-            <li><a href="{% url 'domestic:sister_list' univ.pk %}">자매 결연 대학</a></li>
-            <li><a href="{% url 'domestic:wiki' univ.pk %}">위키</a></li>
-            <li><a href="{% url 'domestic:question_list' univ.pk %}">QnA</a></li>
-            <li><a href="{% url 'domestic:credit_list' univ.pk %}">파견교별 학점컷</a></li>
-        </ul>
-    </div>
-    <div style="width:750px;">
-        <div class="d-flex justify-content-between ">
+{% extends "domestic/domestic_base.html" %}
+{% block contents %}
+    <div class="container category-detail">
+        <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center ">
-                <h1>{{ univ.home_name }}</h1>
-                <span>Wiki</span>
+                <h3>{{ domestic.home_name }}</h3>
             </div>
         </div>
         <hr>
@@ -41,12 +31,12 @@
             {% endfor %}
         </form>
     </div>
-
-</div>
+{% endblock %}
+{% block extra %}
 <script>
     const onClickEditWiki= () => {  
         alert('위키 수정이 완료되었습니다');
-        window.location.href='{% url "domestic:wiki" univ.pk%}';
+        window.location.href='{% url "domestic:wiki" domestic.pk%}';
     };
 </script>
 {% endblock %}

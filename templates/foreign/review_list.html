@@ -1,69 +1,68 @@
 {%extends "foreign/foreign_base.html"%}
 {%block contents%}
-<div style="width:750px;">
-    <div class="d-flex justify-content-between ">
-        <div class="d-flex align-items-center ">
+<div class="container category-detail">
+    <div class="d-flex justify-content-between align-items-end">
+        <div class="d-flex align-items-end ">
             <h3>{{univ.away_name}}</h3>
-            <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
+            <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
         </div>
-        <div><a href="{% url "foreign:review_create" univ.pk%}">글쓰기</a></div>
-        </div>
-        <hr>
-        <table>
-            <tr align='center' class="review-table">
-                <th width='50'>번호</th>
-                <th width='400' >제목</th>
-                <th width='100'>파견 학기</th>
-                <th width='150'>날짜</th>
-            </tr>
-            {%for review in page_obj %}
-                    <tr>
-                        <td class="numbered" align='center'></td>
-                        <td><a href="{% url "foreign:review_detail" univ.pk review.pk %}">{{ review.title }}</a></td>
-                        <td align="center">{{review.away_year}}-{{review.away_semester}}</td>
-                        <td align="center">{{ review.created_at }}</td>
-                    </tr>
-            {% endfor %}
-        </table>
-        {% if not page_obj %}
-        <div class='text-center m-5'>
-            <h5>등록된 정보가 없습니다</h5>
-            <h6>첫 번째로 정보를 등록해주세요!</h6>
-        </div>
-        {% endif %}
+        <a class="country-btn light-button" href="{% url "foreign:review_create" univ.pk%}">글쓰기</a>
+    </div>
+    <hr>
+    <table>
+        <tr align='center'>
+            <th width='50'>번호</th>
+            <th width='400' >제목</th>
+            <th width='100'>파견 학기</th>
+            <th width='150'>날짜</th>
+        </tr>
+        {%for review in page_obj %}
+                <tr>
+                    <td class="numbered" align='center'></td>
+                    <td><a href="{% url "foreign:review_detail" univ.pk review.pk %}">{{ review.title }}</a></td>
+                    <td align="center">{{review.away_year}}-{{review.away_semester}}</td>
+                    <td align="center">{{ review.created_at }}</td>
+                </tr>
+        {% endfor %}
+    </table>
+    {% if not page_obj %}
+    <div class='text-center m-5'>
+        <h5>등록된 정보가 없습니다</h5>
+        <h6>첫 번째로 정보를 등록해주세요!</h6>
+    </div>
+    {% endif %}
+    <div style="text-align:center">
+        <div class="pagination">
         
-            <div style="text-align:center">
-                <div class="pagination">
-                
-                    <div style="width:35%; margin: 5px;">
-                    {% if page_obj.has_previous %}
-                        <a class="abutton" href="?page=1">맨 앞으로</a>
-                        <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
-                    {% endif %}
-                    </div>
-    
-                    <div style="width:30%; margin: 5px;">
-                    {% for page in page_obj.paginator.page_range %}
-                        {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                        <span class="{% if page == page_obj.number %}current{% endif %}">
-                            <a href="?page={{ page }}" {% if page == page_obj.number %}style="font-weight: bold;"{%endif%}>{{ page}}</a>
-                            
-                        </span>
-                        {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
-                            <span>..</span>
-                        {% endif %}
-                    {% endfor %}
-                    </div>
-    
-                    <div style="width:35%; margin: 5px;">
-                    {% if page_obj.has_next %}
-                        <a class="abutton" href="?page={{ page_obj.next_page_number }}">다음</a>
-                        <a class="abutton" href="?page={{ page_obj.paginator.num_pages }}">맨 뒤로</a>
-                    {% endif %}
-                    </div>
-    
-                </div>  
-            </div> 
+            <div style="width:35%; margin: 5px;">
+            {% if page_obj.has_previous %}
+                <a class="abutton" href="?page=1">맨 앞으로</a>
+                <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
+            {% endif %}
+            </div>
+
+            <div style="width:30%; margin: 5px;">
+            {% for page in page_obj.paginator.page_range %}
+                {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                <span class="{% if page == page_obj.number %}current{% endif %}">
+                    <a href="?page={{ page }}" {% if page == page_obj.number %}style="font-weight: bold;"{%endif%}>{{ page}}</a>
+                    
+                </span>
+                {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
+                    <span>..</span>
+                {% endif %}
+            {% endfor %}
+            </div>
+
+            <div style="width:35%; margin: 5px;">
+            {% if page_obj.has_next %}
+                <a class="abutton" href="?page={{ page_obj.next_page_number }}">다음</a>
+                <a class="abutton" href="?page={{ page_obj.paginator.num_pages }}">맨 뒤로</a>
+            {% endif %}
+            </div>
+
+        </div>  
+    </div> 
 
 </div>
 {%endblock%}
