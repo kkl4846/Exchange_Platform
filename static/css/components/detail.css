@@ -11,7 +11,7 @@
 }
 
 .create-btn {
-  border-radius: 14px;
+  border-radius: 15px;
   border: none;
   height: 28px;
   font-size: 14px;
@@ -28,8 +28,8 @@
 .country-btn {
   margin-bottom: 1px;
   margin-left: 10px;
-  padding: 6px 11px;
-  border-radius: 14px;
+  padding: 7px 11px;
+  border-radius: 15px;
   font-size: 14px;
   height: 28px;
   text-decoration: none;

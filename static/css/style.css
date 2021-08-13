@@ -9,6 +9,7 @@
 @import "components/button.css";
 @import "components/detail.css";
 @import "components/post_list.css";
+@import "components/post_form.css";
 @import "components/post.css";
 @import "components/comment.css";
 @import "components/undercomment.css";
@@ -23,6 +24,7 @@
 @import "pages/signup.css";
 @import "pages/certificate.css";
 @import "pages/myquestion.css";
+@import "pages/credit.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;
@@ -32,4 +34,8 @@ body {
 
 .container {
   width: 1040px;
+}
+
+.container2 {
+  width: 990px;
 }
