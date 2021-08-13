@@ -21,7 +21,9 @@
   height: 28px;
   font-size: 12px;
   position: absolute;
-  margin-right: 203px;
+  margin-right: 211px;
+  width: 69px;
+  padding: 0;
 }
 
 .credit-option:focus {
