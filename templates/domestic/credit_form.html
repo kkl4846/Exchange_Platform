@@ -5,13 +5,12 @@
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button class="blue-button create-btn md-btn" onclick="location.href='{% url "domestic:credit_create" domestic.pk %}'"> 저장하기 </button>
+            <input class="blue-button create-btn md-btn" form="frm" type="submit" value="저장하기"/>
         </div>
         <hr>
-        <form action ="" method="POST" enctype="multipart/form-data">
+        <form id="frm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="d-flex justify-content-end"><input type="submit" value="저장하기"/></div>
         </form>
 {% endblock %}
 
