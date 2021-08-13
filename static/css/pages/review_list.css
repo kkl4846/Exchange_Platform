@@ -1,0 +1,38 @@
+.review-list th {
+  font-size: 14px;
+  color: var(--m-gray);
+  padding-bottom: 15px;
+}
+.review-list td {
+  font-size: 15px;
+  padding-bottom: 15px;
+}
+
+.review-list td a {
+  text-decoration: none;
+  color: var(--d-gray);
+}
+.review-list .page-number {
+  margin: 0 20px;
+}
+
+.review-list .numbering {
+  font-size: 17px;
+  border-radius: 14px;
+  background-color: var(--l-gray);
+  width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  margin: 0 3px;
+  text-decoration: none;
+  color: var(--d-gray);
+}
+
+.review-list .numbering:focus {
+  font-weight: normal;
+}
+
+.review-list .fa-chevron-right,
+.review-list .fa-chevron-left {
+  color: var(--m-gray);
+}
