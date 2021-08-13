@@ -5,14 +5,16 @@
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            <div class="d-flex justify-content-end">
+                <form class="d-flex justify-content-center" action="{% url 'domestic:question_search' domestic.pk %}" method="post">
+                    {% csrf_token %}
+                    <input class="search-input" placeholder="검색" name="q" value="{{q}}">
+                    <button class="search-button" type="submit"><ion-icon name="search"></ion-icon></button>
+                </form>
+                <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            </div>
         </div>
         <hr>
-        <form class="d-flex justify-content-center" action="{% url 'domestic:question_search' domestic.pk %}" method="post">
-            {% csrf_token %}
-            <input class="col-9" placeholder="검색" name="q" value="{{q}}">
-            <button class="btn btn-outline-success" type="submit">검색</button>
-        </form>
         {% if page_obj %}
         <table>
             <tr align='center'>
