@@ -177,10 +177,11 @@
 
     const deleteHandleResponse = (comment_id)=>{
     
-        const element = document.querySelector(`.comment_${comment_id}`)
-        const element_comment = element.closest('.post')
-        console.log(element_comment)
-        element_comment.removeChild(element)
+        const element = document.querySelector(`.comment_${comment_id}`);
+        const element_comment = element.closest('.post');
+        element_comment.removeChild(element);
+        const recomment_elements = document.querySelector(`.recomment_list_${ comment_id }`);
+        recomment_elements.innerHTML = '';
     }
 
   //대댓글 생성
