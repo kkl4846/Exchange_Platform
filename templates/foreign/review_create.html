@@ -16,7 +16,7 @@
                     {% csrf_token %}
                     <table class="table table-bordered">
                         {% if request.user == review.post_author or type == 'create' %}
-                        {{form.as_table}}
+                        {{form.as_p}}
                         {% endif %}
                     </table>
                     <input type="submit" value="저장하기" class="btn btn-primary" />
@@ -32,3 +32,6 @@
 </script>
 {%endif%}
 {%endblock%}
+
+{% block extra %}
+{% endblock %}

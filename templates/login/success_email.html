@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="d-flex justify-content-center mt-5">
-    <h3>이메일 인증이 완료되었습니다.</h3>
+<div class="container login">
+    <h3>학교 인증</h3>
+    <br />
+    <hr />
+    <p class="sending-mail">이메일 인증이 완료되었습니다.</p>
 </div>
+{% endblock %}
+
+{% block extra %}
+    {% if message %}
+        <script>alert("{{message}}")</script>
+    {% endif %}
 {% endblock %}

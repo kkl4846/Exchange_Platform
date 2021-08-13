@@ -1,0 +1,54 @@
+.mylist hr {
+  margin: 24.5px 0;
+}
+
+.category-list hr {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.mypage th {
+  font-size: 14px;
+  color: var(--m-gray);
+  padding-bottom: 15px;
+}
+
+.mypage td {
+  font-size: 15px;
+  padding-bottom: 15px;
+}
+
+.mypage td a {
+  text-decoration: none;
+  color: var(--d-gray);
+}
+
+.mylist .page-number {
+  margin: 0 20px;
+}
+
+.mylist .numbering {
+  font-size: 17px;
+  border-radius: 14px;
+  background-color: var(--l-gray);
+  width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  margin: 0 3px;
+  text-decoration: none;
+  color: var(--d-gray);
+}
+
+.mylist .numbering:focus {
+  font-weight: normal;
+}
+
+.mylist .fa-chevron-right,
+.mypage .fa-chevron-left {
+  color: var(--m-gray);
+}
+
+.mylist .fa-chevron-right:hover,
+.mypage .fa-chevron-left:hover {
+  cursor: pointer;
+}

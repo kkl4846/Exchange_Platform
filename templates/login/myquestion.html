@@ -1,139 +1,148 @@
 {% extends 'base.html' %}
 
+{% block style %}
+<script src="https://kit.fontawesome.com/67d418f4de.js" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block content %}
-    <section class="container ml-5 mt-4 w-75">
-        <h4>내가 쓴 질문 목록</h4>
+    <section class="container login mypage mylist" style="margin-bottom: 50px;">
+        <h3>내가 쓴 질문 목록</h3>
+        <br />
         <hr />
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column category-list">
             <h5>국내대학별</h5>
+            <hr />
             <table>
                 <tr align='center'>
                     <th width='50'>번호</th>
-                    <th width='600' >제목</th>
+                    <th width='750' >제목</th>
                     <th>날짜</th>
                 </tr>
                 {% for question in page_obj1 %}
                 <tr>
                     <td class="numbered1" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'domestic:question_detail' question.home_university.pk question.pk %}">{{ question.question_title }}</a></td>
-                    <td align="center">{{ question.created_at }}</td>
+                    <td align="center">{{ question.created_at|date:"Y.m.d" }}</td>
                 </tr>
                 {% endfor %}
             </table>
-            <div style="text-align:center">
-                <div class="pagination">
-                    <div style="width:35%; margin: 5px;">
-                        {% if page_obj1.has_previous %}
-                        <a class="abutton" href="?page1=1">맨 앞으로</a>
-                        <a class="abutton" href="?page1={{ bpage_obj.previous_page_number }}">이전</a>
+            <div class="pagination d-flex justify-content-center">
+                <div>
+                    {% if page_obj1.has_previous %}
+                        <a class="abutton" href="?page1={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+                </div>
+                <div class="page-number">
+                    {% for page1 in page_obj1.paginator.page_range %}
+                        {% if page1 >= page_obj1.number|add:-2 and page1 <= page_obj1.number|add:2 %}
+                            <span class="{% if page1 == page_obj1.number %}current{% endif %}">
+                                <a class="numbering" href="?page1={{ page1 }}" {% if page1 == page_obj1.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page1 }}</a>
+                            </span>
+                        {% elif page1 >= page_obj1.number|add:-3 and page1 <= page_obj1.number|add:3 %}
+                            <span>..</span>
                         {% endif %}
-                    </div>
-                    <div style="width:30%; margin: 5px;">
-                        {% for page1 in page_obj1.paginator.page_range %}
-                            {% if page1 >= page_obj1.number|add:-2 and page1 <= page_obj1.number|add:2 %}
-                                <span class="{% if page1 == page_obj1.number %}current{% endif %}">
-                                    <a href="?page1={{ page1 }}" {% if page1 == page_obj1.number %}style="font-weight: bold;"{%endif%}>{{ page1 }}</a>
-                                    
-                                </span>
-                            {% elif page1 >= page_obj1.number|add:-3 and page1 <= page_obj1.number|add:3 %}
-                                <span>..</span>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div style="width:35%; margin: 5px;">
-                        {% if page_obj1.has_next %}
-                            <a class="abutton" href="?page1={{ page_obj1.next_page_number }}">다음</a>
-                            <a class="abutton" href="?page1={{ page_obj1.paginator.num_pages }}">맨 뒤로</a>
-                        {% endif %}
-                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    {% if page_obj1.has_next %}
+                        <a class="abutton" href="?page1={{ page_obj1.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
                 </div>
             </div>
-            <hr />
+        </div>
+        <hr />
+        <div class="d-flex flex-column category-list">
             <h5>해외파견교별</h5>
+            <hr />
             <table>
                 <tr align='center'>
                     <th width='50'>번호</th>
-                    <th width='600' >제목</th>
+                    <th width='750' >제목</th>
                     <th>날짜</th>
                 </tr>
                 {% for question in page_obj2 %}
                 <tr>
                     <td class="numbered2" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'foreign:question_detail' question.away_university.pk question.pk %}">{{ question.question_title }}</a></td>
-                    <td align="center">{{ question.created_at }}</td>
+                    <td align="center">{{ question.created_at|date:"Y.m.d" }}</td>
                 </tr>
                 {% endfor %}
             </table>
-            <div style="text-align:center">
-                <div class="pagination">
-                    <div style="width:35%; margin: 5px;">
-                        {% if page_obj2.has_previous %}
-                        <a class="abutton" href="?page=1">맨 앞으로</a>
-                        <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
+            <div class="pagination d-flex justify-content-center">
+                <div>
+                    {% if page_obj2.has_previous %}
+                        <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+                </div>
+                <div class="page-number">
+                    {% for page2 in page_obj2.paginator.page_range %}
+                        {% if page2 >= page_obj2.number|add:-2 and page2 <= page_obj2.number|add:2 %}
+                            <span class="{% if page2 == page_obj2.number %}current{% endif %}">
+                                <a class="numbering" href="?page2={{ page2 }}" {% if page2 == page_obj2.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page2 }}</a>
+                            </span>
+                        {% elif page2 >= page_obj2.number|add:-3 and page2 <= page_obj2.number|add:3 %}
+                            <span>..</span>
                         {% endif %}
-                    </div>
-                    <div style="width:30%; margin: 5px;">
-                        {% for page2 in page_obj2.paginator.page_range %}
-                            {% if page2 >= page_obj2.number|add:-2 and page2 <= page_obj2.number|add:2 %}
-                                <span class="{% if page2 == page_obj2.number %}current{% endif %}">
-                                    <a href="?page2={{ page2 }}" {% if page2 == page_obj2.number %}style="font-weight: bold;"{%endif%}>{{ page2 }}</a>
-                                    
-                                </span>
-                            {% elif page2 >= page_obj2.number|add:-3 and page2 <= page_obj2.number|add:3 %}
-                                <span>..</span>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div style="width:35%; margin: 5px;">
-                        {% if page_obj2.has_next %}
-                            <a class="abutton" href="?page2={{ page_obj2.next_page_number }}">다음</a>
-                            <a class="abutton" href="?page2={{ page_obj2.paginator.num_pages }}">맨 뒤로</a>
-                        {% endif %}
-                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    {% if page_obj2.has_next %}
+                        <a class="abutton" href="?page2={{ page_obj2.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
                 </div>
             </div>
-            <hr />
+        </div>
+        <hr />
+        <div class="d-flex flex-column category-list">
             <h5>파견국가별</h5>
+            <hr />
             <table>
                 <tr align='center'>
                     <th width='50'>번호</th>
-                    <th width='600' >제목</th>
+                    <th width='750' >제목</th>
                     <th>날짜</th>
                 </tr>
                 {% for question in page_obj3 %}
                 <tr>
                     <td class="numbered3" align='center'></td>
                     <td style="padding-left: 30px;"><a href="{% url 'country:question_detail' question.country.pk question.pk %}">{{ question.question_title }}</a></td>
-                    <td align="center">{{ question.created_at }}</td>
+                    <td align="center">{{ question.created_at|date:"Y.m.d" }}</td>
                 </tr>
                 {% endfor %}
             </table>
-            <div style="text-align:center">
-                <div class="pagination">
-                    <div style="width:35%; margin: 5px;">
-                        {% if page_obj3.has_previous %}
-                        <a class="abutton" href="?page3=1">맨 앞으로</a>
-                        <a class="abutton" href="?page3={{ bpage_obj3.previous_page_number }}">이전</a>
+            <div class="pagination d-flex justify-content-center">
+                <div>
+                    {% if page_obj3.has_previous %}
+                        <a class="abutton" href="?page3={{ bpage_obj3.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+                </div>
+                <div class="page-number">
+                    {% for page3 in page_obj3.paginator.page_range %}
+                        {% if page3 >= page_obj3.number|add:-2 and page3 <= page_obj3.number|add:2 %}
+                            <span class="{% if page3 == page_obj3.number %}current{% endif %}">
+                                <a class="numbering" href="?page3={{ page3 }}" {% if page3 == page_obj3.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page3 }}</a>
+                            </span>
+                        {% elif page3 >= page_obj3.number|add:-3 and page3 <= page_obj3.number|add:3 %}
+                            <span>..</span>
                         {% endif %}
-                    </div>
-                    <div style="width:30%; margin: 5px;">
-                        {% for page3 in page_obj3.paginator.page_range %}
-                            {% if page3 >= page_obj3.number|add:-2 and page3 <= page_obj3.number|add:2 %}
-                                <span class="{% if page3 == page_obj3.number %}current{% endif %}">
-                                    <a href="?page3={{ page3 }}" {% if page3 == page_obj3.number %}style="font-weight: bold;"{%endif%}>{{ page3 }}</a>
-                                    
-                                </span>
-                            {% elif page3 >= page_obj3.number|add:-3 and page3 <= page_obj3.number|add:3 %}
-                                <span>..</span>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div style="width:35%; margin: 5px;">
-                        {% if page_obj3.has_next %}
-                            <a class="abutton" href="?page3={{ page_obj3.next_page_number }}">다음</a>
-                            <a class="abutton" href="?page3={{ page_obj3.paginator.num_pages }}">맨 뒤로</a>
-                        {% endif %}
-                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    {% if page_obj3.has_next %}
+                        <a class="abutton" href="?page3={{ page_obj3.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
                 </div>
             </div>
         </div>

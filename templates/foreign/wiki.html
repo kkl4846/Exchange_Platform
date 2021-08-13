@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center ">
             <h1>{{univ.away_name}}</h1>
             <span>위키</span>
-            <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
+            <a class="dark-button m-btn" href="{% url "country:country_wiki" univ.country.pk%}"><span>{{univ.country}}</span></a>
         </div>
     </div>
     <hr>
@@ -13,7 +13,7 @@
         <div>
             <p>1. 파견로의 지원방법</p>
             <pre>{{univ.away_apply}}</pre>  <!--textarea에 입력한대로 보여주는 pre tag-->
-            <button class="btn btn-primary btn-sm" onclick="Edit('{{ user.is_authenticated }}','apply')">수정</button>
+            <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','apply')">수정</button>
             <div>
                 <p>2. 필요 어학 점수</p>
                 <pre>{{univ.language_score}}</pre>

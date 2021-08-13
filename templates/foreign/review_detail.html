@@ -18,7 +18,7 @@
     {% if review.image %}
     <div><img src="{{review.image.url}}" style="width:700px"/></div>
     {% endif %}
-    {{review.content}}</p>
+    {{review.content | safe}}</p>
 {% if IsReviewAuthor %}
 <form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" class="ReviewDeleteForm" style="  display: inline; background: transparent">
     {% csrf_token %}

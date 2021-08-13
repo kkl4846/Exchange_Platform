@@ -21,9 +21,9 @@ urlpatterns = [
     path('<int:domestic_id>/qna/<int:pk>/delete/', views.question_delete, name='question_delete'),
     path('<int:domestic_id>/qna/search/',views.question_search, name='question_search'),
 
-    path('<int:domestic_id>/qna/<int:pk>/comment/create/', views.comment_create, name='comment_create'),
-    path('<int:domestic_id>/comment/<int:comment_id>/edit/', views.comment_edit, name='comment_edit'),
-    path('<int:domestic_id>/comment/<int:comment_id>/delete/', views.comment_delete, name='comment_delete'),
+    path('<int:domestic_id>/qna/<int:pk>/comment_create/', views.comment_create, name='comment_create'),
+    path('<int:domestic_id>/qna/<int:pk>/comment_update/', views.comment_update, name='comment_update'),
+    path('<int:domestic_id>/qna/<int:pk>/comment_delete/', views.comment_delete, name='comment_delete'),
 
     path('<int:domestic_id>/qna/<int:pk>/undercomment_create/', views.undercomment_create, name='undercomment_create'),
     path('<int:domestic_id>/qna/<int:pk>/undercomment_update/', views.undercomment_update, name='undercomment_update'),

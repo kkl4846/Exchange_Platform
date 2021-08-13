@@ -30,8 +30,10 @@ def univ_list(request):
             univ_dict[this_alpha].append(univ)
     if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
         del(univ_dict['A'])
+    alphaList = [chr(c) for c in range(ord('A'), ord('Z')+1)]
     return render(request, 'foreign/univ_list.html', {
         'univ_dict': univ_dict,
+        'alphaList': alphaList,
 
     })
 
