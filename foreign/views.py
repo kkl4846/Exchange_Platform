@@ -487,60 +487,48 @@ def question_search(request, foreign_id):
     }
     return render(request, template_name='foreign/question_search.html', context=ctx)
 
-# 답변
+# qna 댓글
 
 
+@csrf_exempt
 @login_required(login_url=URL_LOGIN)
 def q_comment_create(request, foreign_id, pk):
-    foreign = get_object_or_404(Foreign, pk=foreign_id)
-    question = FQuestion.objects.get(id=pk)
-    undercomments = FUnderComment.objects.all()
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.question = question
-            comment.comment_author = request.user
-            comment.save()
-            return redirect('foreign:question_detail', foreign_id, pk)
-    else:
-        form = CommentForm()
-        ctx = {
-            'form': form,
-            'question': question,
-            'univ': foreign,
-            'undercomments': undercomments,
-        }
-        return render(request, template_name='foreign/comment_form.html', context=ctx)
+    req = json.loads(request.body)
+    question_id = req['question_id']
+    new_comment_content = req['comment_content']
+
+    new_comment = FComment.objects.create(
+        question=FQuestion.objects.get(id=question_id),
+        comment_content=new_comment_content,
+        comment_author=request.user
+    )
+    new_comment.save()
+
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content})
 
 
+@csrf_exempt
 @login_required(login_url=URL_LOGIN)
 def q_comment_edit(request, foreign_id, pk):
-    foreign = get_object_or_404(Foreign, pk=foreign_id)
-    comment = FComment.objects.get(id=pk)
-    undercomments = FUnderComment.objects.all()
-    if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            comment = form.save()
-            return redirect('foreign:question_detail', foreign_id, comment.question.pk)
-    else:
-        form = CommentForm(instance=comment)
-        ctx = {
-            'form': form,
-            'question': comment.question,
-            'univ': foreign,
-            'undercomments': undercomments,
-        }
-        return render(request, template_name='foreign/comment_form.html', context=ctx)
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    edit_comment_content = req['comment_content']
+
+    edit_comment = FComment.objects.get(id=comment_id)
+    edit_comment.comment_content = edit_comment_content
+    edit_comment.save()
+
+    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
 
 
+@csrf_exempt
 def q_comment_delete(request, foreign_id, pk):
-    comment = FComment.objects.get(id=pk)
-    question = comment.question
-    if request.method == 'POST':
-        comment.delete()
-    return redirect('foreign:question_detail', foreign_id, question.pk)
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    delete_comment = FComment.objects.get(id=comment_id)
+    delete_comment.delete()
+
+    return JsonResponse({'comment_id': comment_id})
 
 
 # qna 대댓글

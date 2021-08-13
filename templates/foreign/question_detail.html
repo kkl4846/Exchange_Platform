@@ -1,28 +1,26 @@
 {% extends "foreign/foreign_base.html" %}
 {% block contents %}
 
-    <div style="width:750px;">
-        <div class="d-flex justify-content-between ">
-            <div class="d-flex align-items-center ">
-                <h1>{{univ.away_name}}</h1>
-                <span>QnA</span>
-                <a href="{% url "country:country_wiki" univ.country.pk%}"><h3>{{univ.country}}</h3></a>
+    <div class="container category-detail">
+        <div class="d-flex justify-content-between align-items-end">
+            <div class="d-flex align-items-end ">
+                <h3>{{univ.away_name}}</h3>
+                <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
             </div>
-            <button class="btn btn-sm btn-border" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
+            <button class="light-button create-btn md-btn" onclick="location.href='{% url "foreign:question_list" univ.pk %}'"> 목록보기 </button>
         </div>
         <hr>
         <div>
             <div class="d-flex justify-content-between">
                 <h4>{{ question.question_title }}</h4>
-                <p>작성자: {{ question.author.nickname}} 작성 시간: {{ question.created_at }}</p>
+                <p>작성자: {{ question.author.nickname}} 작성일: {{ question.created_at }}</p>
             </div>
-    
             <p>
             {{ question.question_content }}
             </p>
             <div class="d-flex justify-content-end">
                 {% if question.author.pk == user.pk %}
-                <form action="{% url "foreign:question_delete" univ.pk question.pk %}" method="post" >
+                <form action="{% url "domestic:question_delete" univ.pk question.pk %}" method="post" >
                     {% csrf_token %}
                     <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
                 </form>
@@ -33,25 +31,20 @@
             <hr>
             <div class="d-flex justify-content-between">
                 <h4>답변</h4>
-
-                <button onclick="canIAnswer('{{ is_authenticated }}')">답변 달기</button>
             </div>
-            {% for comment in comments %}
-                <div class="d-flex justify-content-between">
+        </div>
+        <div>
+            <div class="post_{{question.id}}">
+                {%for comment in comments %}
+                <div class="comment_{{comment.id}} d-flex justify-content-between">
+                    {{comment.comment_author.nickname}} &#160; &#160; 
+                    {{comment.comment_content}}
                     <div>
-                        <h5>{{ comment.comment_author.nickname }}</h5> 
-                        {{ comment.comment_content }}
-                    </div>
-                    <div>
-                        {{ comment.created_at }}
-                        {% if comment.comment_author == user %}
-                        <button onclick="location.href='{% url "foreign:q_comment_edit" univ.pk comment.pk%}'"> 수정  </button>
-                        <form action="{% url "foreign:q_comment_delete" univ.pk comment.pk %}" method="post" style="display:inline;" >
-                            {% csrf_token %}
-                            <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
-                        </form>
-                        {% endif %}
-                        <button id='undercomment' onclick="commentPlus('{{comment.pk}}')">댓글</button><br/>
+                    {% if request.user == comment.comment_author %}
+                    <button class="btn btn-outline-secondary update " onclick="EditComment('{{ comment.id }}' ,'{{ comment.comment_content }}')">수정</button>
+                    <button class="btn btn-outline-secondary delete " onclick="onClickDelete('{{ comment.id }}' )">삭제</button>
+                    {%endif%}
+                    <button id='undercomment' onclick="undercommentPlus('{{ comment.id }}')">댓글</button><br/>
                     </div>
                 </div>
                 <div class="undercomment_list_{{ comment.pk }}">
@@ -64,7 +57,7 @@
                             </div>
                             {% if undercomment.comment_author == request.user %}
                             <div>
-                                <button onclick="editComment('{{ comment.pk }}', '{{ undercomment.pk }}','{{ undercomment.comment_content }}')">수정</button>
+                                <button onclick="editUnderComment('{{ comment.pk }}', '{{ undercomment.pk }}','{{ undercomment.comment_content }}')">수정</button>
                                 <button onclick="onClickDeleteUnder('{{ undercomment.pk }}')">삭제</button>
                             </div>
                             {% endif %}
@@ -73,9 +66,17 @@
                     {% endfor %}
                 </div>
                 <div class="undercomment_{{ comment.pk }}"></div>
-
-            {% endfor %}
-            </div>
+                {% endfor %}
+                </div>
+                <form action="./comment_create/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="comment_content" id="comment_{{ question.id }}" placeholder='댓글달기...' style="width: 80%;"/>
+                    <div class="btn btn-outline-dark submit" onclick="onClickComment('{{ user.is_authenticated }}',{{ question.id }}, document.querySelector('#comment_{{question.id}}').value)">
+                        submit
+                    </div>
+                </form>
+                </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
@@ -97,9 +98,113 @@
             }
         };
         
+//댓글
+const onClickComment= async(is_authenticated, question_id, comment_content) => {  
+            if (is_authenticated == 'False') {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href='{% url "login:login" %}';
+        }else{
+        const url = './comment_create/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content})
+        }); 
+    
+        const {question_id:id, comment_content:content, comment_id:c_id}= await res.json();        
+        commentHandleResponse(id, content, c_id);
+    }
+    };
+
+    const commentHandleResponse=(question_id, comment_content, comment_id) => {
+        const element=document.querySelector(`.post_${question_id}`)
+        element.innerHTML += `
+        <div class="comment_${comment_id} d-flex justify-content-between">
+            {{request.user.nickname}} &#160; &#160; ${comment_content}
+            <div>
+            <button class="btn btn-outline-secondary update " onclick="EditComment('${comment_id}', '${comment_content}')">수정</button>
+            <div class="btn btn-outline-secondary delete" onclick="onClickDelete('${comment_id}')">삭제</div>
+            <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+            </div>
+        </div>
+        <div class="undercomment_list_${comment_id}"></div>
+        <div class="undercomment_${comment_id}"></div>
+        `
+        const input_content = document.querySelector(`#comment_${question_id}`)
+        input_content.value = null
+    }
+    
+    //댓글 수정
+    const EditComment = (comment_id,comment_content)=>{
+        const element = document.querySelector(`.comment_${comment_id}`);
+        element.innerHTML = ` 
+        {{request.user.nickname}}
+            <input type="text" id="edit_comment" value=${comment_content} class="w-75"/>
+            <button class="btn btn-sm btn-outline-dark" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">수정</button>
+            `
+
+    }
+    const onClickUpdate= async(comment_id,comment_content) => { 
+        const allowance =  confirm('수정하시겠습니까?'); 
+        if (allowance == true) {
+        const url = './comment_update/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({comment_id:comment_id, comment_content:comment_content})
+        }); 
+        const {comment_id:id, comment_content:content, nickname:nickname} = await res.json();        
+        UpdateHandleResponse(id,content,nickname);
+    };
+    };
+
+    const UpdateHandleResponse = (comment_id,comment_content,nickname)=>{
+        const element = document.querySelector(`.comment_${comment_id}`)
+        element.innerHTML = `
+        ${nickname} &#160; &#160; 
+        ${comment_content}
+        <div>
+            <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+            <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
+            <button id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+        </div>
+        `
+    }
+
+
+    //댓글 삭제
+    const onClickDelete= async(comment_id) => { 
+        const allowance =  confirm('정말로 삭제하시겠습니까?'); 
+        if (allowance == true) {
+        const url = './comment_delete/';
+        const res= await fetch(url,{        
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({comment_id:comment_id})
+        }); 
+        const {comment_id:id} = await res.json();       
+        deleteHandleResponse(id);
+    };
+    };
+
+    const deleteHandleResponse = (comment_id)=>{
+        const undercomment = document.querySelector(`.undercomment_list_${comment_id}`);
+        undercomment.innerHTML = '';
+        const element = document.querySelector(`.comment_${comment_id}`)
+        element.innerHTML='';
+        
+    }
+
+
         //대댓글 생성
 
-        const commentPlus = (comment_id) => {
+        const undercommentPlus = (comment_id) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
         const originHTML = element.innerHTML;
             
@@ -134,7 +239,7 @@
                     <span style="margin-left: 30px;">${undercomment_content}</span>
                 </div>
                 <div>
-                    <button onclick="editComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
+                    <button onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
                     <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
                 </div>
                 `
@@ -144,7 +249,7 @@
             };
             
             //대댓글 수정
-        const editComment = (comment_id, undercomment_id, undercomment_content) => {
+        const editUnderComment = (comment_id, undercomment_id, undercomment_content) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
         const originHTML = element.innerHTML;
             
@@ -175,7 +280,7 @@
             <span style="margin-left: 30px;">${undercomment_content}</span>
         </div>
         <div>
-            <button onclick="editComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
+            <button onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
             <button onclick="onClickDeleteUnder('${undercomment_id}')">삭제</button>
         </div>
         `

@@ -19,7 +19,7 @@
   display: inline-block;
 }
 .foreign-search::placeholder {
-  color: black;
+  color: var(--d-gray);
 }
 .addForeign-form {
   color: var(--m-gray);
@@ -44,11 +44,15 @@
 .lgbtn-blue {
   width: 74px;
   height: 28px;
-  color: var(--bg);
-  background-color: var(--blue);
   font-size: 14px;
   border-radius: 21px;
   border: none;
   float: right;
   display: inline-block;
+}
+
+.lsearch-icon {
+  position: absolute;
+  font-size: 12px;
+  text-align: start;
 }

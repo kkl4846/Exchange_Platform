@@ -1,50 +1,40 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="d-flex justify-content-evenly ">
-    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
-        <ul>
-            <li><a href="{% url 'domestic:sister_list' univ.pk %}">자매 결연 대학</a></li>
-            <li><a href="{% url 'domestic:wiki' univ.pk %}">위키</a></li>
-            <li><a href="{% url 'domestic:question_list' univ.pk %}">QnA</a></li>
-            <li><a href="{% url 'domestic:credit_list' univ.pk %}">파견교별 학점컷</a></li>
-        </ul>
-    </div>
-    <div style="width:750px;">
-        <div class="d-flex justify-content-between ">
+{% extends "domestic/domestic_base.html" %}
+{% block contents %}
+    <div class="container category-detail">
+        <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center ">
-                <h1>{{ univ.home_name }}</h1>
-                <span>Wiki</span>
+                <h3>{{ domestic.home_name }}</h3>
             </div>
         </div>
         <hr>
         <div>
             <p>1. 지원 방법</p>
-            <p>{{univ.home_apply}}</p>
-            <button class="m-btn light-button" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
+            <p>{{ domestic.home_apply }}</p>
+            <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
             <div>
                 <p>2. 필요 서류</p>
-                <p>{{univ.home_document}}</p>
+                <p>{{ domestic.home_document }}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
             </div>
             <div>
                 <p>3. 수학 가능 학기</p>
-                <p>{{univ.semester}}</p>
+                <p>{{ domestic.semester }}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
             </div>
             <div>
                 <p>4. 교내 장학금 정보</p>
-                <p>{{univ.home_scholarship}}</p>
+                <p>{{ domestic.home_scholarship }}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
             </div>
             <div>
                 <p>5. 유학생 보험 준비</p>
-                <p>{{univ.insurance}}</p>
+                <p>{{ domestic.insurance }}</p>
                 <button class="btn btn-sm btn-primary" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
             </div>
         </div>
     </div>
-
-</div>
+{% endblock %}
+{% block extra %}
 <script>
     const canIEdit= (is_authenticated, is_enrolled, str)=> {
         if (is_authenticated == 'False') {
