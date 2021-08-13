@@ -1,7 +1,8 @@
+.container {
+  width: 1040px;
+}
 .lbody {
-  width: 1040px; /*container로 바꾸기*/
   font-weight: normal;
-  transform: translate(50%, 0);
 }
 .lbar {
   height: 30px;

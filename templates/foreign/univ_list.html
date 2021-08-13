@@ -1,7 +1,8 @@
 {%extends "base.html"%}
 {%block content%}
-<div class="lbody ">
 
+<div class="lbody d-flex flex-column">
+    <div class="container">
     <div class="lbar d-flex align-items-center">
     <div class="lforeign_list d-flex justify-content-around text-center ">
     {% for key, val in univ_dict.items %}
@@ -9,10 +10,10 @@
     {% endfor %}
     </div>
     <button class="lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
-</div>
+    </div>
     <div>
     {% for key, val in univ_dict.items %}
-    <div class="lgroup d-flex">
+    <div class="lgroup ">
             <div id="{{ key }}" class="lalpha">{{ key }}</div>
             <div class="lforeign_name ">
             {% for univ in val %}
@@ -23,6 +24,7 @@
     </div>
     {% endfor %}
 
+</div>
 </div>
 </div>
 <script>

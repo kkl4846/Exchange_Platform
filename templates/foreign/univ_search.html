@@ -37,10 +37,10 @@
 {% endblock %}
 
 {%block content%}
-<div class="containers">
+<div class="containers d-flex flex-column">
     <div class="space-between">
     <div class="addForeign-top">파견교 추가</div>
-    <input class="lgbtn-blue" type="submit" onclick="document.getElementById('frm').submit();" value="저장하기">
+    <input class="lgbtn-blue" type="submit" onclick="document.getElementById('frm').submit();" value="저장하기"/>
     </div>
     <hr />
     <form autocomplete="off">
@@ -48,6 +48,7 @@
             <span class="foreign-name">해외학교명</span>
             <input class="foreign-search" type="text" id="myInput" name="newUniversity" placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다." autocomplete="off">
             <input type="submit" value="확인" style="display: none;">
+            <ion-icon name="search"></ion-icon>
         </div>
     </form>
     <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='frm'>
