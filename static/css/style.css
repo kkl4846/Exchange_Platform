@@ -6,6 +6,7 @@
 
 /* Components */
 @import "components/header.css";
+@import "components/footer.css";
 @import "components/button.css";
 @import "components/detail.css";
 @import "components/post_list.css";
@@ -13,6 +14,7 @@
 @import "components/post.css";
 @import "components/comment.css";
 @import "components/undercomment.css";
+@import "components/sidebar.css";
 /* Pages */
 @import "pages/main.css";
 @import "pages/list.css";
