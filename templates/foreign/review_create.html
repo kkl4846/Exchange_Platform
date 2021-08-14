@@ -15,7 +15,7 @@
             {% csrf_token %}
             <table class="table table-bordered">
                 {% if request.user == review.post_author or type == 'create' %}
-                <input type="text" name="title" maxlength="50" required id="id_title" placeholder="제목을 입력하세요." {% if review.title %}value="{{review.title}}" {% endif %}>
+                <input type="text" name="title" maxlength="50" required id="id_title" placeholder="제목을 입력하세요." {% if review.title %} value="{{review.title}}" {% endif %}>
                 <div class="review-content">{{form.content}}</div>
                 <div class="review-away_year">파견년도 {{form.away_year}}</div>
                 <div class="review-away_semester">파견학기 {{form.away_semester}}</div>

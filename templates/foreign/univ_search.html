@@ -51,10 +51,12 @@
         <form autocomplete="off">
             <div class="autocomplete">
                 <span class="foreign-name">해외학교명</span>
+                <div style="display:inline;">
                 <input class="foreign-search" type="text" id="myInput" name="newUniversity"
                     placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다. " autocomplete="off">
                 <input type="submit" value="확인" style="display: none;">
-                <!-- <ion-icon name="search" class = "lsearch-icon"></ion-icon> -->
+                <ion-icon name="search" class = "lsearch-icon"></ion-icon>
+                </div>
             </div>
         </form>
         <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='addForeign'>
