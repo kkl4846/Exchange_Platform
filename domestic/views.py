@@ -291,7 +291,8 @@ def question_edit(request, domestic_id, pk):
             form = DQuestionForm(instance=question)
             ctx = {
             'form': form,
-            'domestic': domestic
+            'domestic': domestic,
+            'question': question
             }
             return render(request, template_name='domestic/question_form.html', context=ctx)
     else:

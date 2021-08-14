@@ -398,12 +398,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
+    now=datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
+        'now':now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -452,6 +454,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
+            'question':question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 

@@ -27,11 +27,11 @@
         <p class="post-content">{{ question.question_content }}</p>
         <hr class="post-hr" style="margin:none;">
         <div>
-            <div class="post_{{question.id}}">
+            <div class="post_{{ question.id }}">
                 {%for comment in comments %}
-                <div class="comment_{{comment.id}} comment-container">
+                <div class="comment_{{ comment.id }} comment-container">
                     <div class=" d-flex justify-content-between">
-                        <div>
+                        <div class="d-flex align-items-center">
                             <span class="post-author">{{ comment.comment_author.nickname }}</span>
                             <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
                         </div>
@@ -39,11 +39,13 @@
                             {% if request.user == comment.comment_author %}
                             <button class="light-button create-btn s-btn update " onclick="EditComment('{{ comment.id }}' ,'{{ comment.comment_content }}')">수정</button>
                             <button class="light-button create-btn s-btn post-button delete " onclick="onClickDelete('{{ comment.id }}' )">삭제</button>
-                            {%endif%}
+                            {% endif %}
+                            {% if is_enrolled == 'True' %}
                             <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('{{ comment.id }}')">댓글</button><br/>
+                            {% endif %}
                         </div>
                     </div>
-                    <span class="comment-content">{{ comment.comment_content }}</span>
+                    <p class="comment-content">{{ comment.comment_content }}</p>
                 </div>
                 <div class="undercomment_list_{{ comment.pk }}">
                     {% for undercomment in undercomments  %}
@@ -51,9 +53,9 @@
                         <div id="undercomment_{{ undercomment.pk }}">
                             <div class="undercomment-container d-flex justify-content-between">
                                 <div>
-                                    <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
+                                    <img class="undercomment-icon" src="/static/css/img/undercomment.png" alt="대댓글">
                                     <span class="post-author">{{ undercomment.comment_author.nickname }}</span>
-                                    <span class="comment-content">{{ undercomment.comment_content }}</span>
+                                    <p class="comment-content">{{ undercomment.comment_content }}</p>
                                 </div>
                                 {% if undercomment.comment_author == request.user %}
                                 <div>
@@ -69,10 +71,12 @@
                 <div class="undercomment-container undercomment_{{ comment.pk }} d-flex align-items-center" ></div>
                 {% endfor %}
             </div>
+            {% if is_enrolled == 'True' %}
             <form class="new-comment d-flex align-items-center" action="./comment_create/" method="POST">
                 <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{ question.pk }}" placeholder='댓글달기...' style="width: 80%;"/>
                 <span class="blue-button create-btn s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}', '{{ question.pk }}', document.querySelector('#comment_{{ question.pk }}').value )">등록</span>
             </form>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -104,7 +108,7 @@
         element.innerHTML += `
         <div class="comment_${comment_id} comment-container">
             <div class=" d-flex justify-content-between">
-                <div>
+                <div class="d-flex align-items-center">
                     <span class="post-author">{{request.user.nickname}}</span>
                     <span class="comment-date">{{ now |date:"Y.m.d" }} </span>
                 </div>
@@ -114,7 +118,7 @@
                     <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
                 </div>
             </div>
-            <span class="comment-content">${comment_content}</span>
+            <p class="comment-content">${comment_content}</p>
         </div>
         <div class="undercomment_list_${comment_id}"></div>
         <div class="undercomment-container undercomment_${comment_id} d-flex align-items-center"></div>
@@ -128,7 +132,7 @@
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = ` 
             <div class=" d-flex justify-content-between">
-                <div>
+                <div class="d-flex align-items-center">
                     <span class="post-author">{{request.user.nickname}}</span>
                     <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
                 </div>
@@ -158,7 +162,7 @@
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = `
         <div class=" d-flex justify-content-between">
-            <div>
+            <div class="d-flex align-items-center">
                 <span class="post-author">${nickname}</span>
                 <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
             </div>
@@ -168,7 +172,7 @@
                 <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
             </div>
         </div>
-        <span class="comment-content">${comment_content}</span>
+        <p class="comment-content">${comment_content}</p>
         `;
     };
 
@@ -198,14 +202,14 @@
         const temp = document.querySelector(`.undercomment_${comment_id}`);
         temp.remove();
         
-    }
+    };
 
   //대댓글 생성
 
     const undercommentPlus = (comment_id) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
         element.innerHTML = `
-            <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
+            <img src="/static/css/img/undercomment.png" alt="대댓글">
             <span class="post-author">{{ request.user.nickname }}</span>
             <input class="new-undercomment-input flex-grow-1" type="text" id="new-undercomment" placeholder="댓글 달기..."/>
             <button class="blue-button create-btn s-btn post-button" onclick="onClickUnderComment('{{ is_authenticated }}', ${comment_id}, document.querySelector('#new-undercomment').value)">등록</button>
@@ -232,9 +236,9 @@
             <div id="undercomment_${undercomment_id}">
                 <div class="undercomment-container d-flex justify-content-between">
                     <div>
-                        <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
+                        <img src="/static/css/img/undercomment.png" alt="대댓글">
                         <span class="post-author">${undercomment_author}</span>
-                        <span class="comment-content">${undercomment_content}</span>
+                        <p class="comment-content">${undercomment_content}</p>
                     </div>
                     <div>
                         <button class="light-button create-btn s-btn" onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
@@ -253,7 +257,7 @@
         const originHTML = element.innerHTML;
         element.innerHTML = `
         <div class="undercomment-container d-flex align-items-center">
-            <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
+            <img src="/static/css/img/undercomment.png" alt="대댓글">
             <span class="post-author">{{ request.user.nickname }}</span>
             <input class="new-undercomment-input flex-grow-1" type="text" id="edit-undercomment" value=${undercomment_content} />
             <button class="blue-button create-btn s-btn post-button" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">저장</button>
@@ -277,9 +281,9 @@
         element.innerHTML = `
             <div class="undercomment-container d-flex justify-content-between">
                 <div>
-                    <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
+                    <img src="/static/css/img/undercomment.png" alt="대댓글">
                     <span class="post-author">{{ request.user.nickname }}</span>
-                    <span class="comment-content flex-grow-1">${undercomment_content}</span>
+                    <p class="comment-content flex-grow-1">${undercomment_content}</p>
                 </div>
                 <div>
                     <button class="light-button create-btn s-btn" onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>

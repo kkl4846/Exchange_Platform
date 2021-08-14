@@ -202,17 +202,17 @@ class Activate(View):
 @login_required(login_url=URL_LOGIN)
 def myquestion(request):
     user = request.user
-    d_questions = DQuestion.objects.filter(author=user)
+    d_questions = DQuestion.objects.filter(author=user).order_by('-pk')
     paginator1 = Paginator(d_questions, 10)
     page_number1 = request.GET.get('page1')
     page_obj1 = paginator1.get_page(page_number1)
 
-    f_questions = FQuestion.objects.filter(author=user)
+    f_questions = FQuestion.objects.filter(author=user).order_by('-pk')
     paginator2 = Paginator(f_questions, 10)
     page_number2 = request.GET.get('page2')
     page_obj2 = paginator2.get_page(page_number2)
 
-    c_questions = CQuestion.objects.filter(author=user)
+    c_questions = CQuestion.objects.filter(author=user).order_by('-pk')
     paginator3 = Paginator(c_questions, 10)
     page_number3 = request.GET.get('page3')
     page_obj3 = paginator3.get_page(page_number3)
@@ -228,17 +228,17 @@ def myquestion(request):
 @login_required(login_url=URL_LOGIN)
 def mycomment(request):
     user = request.user
-    d_comments = DComment.objects.filter(comment_author=user)
+    d_comments = DComment.objects.filter(comment_author=user).order_by('-pk')
     paginator1 = Paginator(d_comments, 10)
     page_number1 = request.GET.get('page1')
     page_obj1 = paginator1.get_page(page_number1)
 
-    f_comments = FComment.objects.filter(comment_author=user)
+    f_comments = FComment.objects.filter(comment_author=user).order_by('-pk')
     paginator2 = Paginator(f_comments, 10)
     page_number2 = request.GET.get('page2')
     page_obj2 = paginator2.get_page(page_number2)
 
-    c_comments = CComment.objects.filter(comment_author=user)
+    c_comments = CComment.objects.filter(comment_author=user).order_by('-pk')
     paginator3 = Paginator(c_comments, 10)
     page_number3 = request.GET.get('page3')
     page_obj3 = paginator3.get_page(page_number3)
