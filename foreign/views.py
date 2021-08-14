@@ -10,6 +10,8 @@ from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from django.core.paginator import Paginator
+from datetime import datetime
+
 
 URL_LOGIN = '/login/'
 
@@ -317,13 +319,14 @@ def review_detail(request, pk, foreign_id):
         IsReviewAuthor = True
     else:
         IsReviewAuthor = False
-
+    now = datetime.now()
     ctx = {
         'review': review,
         'univ': foreign,
         'all_comment': all_comment,
         'IsReviewAuthor': IsReviewAuthor,
         'recomments': recomments,
+        'now': now,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
