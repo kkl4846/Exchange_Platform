@@ -29,8 +29,8 @@
         <div>
             <div class="post_{{question.id}}">
                 {%for comment in comments %}
-                <div class="comment-container">
-                    <div class="comment_{{comment.id}} d-flex justify-content-between">
+                <div class="comment_{{comment.id}} comment-container">
+                    <div class=" d-flex justify-content-between">
                         <div>
                             <span class="post-author">{{ comment.comment_author.nickname }}</span>
                             <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
@@ -69,11 +69,11 @@
                 {% endfor %}
                 </div>
                 <form class="new-comment" action="./comment_create/" method="POST">
-                    {% csrf_token %}
-                    <input class="new-comment-input" type="text" name="comment_content" id="comment_{{ question.id }}" placeholder='댓글달기...' style="width: 80%;"/>
-                    <button class="blue-button create-btn s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}',{{ question.id }}, document.querySelector('#comment_{{question.id}}').value)">
+                
+                    <input class="new-comment-input" type="text" name="comment_content" id="comment_{{ question.pk }}" placeholder='댓글달기...' style="width: 80%;"/>
+                    <div class="blue-button create-btn s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}', '{{ question.pk }}', document.querySelector('#comment_{{ question.pk }}').value )">
                         등록
-                    </button>
+                    </div>
                 </form>
                 </div>
         </div>
@@ -82,11 +82,10 @@
 {% block extra %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
- //댓글
     const onClickComment= async(is_authenticated, question_id, comment_content) => {  
-            if (is_authenticated == 'False') {
-                alert('로그인이 필요한 서비스입니다.');
-                window.location.href='{% url "login:login" %}';
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
         }else{
         const url = './comment_create/';
         const res= await fetch(url,{        
@@ -94,7 +93,7 @@
             headers:{
             'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify({is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content})
+            body: JSON.stringify({ is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content})
         }); 
     
         const {question_id:id, comment_content:content, comment_id:c_id}= await res.json();        
@@ -105,15 +104,17 @@
     const commentHandleResponse=(question_id, comment_content, comment_id) => {
         const element=document.querySelector(`.post_${question_id}`)
         element.innerHTML += `
-        <div class="comment_${comment_id} d-flex justify-content-between">
-            <div>
-                <span class="post-author">{{request.user.nickname}}</span>
-                <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
-            </div>
-            <div>
-                <button class="light-button create-btn s-btn update " onclick="EditComment('${comment_id}', '${comment_content}')">수정</button>
-                <button class="light-button create-btn s-btn delete post-button" onclick="onClickDelete('${comment_id}')">삭제</button>
-                <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+        <div class="comment_{{comment.id}} comment-container">
+            <div class=" d-flex justify-content-between">
+                <div>
+                    <span class="post-author">{{request.user.nickname}}</span>
+                    <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
+                </div>
+                <div>
+                    <button class="light-button create-btn s-btn update " onclick="EditComment('${comment_id}', '${comment_content}')">수정</button>
+                    <button class="light-button create-btn s-btn delete post-button" onclick="onClickDelete('${comment_id}')">삭제</button>
+                    <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
+                </div>
             </div>
         </div>
         <span class="comment-content">${comment_content}</span>
@@ -121,6 +122,7 @@
             <div class="undercomment_list_${comment_id}"></div>
             <div class="undercomment_${comment_id}"></div>
         </div>
+        
         `
         const input_content = document.querySelector(`#comment_${question_id}`)
         input_content.value = null
@@ -238,9 +240,9 @@
         const element = document.querySelector(`#undercomment_${undercomment_id}`);
         const originHTML = element.innerHTML;
         element.innerHTML = `
-        {{request.user.nickname}}
-            <input type="text" id="edit-undercomment" value=${undercomment_content} class="w-75"/>
-            <button class="blue-button create-btn s-btn post-button" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">저장</button>
+        <span class="post-author">{{request.user.nickname}}</span>
+        <input type="text" id="edit-undercomment" value=${undercomment_content} class="w-75"/>
+        <button class="blue-button create-btn s-btn post-button" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">저장</button>
         `
     }
 
