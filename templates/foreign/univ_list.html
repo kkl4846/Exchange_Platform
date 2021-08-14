@@ -12,19 +12,19 @@
     <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
     </div>
     <div>
-    {% for key, val in univ_dict.items %}
-    <div class="lgroup ">
-            <div id="{{ key }}" class="lalpha">{{ key }}</div>
-            <div class="lforeign_name ">
-            {% for univ in val %}
-                <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
-            {% endfor %}
-            </div>
-        <br>
-    </div>
-    {% endfor %}
+        {% for key, val in univ_dict.items %}
+        <div class="lgroup ">
+                <div id="{{ key }}" class="lalpha">{{ key }}</div>
+                <div class="lforeign_name ">
+                {% for univ in val %}
+                    <a href="{% url "foreign:wiki" univ.pk%}">{{univ.away_name}}</a>
+                {% endfor %}
+                </div>
+            <br>
+        </div>
+        {% endfor %}
 
-</div>
+    </div>
 </div>
 </div>
 <script>

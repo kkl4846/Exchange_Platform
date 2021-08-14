@@ -1,6 +1,6 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div class="container category-detail">
+    <div class="container2 category-detail">
         <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
@@ -11,7 +11,7 @@
         {% if sisters_dict.items %}
             {% for key, val in sisters_dict.items %}
             <ul>
-                <h3>{{ key }}</h3>
+                <h4>{{ key }}</h4>
                 {% for sister in val %}
                     <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
                 {% endfor %}
@@ -23,7 +23,6 @@
                 <h6>첫 번째로 정보를 등록해주세요!</h6>
             </div>
         {% endif %}
-    </div>
 {% endblock %}
 {% block extra %}
 <script>

@@ -1,27 +1,28 @@
 {%extends "foreign/foreign_base.html"%}
 {%block contents%}
 {% if type == 'create' or IsReviewAuthor == True %}
-<div class="container category-detail">
+<div class="container2 category-detail">
     <div class="d-flex justify-content-between align-items-end">
         <div class="d-flex align-items-end">
             <h3>{{univ.away_name}}</h3>
             <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
         </div>
+        <input class="blue-button lgbtn-blue" type="submit" form="review-form" value="저장하기" />
     </div>
     <hr>
-    <div class="container">
-        <div class="col-sm-12">
-            <form action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <table class="table table-bordered">
-                    {% if request.user == review.post_author or type == 'create' %}
-                    {{form.as_p}}
-                    {% endif %}
-                </table>
-                <input type="submit" value="저장하기" class="btn btn-primary" />
-            </form>
-        </div>
-    </div>
+
+        <form action="" method="post" enctype="multipart/form-data" id = "review-form">
+            {% csrf_token %}
+            <table class="table table-bordered">
+                {% if request.user == review.post_author or type == 'create' %}
+                <input type="text" name="title" maxlength="50" required id="id_title" placeholder="제목을 입력하세요.">
+                <div class="review-content">{{form.content}}</div>
+                <div class="review-away_year">파견년도 {{form.away_year}}</div>
+                <div class="review-away_semester">파견학기 {{form.away_semester}}</div>
+                {% endif %}
+            </table>
+        </form>
+    
 
 </div>
 {%else%}

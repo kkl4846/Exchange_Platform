@@ -1,30 +1,36 @@
 {% extends "domestic/domestic_base.html" %}
+{% block style %}
+<script src="https://kit.fontawesome.com/67d418f4de.js" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block contents %}
-    <div class="container category-detail">
+    <div class="container2 category-detail post-list">
         <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            <div class="d-flex justify-content-end">
+                <form class="d-flex justify-content-center" action="{% url 'domestic:question_search' domestic.pk %}" method="post">
+                    {% csrf_token %}
+                    <input class="search-input" placeholder="검색" name="q" value="{{q}}">
+                    <button class="search-button" type="submit"><ion-icon name="search"></ion-icon></button>
+                </form>
+                <button class="light-button create-btn sm-btn" style="margin-left:15px;" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            </div>
         </div>
         <hr>
-        <form class="d-flex justify-content-center" action="{% url 'domestic:question_search' domestic.pk %}" method="post">
-            {% csrf_token %}
-            <input class="col-9" placeholder="검색" name="q" value="{{q}}">
-            <button class="btn btn-outline-success" type="submit">검색</button>
-        </form>
         {% if page_obj %}
         <table>
             <tr align='center'>
                 <th width='50'>번호</th>
-                <th width='600' >제목</th>
-                <th>날짜</th>
+                <th width='880' >제목</th>
+                <th width='80'>날짜</th>
             </tr>
             {% for question in page_obj %}
             <tr>
                 <td class="numbered" align='center'></td>
                 <td><a href="{% url 'domestic:question_detail' domestic.pk question.pk %}">{{ question.question_title }}</a></td>
-                <td>{{ question.created_at }}</td>
+                <td>{{ question.created_at|date:"Y.m.d" }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -41,32 +47,31 @@
             <h6>첫 번째로 정보를 등록해주세요!</h6>
         </div>
         {% endif %}
-        <div style="text-align:center">
-            <div class="pagination">
-                <div style="width:35%; margin: 5px;">
-                    {% if page_obj.has_previous %}
-                    <a class="abutton" href="?page=1">맨 앞으로</a>
-                    <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}">이전</a>
+        <div class="pagination d-flex justify-content-center">
+            <div>
+                {% if page_obj.has_previous %}
+                    <a class="abutton" href="?page1={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                {% else %}
+                    <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                {% endif %}
+            </div>
+            <div class="page-number">
+                {% for page in page_obj.paginator.page_range %}
+                    {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                        <span class="{% if page == page_obj.number %}current{% endif %}">
+                            <a class="numbering" href="?page1={{ page }}" {% if page == page_obj.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page }}</a>
+                        </span>
+                    {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
+                        <span>..</span>
                     {% endif %}
-                </div>
-                <div style="width:30%; margin: 5px;">
-                    {% for page in page_obj.paginator.page_range %}
-                        {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                            <span class="{% if page == page_obj.number %}current{% endif %}">
-                                <a href="?page={{ page }}" {% if page == page_obj.number %}style="font-weight: bold;"{%endif%}>{{ page}}</a>
-                                
-                            </span>
-                        {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
-                            <span>..</span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div style="width:35%; margin: 5px;">
-                    {% if page_obj.has_next %}
-                        <a class="abutton" href="?page={{ page_obj.next_page_number }}">다음</a>
-                        <a class="abutton" href="?page={{ page_obj.paginator.num_pages }}">맨 뒤로</a>
-                    {% endif %}
-                </div>
+                {% endfor %}
+            </div>
+            <div>
+                {% if page_obj.has_next %}
+                    <a class="abutton" href="?page1={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                {% else %}
+                    <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>
