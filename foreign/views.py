@@ -370,7 +370,6 @@ def review_delete(request, pk, foreign_id):
 @login_required(login_url=URL_LOGIN)
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
-
     return review_create(request, foreign_id, post)
 
 
