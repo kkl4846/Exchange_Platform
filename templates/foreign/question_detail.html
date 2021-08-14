@@ -52,7 +52,7 @@
                     {% for undercomment in undercomments  %}
                         {% if undercomment.comment == comment %}
                         <div id="undercomment_{{ undercomment.pk }}">
-                            <div class="undercomment-container d-flex justify-content-between">
+                            <div class="undercomment-container d-flex justify-content-between align-items-center">
                                 <div>
                                     <img class="undercomment-icon" src="/static/css/img/undercomment.png" alt="대댓글">
                                     <span class="post-author">{{ undercomment.comment_author.nickname }}</span>
@@ -236,7 +236,7 @@
             const element = document.querySelector(`.undercomment_list_${comment_id}`);
             element.innerHTML += `
             <div id="undercomment_${undercomment_id}">
-                <div class="undercomment-container d-flex justify-content-between">
+                <div class="undercomment-container d-flex justify-content-between align-items-center">
                     <div>
                         <img src="/static/css/img/undercomment.png" alt="대댓글">
                         <span class="post-author">${undercomment_author}</span>
@@ -280,7 +280,7 @@
     const underEditHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
         const element = document.querySelector(`#undercomment_${undercomment_id}`);
         element.innerHTML = `
-            <div class="undercomment-container d-flex justify-content-between">
+            <div class="undercomment-container d-flex justify-content-between align-items-center">
                 <div>
                     <img src="/static/css/img/undercomment.png" alt="대댓글">
                     <span class="post-author">{{ request.user.nickname }}</span>
