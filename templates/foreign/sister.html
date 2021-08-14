@@ -12,17 +12,16 @@
     <hr>
     <div>
         {% for key, val in sisters_dict.items %}
-        <ul class="lgroup ">
-            <p class="lalpha">{{ key }}</p>
-            <div class="lforeign_name ">
-            {% for sister in val %}
-            <a href="{% url "domestic:wiki" sister.pk %}">{{sister.home_name}}</a>
-            {% endfor %}
-        </div>
-        </ul>
-        <br>
+            <ul class="lgroup ">
+                <p class="lalpha">{{ key }}</p>
+                <div class="lforeign_name ">
+                {% for sister in val %}
+                <a href="{% url "domestic:wiki" sister.pk %}">{{sister.home_name}}</a>
+                {% endfor %}
+            </div>
+            </ul>
+            <br>
         {% endfor %}
-        
     </div>
 
 </div>
