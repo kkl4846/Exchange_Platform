@@ -10,6 +10,7 @@ from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from django.core.paginator import Paginator
+from datetime import datetime
 
 URL_LOGIN = '/login/'
 
@@ -370,7 +371,6 @@ def review_delete(request, pk, foreign_id):
 @login_required(login_url=URL_LOGIN)
 def review_update(request, pk, foreign_id):
     post = get_object_or_404(Post, pk=pk)
-
     return review_create(request, foreign_id, post)
 
 
@@ -396,12 +396,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
+    now=datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
+        'now':now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -450,6 +452,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
+            'question':question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 

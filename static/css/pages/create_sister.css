@@ -1,0 +1,21 @@
+.create-sister-form {
+  width: 100%;
+  height: 35px;
+}
+.create-sister-form span {
+  color: var(--m-gray);
+}
+
+.create-sister-form form {
+  width: 88%;
+  height: 100%;
+}
+.create-sister-form select {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+}
+.mb25-hr {
+  margin-bottom: 35px;
+}
