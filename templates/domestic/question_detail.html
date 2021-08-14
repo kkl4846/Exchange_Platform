@@ -55,7 +55,7 @@
                                 <div>
                                     <img class="undercomment-icon" src="/static/css/img/undercomment.png" alt="대댓글">
                                     <span class="post-author">{{ undercomment.comment_author.nickname }}</span>
-                                    <span class="comment-content">{{ undercomment.comment_content }}</span>
+                                    <p class="comment-content">{{ undercomment.comment_content }}</p>
                                 </div>
                                 {% if undercomment.comment_author == request.user %}
                                 <div>
@@ -108,7 +108,7 @@
         element.innerHTML += `
         <div class="comment_${comment_id} comment-container">
             <div class=" d-flex justify-content-between">
-                <div>
+                <div class="d-flex align-items-center">
                     <span class="post-author">{{request.user.nickname}}</span>
                     <span class="comment-date">{{ now |date:"Y.m.d" }} </span>
                 </div>
@@ -118,7 +118,7 @@
                     <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
                 </div>
             </div>
-            <span class="comment-content">${comment_content}</span>
+            <p class="comment-content">${comment_content}</p>
         </div>
         <div class="undercomment_list_${comment_id}"></div>
         <div class="undercomment-container undercomment_${comment_id} d-flex align-items-center"></div>
@@ -132,7 +132,7 @@
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = ` 
             <div class=" d-flex justify-content-between">
-                <div>
+                <div class="d-flex align-items-center">
                     <span class="post-author">{{request.user.nickname}}</span>
                     <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
                 </div>
@@ -162,7 +162,7 @@
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = `
         <div class=" d-flex justify-content-between">
-            <div>
+            <div class="d-flex align-items-center">
                 <span class="post-author">${nickname}</span>
                 <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
             </div>
@@ -172,7 +172,7 @@
                 <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
             </div>
         </div>
-        <span class="comment-content">${comment_content}</span>
+        <p class="comment-content">${comment_content}</p>
         `;
     };
 
@@ -238,7 +238,7 @@
                     <div>
                         <img src="/static/css/img/undercomment.png" alt="대댓글">
                         <span class="post-author">${undercomment_author}</span>
-                        <span class="comment-content">${undercomment_content}</span>
+                        <p class="comment-content">${undercomment_content}</p>
                     </div>
                     <div>
                         <button class="light-button create-btn s-btn" onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
@@ -283,7 +283,7 @@
                 <div>
                     <img src="/static/css/img/undercomment.png" alt="대댓글">
                     <span class="post-author">{{ request.user.nickname }}</span>
-                    <span class="comment-content flex-grow-1">${undercomment_content}</span>
+                    <p class="comment-content flex-grow-1">${undercomment_content}</p>
                 </div>
                 <div>
                     <button class="light-button create-btn s-btn" onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>
