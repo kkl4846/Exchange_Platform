@@ -449,6 +449,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
+            'question':question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 

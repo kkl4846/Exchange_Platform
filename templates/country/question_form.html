@@ -10,10 +10,12 @@
   <hr />
   <form id="frm" method="POST" enctype="multipart/form-data">
     {% csrf_token %} 
-    {{ form.as_p }}
+    <p><input class="question-title" name="question_title" placeholder="제목을 입력하세요." required {% if question.question_title %} value="{{ question.question_title }}" {% endif %}></p>
+    <p><textarea class="question-content" name="question_content" placeholder="내용을 입력하세요." required >{{ question.question_content }}</textarea></p>
   </form>
 </div>
-
+{% endblock %}
+{% block extra %}
 <script>
   const canIPost = (is_authenticated) => {
     if (is_authenticated == "False") {

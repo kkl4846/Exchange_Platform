@@ -250,7 +250,8 @@ def question_edit(request, country_id, pk):
         form = CQuestionForm(instance=question)
         ctx = {
             'form': form,
-            'country': country
+            'country': country,
+            'question':question,
         }
         return render(request, template_name='country/question_form.html', context=ctx)
 
