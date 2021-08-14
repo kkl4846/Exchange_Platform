@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .forms import *
+from datetime import datetime
 
 URL_LOGIN = '/login/'
 
@@ -206,12 +207,14 @@ def question_detail(request, country_id, pk):
     question = CQuestion.objects.get(id=pk)
     comments = question.ccomment_set.all()
     undercomments = CUnderComment.objects.all()
+    now=datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'country': country,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
+        'now':now
     }
     return render(request, template_name='country/question_detail.html', context=ctx)
 
@@ -269,61 +272,42 @@ def question_delete(request, country_id, pk):
 '''
 
 
-@login_required(login_url=URL_LOGIN)
+@csrf_exempt
 def comment_create(request, country_id, pk):
-    country = get_object_or_404(Country, pk=country_id)
-    question = CQuestion.objects.get(id=pk)
-    undercomments = CUnderComment.objects.all()
-    if request.method == 'POST':
-        form = CCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.question = question
-            comment.comment_author = request.user
-            comment.save()
-            return redirect('country:question_detail', country_id, pk)
-    else:
-        form = CCommentForm()
-        ctx = {
-            'form': form,
-            'question': question,
-            'country': country,
-            'is_authenticated': request.user.is_authenticated,
-            'undercomments': undercomments,
-        }
-        return render(request, template_name='country/comment_form.html', context=ctx)
+    req = json.loads(request.body)
+    question_id = req['question_id']
+    new_comment_content = req['comment_content']
+
+    new_comment = CComment.objects.create(
+        question=CQuestion.objects.get(id=question_id),
+        comment_content=new_comment_content,
+        comment_author=request.user
+    )
+    new_comment.save()
+
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id,'comment_content': new_comment_content})
 
 
-@login_required(login_url=URL_LOGIN)
-def comment_edit(request, country_id, comment_id):
-    country = get_object_or_404(Country, pk=country_id)
-    comment = get_object_or_404(CComment, id=comment_id)
-    undercomments = CUnderComment.objects.all()
-    question = comment.question
-    if request.method == 'POST':
-        form = CCommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            comment = form.save()
-            return redirect('country:question_detail', country_id, question.pk)
-    else:
-        form = CCommentForm(instance=comment)
-        ctx = {
-            'form': form,
-            'question': comment.question,
-            'country': country,
-            'is_authenticated': request.user.is_authenticated,
-            'undercomments': undercomments,
-        }
-        return render(request, template_name='country/comment_form.html', context=ctx)
+@csrf_exempt
+def comment_update(request, country_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    edit_comment_content = req['comment_content']
 
+    edit_comment = CComment.objects.get(id=comment_id)
+    edit_comment.comment_content = edit_comment_content
+    edit_comment.save()
 
-def comment_delete(request, country_id, comment_id):
-    comment = CComment.objects.get(id=comment_id)
-    question = comment.question
-    if request.method == 'POST':
-        comment.delete()
-    return redirect('country:question_detail', country_id, question.pk)
+    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
 
+@csrf_exempt
+def comment_delete(request, country_id, pk):
+    req = json.loads(request.body)
+    comment_id = req['comment_id']
+    delete_comment = CComment.objects.get(id=comment_id)
+    delete_comment.delete()
+
+    return JsonResponse({'comment_id': comment_id})
 
 @csrf_exempt
 def undercomment_create(request, country_id, pk):
