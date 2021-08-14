@@ -9,7 +9,7 @@
 }
 .ra_btn {
   text-decoration: none;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .review-detail-name {
   font-weight: 700;
@@ -17,10 +17,8 @@
 .review-detail-top {
   padding-bottom: 10px;
 }
-.review-detail-content {
-  font-weight: normal;
-  font-size: 15px;
-  padding-top: 26px;
+.review-detail-mid {
+  padding-bottom: 26px;
 }
 .review-detail-hr {
   margin-top: 20px;
@@ -41,6 +39,7 @@
   border: none;
   display: inline;
   text-align: center;
+  display: inline;
 }
 .review-comment-form {
   width: 100%;

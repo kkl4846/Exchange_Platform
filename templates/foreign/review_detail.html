@@ -1,84 +1,84 @@
 {%extends "foreign/foreign_base.html"%}
 {%block contents%}
-<div class="container2 category-detail d-flex flex-column">
-    <div class="d-flex justify-content-between align-items-end">
+<div class="container2 category-detail">
+    <div class="d-flex justify-content-between align-items-end" ">
         <div class="d-flex align-items-end ">
             <h3>{{univ.away_name}}</h3>
             <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
         </div>
         <a href="{% url "foreign:review_list" univ.pk %}" class="m-btn light-button" style="text-decoration: none;">목록보기</a>
     </div>
-<hr>
-<div class="review-detail-object">
-    <div class="d-flex justify-content-between align-items-end review-detail-top">
-        <div>
-        <span class="review-detail-title">{{review.title}}</span>
-        <span class="review-detail-date">{{review.away_year}} {{review.away_semester}}</span>
-        </div>
-        <div>
-        {% if IsReviewAuthor %}
-        <form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" class="ReviewDeleteForm" style="  display: inline; background: transparent">
-            {% csrf_token %}
-            <button class="light-button s-btn " onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
-        </form>
-        <button class="light-button s-btn ra_btn" onclick="location.href='{% url "foreign:review_update" univ.pk review.pk%}' ">수정</button>
-        {% endif %}
-        </div>
-    </div>
-    <div>
-    <span class="review-detail-name">{{review.post_author.nickname}}</span>
-    <span class="review-detail-date">{{review.created_at|date:"Y.m.d"}}</span>
-    </div>
-    {{review.content | safe}}
-</div>
-
-<hr class="review-detail-hr">
-
-<div class="post_{{review.id}} post">
-{%if all_comment %}
-{%for comment in all_comment %}
-<div >
-<div class="comment_{{comment.id}} d-flex justify-content-between">
-    {{comment.comment_author.nickname}} &#160; &#160; 
-    {{comment.comment_content}}
-    <div>
-    {% if request.user == comment.comment_author %}
-    <button class="btn btn-outline-secondary update " onclick="EditComment({{comment.id}} ,'{{comment.comment_content}}')">수정</button>
-    <button class="btn btn-outline-secondary delete " onclick="onClickDelete({{comment.id}} )">삭제</button>
-    {%endif%}
-    <button id='recomment' onclick="recommentPlus('{{comment.pk}}')">댓글</button><br/>
-    </div>
-</div>
-</div>
-<div class="recomment_list_{{ comment.pk }}">
-    {% for recomment in recomments  %}
-        {% if recomment.comment == comment %}
-        <div class="d-flex justify-content-between" id="recomment_{{ recomment.pk }}">
+    <hr>
+    <div class="review-detail-object">
+        <div class="d-flex justify-content-between align-items-end review-detail-top">
             <div>
-                <span>👉 {{ recomment.comment_author.nickname }}</span>
-                <span style="margin-left: 30px;">{{ recomment.comment_content }}</span>
+                <span class="review-detail-title">{{review.title}}</span>
+                <span class="review-detail-date">{{review.away_year}} {{review.away_semester}}</span>
             </div>
-            {% if recomment.comment_author == request.user %}
             <div>
-                <button onclick="editReComment('{{ comment.pk }}', '{{ recomment.pk }}','{{ recomment.comment_content }}')">수정</button>
-                <button onclick="onClickDeleteUnder('{{ recomment.pk }}')">삭제</button>
+                {% if IsReviewAuthor %}
+                <button class="light-button create-btn ra_btn" onclick="location.href='{% url "foreign:review_update" univ.pk review.pk%}' ">수정</button>
+                    <form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" class="ReviewDeleteForm" style="  display: inline; background: transparent">
+                        {% csrf_token %}
+                        <button class="light-button create-btn " onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
+                    </form>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
-        {% endif %}
-    {% endfor %}
-    <div class="recomment_{{ comment.pk }}"></div>
-</div>
-{%endfor%}
-{%endif%}
-</div>
+        <div class="review-detail-mid">
+            <span class="review-detail-name">{{review.post_author.nickname}}</span>
+            <span class="review-detail-date">{{review.created_at|date:"Y.m.d"}}</span>
+        </div>
+        {{review.content | safe}}
+    </div>
 
-<form action="./comment_create/" method="POST" class="d-flex justify-content-between align-items-end">
-    {% csrf_token %}
-    <input type="text" name="comment_content" id="comment_{{review.id}}" placeholder='댓글달기...' style="width: 80%;"/>
-    <div type="submit" class="blue-button review-detail-submitbtn" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">등록</div>
-    <!-- 이유는 모르겠으나 div가 아닌 button,input이면 오류가 남,,, -->
-</form>
+    <hr class="review-detail-hr">
+
+    <div class="post_{{review.id}} post">   
+        {%if all_comment %}
+        {%for comment in all_comment %}
+        <div >
+            <div class="comment_{{comment.id}} d-flex justify-content-between">
+                {{comment.comment_author.nickname}} &#160; &#160; 
+                {{comment.comment_content}}
+                <div>
+                    {% if request.user == comment.comment_author %}
+                    <button class="s-btn light-button" onclick="EditComment({{comment.id}} ,'{{comment.comment_content}}')">수정</button>
+                    <button class="s-btn light-button" onclick="onClickDelete({{comment.id}} )">삭제</button>
+                    {%endif%}
+                    <button class="s-btn light-button" id='recomment' onclick="recommentPlus('{{comment.pk}}')">댓글</button><br/>
+                </div>
+            </div>
+        </div>
+        <div class="recomment_list_{{ comment.pk }}">
+            {% for recomment in recomments  %}
+                {% if recomment.comment == comment %}
+                <div class="d-flex justify-content-between" id="recomment_{{ recomment.pk }}">
+                    <div>
+                        <span>👉 {{ recomment.comment_author.nickname }}</span>
+                        <span style="margin-left: 30px;">{{ recomment.comment_content }}</span>
+                    </div>
+                    {% if recomment.comment_author == request.user %}
+                    <div>
+                        <button class="s-btn light-button" onclick="editReComment('{{ comment.pk }}', '{{ recomment.pk }}','{{ recomment.comment_content }}')">수정</button>
+                        <button class="s-btn light-button" onclick="onClickDeleteUnder('{{ recomment.pk }}')">삭제</button>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="recomment_{{ comment.pk }}"></div>
+        {%endfor%}
+        {%endif%}
+    </div>
+
+    <form action="./comment_create/" method="POST">
+        {% csrf_token %}
+        <input type="text" name="comment_content" id="comment_{{review.id}}" placeholder='답변 달기...' style="width: 80%;"/>
+        <span type="submit" class="blue-button review-detail-submitbtn" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">등록</span>
+        <!-- 이유는 모르겠으나 위의 버튼이 div,span가 아닌 button,input이면 오류가 남,,, -->
+    </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -110,14 +110,14 @@
         <div class="comment_${comment_id} d-flex justify-content-between">
             {{request.user.nickname}} &#160; &#160; ${comment_content}
             <div>
-                <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
-                <div class="btn btn-outline-secondary delete" onclick="onClickDelete(${comment_id})">삭제</div>
-                <button id='recomment' onclick="recommentPlus(${comment_id})">댓글</button><br/>
+                <button class="s-btn light-button" onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+                <div class="s-btn light-button" onclick="onClickDelete(${comment_id})">삭제</div>
+                <button class="s-btn light-button" id='recomment' onclick="recommentPlus(${comment_id})">댓글</button><br/>
             </div>
         </div>
-        <div class="recomment_list_${ comment_id }">
-            <div class="recomment_${ comment_id }"></div>
-        </div>
+        <div class="recomment_list_${ comment_id }"></div>
+        <div class="recomment_${ comment_id }"></div>
+
         `
         element.appendChild(newDiv)
         //댓글 입력창 비워주기
@@ -130,7 +130,7 @@
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = ` 
             <input type="text" id="edit_comment" value=${comment_content} class="w-75"/>
-            <button class="btn btn-sm btn-outline-dark" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">수정</button>
+            <button class="s-btn blue-button" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">수정</button>
             `
 
     }
@@ -156,9 +156,9 @@
         ${nickname} &#160; &#160; 
         ${comment_content}
         <div>
-        <button class="btn btn-outline-secondary update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
-        <button class="btn btn-outline-secondary delete " onclick="onClickDelete(${comment_id} )">삭제</button>
-        <button id='recomment' onclick="recommentPlus(${comment_id})">댓글</button><br/>
+        <button class="s-btn light-button" onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+        <button class="s-btn light-button" onclick="onClickDelete(${comment_id} )">삭제</button>
+        <button class="s-btn light-button" id='recomment' onclick="recommentPlus(${comment_id})">댓글</button><br/>
         </div>
         `
     }
@@ -199,8 +199,8 @@
         const originHTML = element.innerHTML;
             
         element.innerHTML = `
-            <input type="text" id="new-recomment" placeholder="댓글을 입력해주세요." class="w-75"/>
-            <button class="btn btn-sm btn-outline-dark" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-recomment').value)">확인</button>
+            <input type="text" id="new-recomment" placeholder="댓글 달기..." class="w-75"/>
+            <button class="s-btn blue-button" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-recomment').value)">등록</button>
         `
         }
         
@@ -229,8 +229,8 @@
                     <span style="margin-left: 30px;">${recomment_content}</span>
                 </div>
                 <div>
-                    <button onclick="editReComment('${comment_id}', '${recomment_id}','${recomment_content}')">수정</button>
-                    <button onclick="onClickDeleteUnder('${recomment_id}')">삭제</button>
+                    <button class="s-btn light-button" onclick="editReComment('${comment_id}', '${recomment_id}','${recomment_content}')">수정</button>
+                    <button class="s-btn light-button" onclick="onClickDeleteUnder('${recomment_id}')">삭제</button>
                 </div>
                 `
                 element.appendChild(newDiv)
@@ -245,7 +245,7 @@
             
         element.innerHTML = `
             <input type="text" id="edit-recomment" value=${recomment_content} class="w-75"/>
-            <button class="btn btn-sm btn-outline-dark" onclick="onClickEditUnder('${comment_id}', '${recomment_id}', document.querySelector('#edit-recomment').value)">수정</button>
+            <button class="s-btn blue-button" onclick="onClickEditUnder('${comment_id}', '${recomment_id}', document.querySelector('#edit-recomment').value)">저장</button>
         `
     }
 
@@ -270,8 +270,8 @@
             <span style="margin-left: 30px;">${recomment_content}</span>
         </div>
         <div>
-            <button onclick="editReComment('${comment_id}', '${recomment_id}','${recomment_content}')">수정</button>
-            <button onclick="onClickDeleteUnder('${recomment_id}')">삭제</button>
+            <button class="s-btn light-button" onclick="editReComment('${comment_id}', '${recomment_id}','${recomment_content}')">수정</button>
+            <button class="s-btn light-button" onclick="onClickDeleteUnder('${recomment_id}')">삭제</button>
         </div>
         `
         const editInput = document.querySelector(`.recomment_${comment_id}`);
