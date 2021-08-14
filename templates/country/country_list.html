@@ -6,7 +6,7 @@
     <div class="lbar d-flex align-items-center">
         <div class="lforeign_list d-flex justify-content-around text-center ">
         {% for key, val in countries_dict.items %}
-        <a href="#{{ key }}">{{ key }}</a>
+        <a href="#{{ key }}" class="list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
         {% endfor %}
         </div>
     </div>
@@ -28,4 +28,21 @@
     {% endautoescape %}
     </div>
 </div>
+<script>
+
+    const clickAlpha = (key)=>{
+        var topKey = document.querySelectorAll('.lforeign_list a');
+        for(i=0;i<topKey.length;i++){
+            topKey[i].className="list-unactive"    /*초기화*/
+            var element = topKey[i].innerHTML;
+            var midKey = document.querySelector(`#${element}`)
+                midKey.className = "lalpha"
+            if(key == topKey[i].innerHTML){
+                topKey[i].className="list-active"
+                midKey = document.querySelector(`#${key}`)
+                midKey.className = "lalpha-active"
+            }
+        }
+    }
+    </script>
 {% endblock %}
