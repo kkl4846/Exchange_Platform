@@ -6,7 +6,7 @@
     <div class="lbar d-flex align-items-center">
     <div class="lforeign_list d-flex justify-content-around text-center ">
     {% for key, val in univ_dict.items %}
-    <a href="#{{ key }}" class="list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
+    <a href="#{{ key }}" class="lbar_alpha list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
     {% endfor %}
     </div>
     <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
@@ -32,10 +32,11 @@ function list(startAlpha){
     var parent = document.querySelector('.lforeign_list')
     var foreign_list = document.querySelectorAll(`.lforeign_list .lbar_alpha`);
     var startnum =startAlpha.charCodeAt(0);
-    
+    console.log(foreign_list.length)
     for(i=0;i<foreign_list.length;i++){
         for(j=startnum ; j<foreign_list[i].innerHTML.charCodeAt(0) ; j++){
             var newSpan = document.createElement('span');
+            newSpan.className = "list-nullKey"
             newSpan.textContent = String.fromCharCode(j);
             parent.insertBefore(newSpan, foreign_list[i]);
         }
