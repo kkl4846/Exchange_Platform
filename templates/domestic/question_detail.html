@@ -27,9 +27,9 @@
         <p class="post-content">{{ question.question_content }}</p>
         <hr class="post-hr" style="margin:none;">
         <div>
-            <div class="post_{{question.id}}">
+            <div class="post_{{ question.id }}">
                 {%for comment in comments %}
-                <div class="comment_{{comment.id}} comment-container">
+                <div class="comment_{{ comment.id }} comment-container">
                     <div class=" d-flex justify-content-between">
                         <div class="d-flex align-items-center">
                             <span class="post-author">{{ comment.comment_author.nickname }}</span>
@@ -39,7 +39,7 @@
                             {% if request.user == comment.comment_author %}
                             <button class="light-button create-btn s-btn update " onclick="EditComment('{{ comment.id }}' ,'{{ comment.comment_content }}')">수정</button>
                             <button class="light-button create-btn s-btn post-button delete " onclick="onClickDelete('{{ comment.id }}' )">삭제</button>
-                            {%endif%}
+                            {% endif %}
                             {% if is_enrolled == 'True' %}
                             <button class="light-button create-btn s-btn post-button" id='undercomment' onclick="undercommentPlus('{{ comment.id }}')">댓글</button><br/>
                             {% endif %}
@@ -202,7 +202,7 @@
         const temp = document.querySelector(`.undercomment_${comment_id}`);
         temp.remove();
         
-    }
+    };
 
   //대댓글 생성
 

@@ -10,6 +10,7 @@ from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from django.core.paginator import Paginator
+from datetime import datetime
 
 URL_LOGIN = '/login/'
 
@@ -395,12 +396,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
+    now=datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
+        'now':now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
