@@ -13,8 +13,8 @@
             <span class="post-title">{{ question.question_title }}</span>
             <div class="d-flex justify-content-end">
                 {% if question.author.pk == user.pk %}
-                <button class="light-button create-btn m-btn " onclick="location.href='{% url "foreign:question_edit" country.pk question.pk %}'"> 수정 </button>
-                <form action="{% url 'foreign:question_delete' country.pk question.pk %}" method="post" >
+                <button class="light-button create-btn m-btn " onclick="location.href='{% url "country:question_edit" country.pk question.pk %}'"> 수정 </button>
+                <form action="{% url 'country:question_delete' country.pk question.pk %}" method="post" >
                     {% csrf_token %}
                     <button class="light-button create-btn m-btn post-button" onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
                 </form>
