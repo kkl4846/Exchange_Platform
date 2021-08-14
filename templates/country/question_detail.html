@@ -260,7 +260,7 @@
         <div class="undercomment-container d-flex align-items-center">
             <img src="/static/css/img/undercomment.png" alt="대댓글">
             <span class="post-author">{{ request.user.nickname }}</span>
-            <input class="new-undercomment-input flex-grow-1" type="text" id="edit-undercomment" value=${undercomment_content} />
+            <input class="new-undercomment-input flex-grow-1" type="text" id="edit-undercomment" value='${undercomment_content}' />
             <button class="blue-button create-btn s-btn post-button" onclick="onClickEditUnder('${comment_id}', '${undercomment_id}', document.querySelector('#edit-undercomment').value)">저장</button>
         </div>
         `
