@@ -8,7 +8,7 @@
             <button class="light-button create-btn md-btn" onclick="location.href='{% url "domestic:question_list" domestic.pk %}'"> 목록보기 </button>
         </div>
         <hr>
-        <div class="d-flex justify-content-between">
+        <div class="post-header d-flex justify-content-between">
             <span class="post-title">{{ question.question_title }}</span>
             <div class="d-flex justify-content-end">
                 {% if question.author.pk == user.pk %}

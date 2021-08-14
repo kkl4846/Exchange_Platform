@@ -368,7 +368,6 @@ def comment_update(request, domestic_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     edit_comment_content = req['comment_content']
-    print(edit_comment_content)
     edit_comment = DComment.objects.get(id=comment_id)
     edit_comment.comment_content = edit_comment_content
     edit_comment.save()
@@ -478,7 +477,6 @@ def sister_add(request, domestic_id):
             return redirect('domestic:sister_list', domestic_id)
         else:
             univs = Foreign.objects.all()
-            print(univs)
             ctx = {
                 'domestic': domestic,
                 'is_authenticated': user.is_authenticated,
