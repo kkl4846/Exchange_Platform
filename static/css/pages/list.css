@@ -9,7 +9,6 @@
 .lforeign_list {
   width: 951px;
   border-radius: 10px;
-  background-color: var(--bg);
   line-height: 22px;
   margin-right: 15px;
 }
@@ -24,7 +23,6 @@
 }
 .lforeign_list a:active {
   background-color: var(--blue);
-  color: var(--bg);
 }
 .lforeign_list span {
   font-weight: lighter;

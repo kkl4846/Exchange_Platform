@@ -1,0 +1,116 @@
+.credit-list hr {
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+.credit-search {
+  width: 285px;
+  height: 28px;
+  border-radius: 14px;
+  border: none;
+  padding: 9px 0px 9px 90px;
+  font-size: 12px;
+}
+
+.credit-search:focus {
+  outline: none;
+}
+
+.credit-search:visited {
+  background-color: white;
+}
+
+.credit-option {
+  border: none;
+  height: 28px;
+  font-size: 12px;
+  position: absolute;
+  margin-right: 200px;
+  width: 69px;
+  padding: 0;
+  border-radius: 20px;
+}
+
+.credit-option:focus {
+  outline: none;
+}
+
+.credit-button {
+  width: 14px;
+  height: 14px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  margin-top: 5px;
+  margin-left: 235px;
+}
+
+.credit-list th {
+  font-size: 14px;
+  color: var(--m-gray);
+  padding-bottom: 20px;
+}
+
+.credit-list td {
+  height: 45px;
+}
+
+.credit-list .page-number {
+  margin: 0 20px;
+}
+
+.credit-list .numbering {
+  font-size: 17px;
+  border-radius: 14px;
+  background-color: var(--l-gray);
+  width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  margin: 0 3px;
+  text-decoration: none;
+  color: var(--d-gray);
+}
+
+.credit .numbering:focus {
+  font-weight: normal;
+}
+
+.credit-list .fa-chevron-right,
+.credit-list .fa-chevron-left {
+  color: var(--m-gray);
+}
+
+.credit-list .fa-chevron-right:hover,
+.credit-list .fa-chevron-left:hover {
+  cursor: pointer;
+}
+
+.credit-form {
+  margin-left: 23px;
+}
+
+.credit-form p {
+  margin: 20px 0;
+}
+
+.credit-form label {
+  font-size: 15px;
+  color: var(--m-gray);
+}
+
+.credit-form input,
+.credit-form select {
+  height: 35px;
+  width: 879px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  padding: 0px 15px;
+  margin-left: 15px;
+  color: var(--d-gray);
+}
+
+.credit-form input,
+select:focus {
+  outline: none;
+}
