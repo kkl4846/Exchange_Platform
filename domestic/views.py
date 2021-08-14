@@ -8,6 +8,7 @@ from jamo import h2j, j2hcj
 from .models import *
 from .forms import *
 from foreign.models import *
+from datetime import datetime
 
 URL_LOGIN = '/login/'
 
@@ -225,6 +226,7 @@ def question_detail(request, domestic_id, pk):
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
             is_enrolled = 'True'
+    now=datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
@@ -232,6 +234,7 @@ def question_detail(request, domestic_id, pk):
         'domestic': domestic,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
+        'now':now
     }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
