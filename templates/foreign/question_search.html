@@ -83,11 +83,7 @@
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
         }else{
-            if(is_enrolled == 'False'){
-                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
-            }else{
-                window.location.href='{% url "foreign:question_create" univ.pk %}';
-            }
+            window.location.href='{% url "foreign:question_create" univ.pk %}';
         }
     };
 
