@@ -36,3 +36,8 @@
 .review-list .fa-chevron-left {
   color: var(--m-gray);
 }
+
+.review-list-hr {
+  margin-top: 40px;
+  margin-bottom: 15px !important;
+}
