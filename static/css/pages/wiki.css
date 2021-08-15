@@ -17,3 +17,12 @@
   display: flex;
   justify-content: space-between;
 }
+.wiki__content textarea {
+  border: none;
+  border-radius: 10px;
+  height: 275px;
+  margin-bottom: 70px;
+}
+textarea:focus {
+  outline: none;
+}

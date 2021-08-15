@@ -5,12 +5,12 @@
   height: 30px;
   padding-bottom: 50px;
   padding-top: 20px;
+  margin-top: 15px;
 }
 .lforeign_list {
-  width: 951px;
+  width: 1040px;
   border-radius: 10px;
   line-height: 22px;
-  margin-right: 15px;
   background-color: white;
 }
 .lforeign_list .list-unactive {
@@ -48,6 +48,7 @@
   height: 28px;
   font-size: 14px;
   border-radius: 21px;
+  margin-left: 15px;
   border: none;
 }
 
