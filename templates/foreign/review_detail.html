@@ -264,8 +264,9 @@
             //대댓글 수정
     const editReComment = (comment_id, recomment_id, recomment_content) => {
         const element = document.querySelector(`.recomment_${comment_id}`);
+        element.className = `d-flex align-items-center  recomment_${comment_id} post-input-margin`;
         element.innerHTML = `
-            <input type="text" id="edit-recomment" class="new-undercomment-input flex-grow-1 post-input-margin" value=${recomment_content}  />
+            <input type="text" id="edit-recomment" class="new-undercomment-input flex-grow-1 " value=${recomment_content}  />
             <button class="s-btn blue-button" onclick="onClickEditUnder('${comment_id}', '${recomment_id}', document.querySelector('#edit-recomment').value)">저장</button>
         `
     }
