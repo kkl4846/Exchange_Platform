@@ -200,17 +200,15 @@ def wiki_edit_insurance(request, domestic_id):
 
 def question_list(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    questions = domestic.dquestion_set.all()
+    questions = domestic.dquestion_set.order_by('-pk')
 
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
         is_enrolled = 'True'
-
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
@@ -322,7 +320,7 @@ def question_delete(request, domestic_id, pk):
 
 def question_search(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    questions = domestic.dquestion_set.all()
+    questions = domestic.dquestion_set.order_by('-pk')
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
@@ -517,7 +515,7 @@ def sister_add(request, domestic_id):
 
 def credit_list(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
-    credit_posts = domestic.credit_set.all()
+    credit_posts = domestic.credit_set.order_by('-pk')
 
     paginator = Paginator(credit_posts, 20)
     page_number = request.GET.get('page')
@@ -582,7 +580,7 @@ def credit_create(request, domestic_id):
 
 def credit_search(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
-    credit_posts = domestic.credit_set.all()
+    credit_posts = domestic.credit_set.order_by('-pk')
 
     filter = request.POST.get('filter', "")
     q = request.POST.get('q', "")

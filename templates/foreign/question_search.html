@@ -16,7 +16,6 @@
             </div>
         </div>
         <hr>
-        {% if page_obj %}
         <table>
             <tr align='center'>
                 <th width='50'>번호</th>
@@ -31,20 +30,13 @@
             </tr>
             {% endfor %}
         </table>
-        {% else %}
-        <table>
-            <tr align='center'>
-                <th width='50'>번호</th>
-                <th width='880' >제목</th>
-                <th width='80'>날짜</th>
-            </tr>
-        </table>
+        {% if not page_obj %}
         <p align='center'>검색 결과가 없습니다.</p>
         {% endif %}
         <div class="pagination qna-pagination d-flex justify-content-center">
             <div>
                 {% if page_obj.has_previous %}
-                    <a class="abutton" href="?page1={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
                 {% else %}
                     <a class="abutton"><i class="fas fa-chevron-left"></i></a>
                 {% endif %}
@@ -53,7 +45,7 @@
                 {% for page in page_obj.paginator.page_range %}
                     {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
                         <span class="{% if page == page_obj.number %}current{% endif %}">
-                            <a class="numbering" href="?page1={{ page }}" {% if page == page_obj.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page }}</a>
+                            <a class="numbering" href="?page={{ page }}" {% if page == page_obj.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page }}</a>
                         </span>
                     {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
                         <span>..</span>
@@ -62,7 +54,7 @@
             </div>
             <div>
                 {% if page_obj.has_next %}
-                    <a class="abutton" href="?page1={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    <a class="abutton" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
                 {% else %}
                     <a class="abutton"><i class="fas fa-chevron-right"></i></a>
                 {% endif %}
