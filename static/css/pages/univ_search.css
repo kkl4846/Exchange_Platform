@@ -56,5 +56,7 @@
 .lsearch-icon {
   position: absolute;
   font-size: 12px;
-  text-align: start;
+  right: 1%;
+  height: 100%;
+  color: var(--d-gray);
 }

@@ -49,6 +49,8 @@ class Comment(models.Model):
     comment_content = models.TextField()
     post = models.ForeignKey(Post, on_delete=CASCADE,
                              related_name="post_comment")
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.comment_content
