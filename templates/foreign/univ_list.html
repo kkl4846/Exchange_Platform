@@ -9,7 +9,7 @@
         <a href="#{{ key }}" class="lbar_alpha list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
         {% endfor %}
         </div>
-        <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+        <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교추가</button>
     </div>
     <div>
         {% for key, val in univ_dict.items %}
