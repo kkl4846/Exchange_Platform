@@ -1,6 +1,6 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div class="container2 category-detail">
+    <div class="container2 category-detail wiki__content">
         <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
@@ -9,23 +9,19 @@
         <hr>
         <form action="" method="POST" enctype="multipart/form-data" class="table">
             {% csrf_token %}
+            <div class="d-flex justify-content-between align-items-center wiki__li-title">
             {% for field in form %}
             {% if btn == forloop.counter%}
-            {%if field.name == 'home_apply'%} <p>1.지원 방법</p>  {%endif%}
-            {%if field.name == 'home_document'%}<p>2.필요 서류</p>   {%endif%}
-            {%if field.name == 'semester'%} <p>3.수학 가능 학기</p>  {%endif%}
-            {%if field.name == 'home_scholarship'%} <p> 4.교내 장학금 정보</p> {%endif%}
-            {%if field.name == 'insurance'%} <p>5.유학생 보험 준비</p> {%endif%}
-            
+                {%if field.name == 'home_apply'%} <h4>1.지원 방법</h4>  {%endif%}
+                {%if field.name == 'home_document'%}<h4>2.필요 서류</h4>   {%endif%}
+                {%if field.name == 'semester'%} <h4>3.수학 가능 학기</h4>  {%endif%}
+                {%if field.name == 'home_scholarship'%} <h4> 4.교내 장학금 정보</h4> {%endif%}
+                {%if field.name == 'insurance'%} <h4>5.유학생 보험 준비</h4> {%endif%}
+                <input class="blue-button m-btn" type="submit" value="저장하기" onclick="onClickEditWiki()"/>
+            </div>
             <div class="form-group">
                 <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
                     id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
-            </div>
-            <input type="submit" value="저장하기" onclick="onClickEditWiki()"/>
-            {% else %}
-            <div class="form-group">
-                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
             </div>
             {%endif%}
             {% endfor %}
