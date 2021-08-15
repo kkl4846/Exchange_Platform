@@ -4,12 +4,12 @@
 <div class="lbody d-flex flex-column">
     <div class="container">
     <div class="lbar d-flex align-items-center">
-    <div class="lforeign_list d-flex justify-content-around text-center ">
-    {% for key, val in univ_dict.items %}
-    <a href="#{{ key }}" class="lbar_alpha list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
-    {% endfor %}
-    </div>
-    <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+        <div class="lforeign_list d-flex justify-content-around text-center ">
+        {% for key, val in univ_dict.items %}
+        <a href="#{{ key }}" class="lbar_alpha list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
+        {% endfor %}
+        </div>
+        <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
     </div>
     <div>
         {% for key, val in univ_dict.items %}
