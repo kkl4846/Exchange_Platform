@@ -51,7 +51,7 @@
                     {% for undercomment in undercomments  %}
                         {% if undercomment.comment == comment %}
                         <div id="undercomment_{{ undercomment.pk }}">
-                            <div class="undercomment-container d-flex justify-content-between">
+                            <div class="undercomment-container d-flex justify-content-between align-items-center">
                                 <div>
                                     <img class="undercomment-icon" src="/static/css/img/undercomment.png" alt="대댓글">
                                     <span class="post-author">{{ undercomment.comment_author.nickname }}</span>
@@ -68,7 +68,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="undercomment-container undercomment_{{ comment.pk }} d-flex align-items-center" ></div>
+                <div class=" undercomment_{{ comment.pk }}" ></div>
                 {% endfor %}
             </div>
             {% if is_enrolled == 'True' %}
@@ -121,7 +121,7 @@
             <p class="comment-content">${comment_content}</p>
         </div>
         <div class="undercomment_list_${comment_id}"></div>
-        <div class="undercomment-container undercomment_${comment_id} d-flex align-items-center"></div>
+        <div class="undercomment-container undercomment_${comment_id}"></div>
         `;
         const input_content = document.querySelector(`#comment_${question_id}`);
         input_content.value = null;
@@ -209,10 +209,12 @@
     const undercommentPlus = (comment_id) => {
         const element = document.querySelector(`.undercomment_${comment_id}`);
         element.innerHTML = `
+        <div class="undercomment-container d-flex align-items-center">
             <img src="/static/css/img/undercomment.png" alt="대댓글">
             <span class="post-author">{{ request.user.nickname }}</span>
             <input class="new-undercomment-input flex-grow-1" type="text" id="new-undercomment" placeholder="댓글 달기..."/>
             <button class="blue-button create-btn s-btn post-button" onclick="onClickUnderComment('{{ is_authenticated }}', ${comment_id}, document.querySelector('#new-undercomment').value)">등록</button>
+        </div>
             `;
     };
         
@@ -234,7 +236,7 @@
             const element = document.querySelector(`.undercomment_list_${comment_id}`);
             element.innerHTML += `
             <div id="undercomment_${undercomment_id}">
-                <div class="undercomment-container d-flex justify-content-between">
+                <div class="undercomment-container d-flex justify-content-between align-items-center">
                     <div>
                         <img src="/static/css/img/undercomment.png" alt="대댓글">
                         <span class="post-author">${undercomment_author}</span>
@@ -279,11 +281,11 @@
     const underEditHandleResponse = (comment_id, undercomment_id, undercomment_author, undercomment_content) => {
         const element = document.querySelector(`#undercomment_${undercomment_id}`);
         element.innerHTML = `
-            <div class="undercomment-container d-flex justify-content-between">
+            <div class="undercomment-container d-flex justify-content-between align-items-center">
                 <div>
                     <img src="/static/css/img/undercomment.png" alt="대댓글">
                     <span class="post-author">{{ request.user.nickname }}</span>
-                    <p class="comment-content flex-grow-1">${undercomment_content}</p>
+                    <p class="comment-content">${undercomment_content}</p>
                 </div>
                 <div>
                     <button class="light-button create-btn s-btn" onclick="editUnderComment('${comment_id}', '${undercomment_id}','${undercomment_content}')">수정</button>

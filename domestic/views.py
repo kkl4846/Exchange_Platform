@@ -95,7 +95,7 @@ def wiki_edit_document(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 2,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
@@ -124,7 +124,7 @@ def wiki_edit_semester(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 3,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
@@ -153,7 +153,7 @@ def wiki_edit_scholarship(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 4,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
@@ -182,7 +182,7 @@ def wiki_edit_insurance(request, domestic_id):
             form = DomesticForm(instance=domestic)
             ctx = {
                 'form': form,
-                'univ': domestic,
+                'domestic': domestic,
                 'btn': 5,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
