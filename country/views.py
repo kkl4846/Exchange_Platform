@@ -169,7 +169,7 @@ def country_univ(request, pk):
 def question_list(request, country_id):
     country = get_object_or_404(Country, pk=country_id)
     questions = CQuestion.objects.filter(country=country)
-    questions = questions.order_by('-created_at')
+    questions = questions.order_by('-pk')
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -183,7 +183,7 @@ def question_list(request, country_id):
 
 def question_search(request, country_id):
     country = get_object_or_404(Country, pk=country_id)
-    questions = country.cquestion_set.all()
+    questions = country.cquestion_set.order_by('-pk')
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
