@@ -30,7 +30,6 @@ def country_list(request):
     g_cho = 'ㄱ'
     if len(countries_dict[g_cho]) == 0:
         del(countries_dict[g_cho])
-    # print(countries_dict)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
 
@@ -207,14 +206,14 @@ def question_detail(request, country_id, pk):
     question = CQuestion.objects.get(id=pk)
     comments = question.ccomment_set.all()
     undercomments = CUnderComment.objects.all()
-    now=datetime.now()
+    now = datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'country': country,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
-        'now':now
+        'now': now
     }
     return render(request, template_name='country/question_detail.html', context=ctx)
 
@@ -254,7 +253,7 @@ def question_edit(request, country_id, pk):
         ctx = {
             'form': form,
             'country': country,
-            'question':question,
+            'question': question,
         }
         return render(request, template_name='country/question_form.html', context=ctx)
 
@@ -285,7 +284,7 @@ def comment_create(request, country_id, pk):
     )
     new_comment.save()
 
-    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id,'comment_content': new_comment_content})
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content})
 
 
 @csrf_exempt
@@ -300,6 +299,7 @@ def comment_update(request, country_id, pk):
 
     return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
 
+
 @csrf_exempt
 def comment_delete(request, country_id, pk):
     req = json.loads(request.body)
@@ -308,6 +308,7 @@ def comment_delete(request, country_id, pk):
     delete_comment.delete()
 
     return JsonResponse({'comment_id': comment_id})
+
 
 @csrf_exempt
 def undercomment_create(request, country_id, pk):
