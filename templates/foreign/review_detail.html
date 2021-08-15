@@ -56,7 +56,7 @@
         <div class="recomment_list_{{ comment.pk }}">
             {% for recomment in recomments  %}
                 {% if recomment.comment == comment %}
-                <div class="undercomment-container d-flex justify-content-between" id="recomment_{{ recomment.pk }}">
+                <div class="undercomment-container d-flex justify-content-between " id="recomment_{{ recomment.pk }}">
                     <div>
                         <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
                         <span class="post-author">{{ recomment.comment_author.nickname }}</span>
@@ -240,7 +240,7 @@
         const underCommentHandleResponse = (comment_id, recomment_id, recomment_author, recomment_content) => {
                 const element = document.querySelector(`.recomment_list_${comment_id}`);
                 const newDiv = document.createElement('div')
-                newDiv.className = "d-flex justify-content-between";
+                newDiv.className = "undercomment-container d-flex justify-content-between";
                 newDiv.id = `recomment_${recomment_id}`
                 
                 newDiv.innerHTML = `
