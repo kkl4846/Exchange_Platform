@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="d-flex justify-content-evenly ">
+    
         <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center"
             style="width:200px; height:150px;">
             <ul>
@@ -10,9 +10,7 @@
                 <li><a href="{% url "country:country_univ" country.pk%}">학교 목록</a></li>
             </ul>
         </div>
-            {% block contents %}
-            {% endblock %}
-
+        {% endblock %}
     </div>
 
 {% endblock %}
