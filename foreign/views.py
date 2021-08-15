@@ -382,7 +382,7 @@ def review_update(request, pk, foreign_id):
 def question_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     questions = FQuestion.objects.filter(away_university=foreign)
-    questions = questions.order_by('-created_at')
+    questions = questions.order_by('-pk')
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -468,7 +468,7 @@ def question_delete(request, foreign_id, pk):
 
 def question_search(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
-    questions = foreign.fquestion_set.all()
+    questions = foreign.fquestion_set.order_by('-pk')
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
