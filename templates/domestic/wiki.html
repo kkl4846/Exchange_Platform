@@ -8,30 +8,40 @@
         </div>
         <hr>
         <div class="wiki__content">
-            <div>
-                <h4>1. 지원 방법</h4>
-                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
-                <p>{{ domestic.home_apply }}</p>
+            <div class="wiki__li">
+                <div class="wiki__li-title">
+                    <h4>1. 지원 방법</h4>
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
+                </div>
+                <pre>{{ domestic.home_apply }}</pre>
             </div>
-            <div>
-                <h4>2. 필요 서류</h4>
-                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
-                <p>{{ domestic.home_document }}</p>
+            <div class="wiki__li">
+                <div class="wiki__li-title">
+                    <h4>2. 필요 서류</h4>
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
+                </div>
+                <pre>{{ domestic.home_document }}</pre>
             </div>
-            <div>
-                <h4>3. 수학 가능 학기</h4>
-                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
-                <p>{{ domestic.semester }}</p>
+            <div class="wiki__li">
+                <div class="wiki__li-title">
+                    <h4>3. 수학 가능 학기</h4>
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
+                </div>
+                <pre>{{ domestic.semester }}</pre>
             </div>
-            <div>
-                <h4>4. 교내 장학금 정보</h4>
-                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
-                <p>{{ domestic.home_scholarship }}</p>
+            <div class="wiki__li">
+                <div class="wiki__li-title">
+                    <h4>4. 교내 장학금 정보</h4>
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
+                </div>
+                <pre>{{ domestic.home_scholarship }}</pre>
             </div>
-            <div>
-                <h4>5. 유학생 보험 준비</h4>
-                <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
-                <p>{{ domestic.insurance }}</p>
+            <div class="wiki__li">
+                <div class="wiki__li-title">
+                    <h4>5. 유학생 보험 준비</h4>
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              
+                </div>
+                <pre>{{ domestic.insurance }}</pre>
             </div>
         </div>
 {% endblock %}
