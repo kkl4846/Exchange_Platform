@@ -1,6 +1,6 @@
 {%extends "foreign/foreign_base.html"%}
 {%block contents%}
-<div class="container2 category-detail">
+<div class="container2 category-detail post-content-padding">
     <div class="d-flex justify-content-between align-items-end" ">
         <div class="d-flex align-items-end ">
             <h3>{{univ.away_name}}</h3>
@@ -37,7 +37,7 @@
     <div class="post_{{review.id}} post">   
         {%if all_comment %}
         {%for comment in all_comment %}
-        <div>
+        <div class="">
             <div class="comment_{{comment.id}} d-flex justify-content-between">
                 <div>
                     <span class="post-author">{{ comment.comment_author.nickname }}</span>

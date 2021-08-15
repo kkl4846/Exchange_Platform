@@ -51,3 +51,7 @@
   border-radius: 10px;
   border: none;
 }
+
+.post-content-padding {
+  padding-bottom: 170px;
+}
