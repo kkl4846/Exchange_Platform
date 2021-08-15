@@ -67,3 +67,7 @@
 .post-list .fa-chevron-left:hover {
   cursor: pointer;
 }
+
+.qna-pagination {
+  margin-top: 35px;
+}

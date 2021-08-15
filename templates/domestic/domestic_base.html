@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="d-flex">
-        <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
-            <ul>
-                <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
-                <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
-                <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
-                <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
-            </ul>
-        </div>
+<div class="d-flex">
+    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
+        <ul>
+            <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
+            <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
+            <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
+            <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
+        </ul>
+    </div>
     <div>
     {% block contents %}
     {% endblock %}
