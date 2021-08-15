@@ -1,6 +1,6 @@
 {%extends "foreign/foreign_base.html"%}
 {%block contents%}
-<div class="container2 category-detail">
+<div class="container2 category-detail post-content-padding">
     <div class="d-flex justify-content-between align-items-end" ">
         <div class="d-flex align-items-end ">
             <h3>{{univ.away_name}}</h3>
@@ -38,41 +38,43 @@
         {%if all_comment %}
         {%for comment in all_comment %}
         <div>
-            <div class="comment_{{comment.id}} d-flex justify-content-between">
-                <div>
-                    <span class="post-author">{{ comment.comment_author.nickname }}</span>
-                    <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
-                </div>
-                <div>
-                    {% if request.user == comment.comment_author %}
-                    <button class="light-button s-btn update" onclick="EditComment({{comment.id}} ,'{{comment.comment_content}}')">수정</button>
-                    <button class="light-button s-btn post-button delete" onclick="onClickDelete({{comment.id}} )">삭제</button>
-                    {%endif%}
-                    <button class="light-button s-btn post-button" id='recomment' onclick="recommentPlus('{{comment.pk}}')">댓글</button><br/>
-                </div>
-            </div>
-            <span class="comment-content">{{ comment.comment_content }}</span>
-        </div>
-        <div class="recomment_list_{{ comment.pk }}">
-            {% for recomment in recomments  %}
-                {% if recomment.comment == comment %}
-                <div class="undercomment-container d-flex justify-content-between " id="recomment_{{ recomment.pk }}">
+            <div class="post-comment-padding">
+                <div class="comment_{{comment.id}} d-flex justify-content-between">
                     <div>
-                        <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
-                        <span class="post-author">{{ recomment.comment_author.nickname }}</span>
-                        <span class="comment-content">{{ recomment.comment_content }}</span>
+                        <span class="post-author">{{ comment.comment_author.nickname }}</span>
+                        <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
                     </div>
-                    {% if recomment.comment_author == request.user %}
                     <div>
-                        <button class="light-button  s-btn update" onclick="editReComment('{{ comment.pk }}', '{{ recomment.pk }}','{{ recomment.comment_content }}')">수정</button>
-                        <button class="light-button  s-btn post-button delete" onclick="onClickDeleteUnder('{{ recomment.pk }}')">삭제</button>
+                        {% if request.user == comment.comment_author %}
+                        <button class="light-button s-btn update" onclick="EditComment({{comment.id}} ,'{{comment.comment_content}}')">수정</button>
+                        <button class="light-button s-btn post-button delete" onclick="onClickDelete({{comment.id}} )">삭제</button>
+                        {%endif%}
+                        <button class="light-button s-btn post-button" id='recomment' onclick="recommentPlus('{{comment.pk}}')">댓글</button><br/>
+                    </div>
+                </div>
+                <span class="comment-content">{{ comment.comment_content }}</span>
+            </div>
+            <div class="recomment_list_{{ comment.pk }}">
+                {% for recomment in recomments  %}
+                    {% if recomment.comment == comment %}
+                    <div class="undercomment-container d-flex justify-content-between " id="recomment_{{ recomment.pk }}">
+                        <div>
+                            <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
+                            <span class="post-author">{{ recomment.comment_author.nickname }}</span>
+                            <span class="comment-content">{{ recomment.comment_content }}</span>
+                        </div>
+                        {% if recomment.comment_author == request.user %}
+                        <div>
+                            <button class="light-button  s-btn update" onclick="editReComment('{{ comment.pk }}', '{{ recomment.pk }}','{{ recomment.comment_content }}')">수정</button>
+                            <button class="light-button  s-btn post-button delete" onclick="onClickDeleteUnder('{{ recomment.pk }}')">삭제</button>
+                        </div>
+                        {% endif %}
                     </div>
                     {% endif %}
-                </div>
-                {% endif %}
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="d-flex align-items-center  recomment_{{ comment.pk }}"></div>
         </div>
-        <div class="undercomment-container d-flex align-items-center  recomment_{{ comment.pk }}"></div>
         {%endfor%}
         {%endif%}
     </div>
@@ -111,18 +113,20 @@
         const element=document.querySelector(`.post_${post_id}`)
         const newDiv = document.createElement('div')
         newDiv.innerHTML = `
-        <div class="comment_${comment_id} d-flex justify-content-between">
-            <div>
-                <span class="post-author">{{ request.user.nickname }}</span>
-                <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
+        <div class='post-comment-padding'>
+            <div class="comment_${comment_id} d-flex justify-content-between">
+                <div>
+                    <span class="post-author">{{ request.user.nickname }}</span>
+                    <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
+                </div>
+                <div>
+                    <button class="s-btn light-button update" onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+                    <button class="s-btn light-button  post-button delete" onclick="onClickDelete(${comment_id} )">삭제</button>
+                    <button class="s-btn light-button  post-button " id='recomment' onclick="recommentPlus(${comment_id})">댓글</button><br/>
+                </div>
             </div>
-            <div>
-                <button class="s-btn light-button update" onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
-                <button class="s-btn light-button  post-button delete" onclick="onClickDelete(${comment_id} )">삭제</button>
-                <button class="s-btn light-button  post-button " id='recomment' onclick="recommentPlus(${comment_id})">댓글</button><br/>
-            </div>
+            <span class="comment-content">${ comment_content }</span>
         </div>
-        <span class="comment-content">${ comment_content }</span>
         <div class="recomment_list_${ comment_id }"></div>
         <div class="recomment_${ comment_id }"></div>
 
@@ -203,7 +207,7 @@
     const deleteHandleResponse = (comment_id)=>{
     
         const element = document.querySelector(`.comment_${comment_id}`)
-        element.parentNode.innerHTML=''
+        element.parentNode.parentNode.innerHTML=''
         const recomment = document.querySelector(`.recomment_list_${ comment_id }`)
         if(recomment){
         recomment.innerHTML=''
@@ -214,8 +218,6 @@
 
   const recommentPlus = (comment_id) => {
         const element = document.querySelector(`.recomment_${comment_id}`);
-        const originHTML = element.innerHTML;
-            
         element.innerHTML = `
             <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
             <span class="post-author">{{ request.user.nickname }}</span>
@@ -263,7 +265,7 @@
     const editReComment = (comment_id, recomment_id, recomment_content) => {
         const element = document.querySelector(`.recomment_${comment_id}`);
         element.innerHTML = `
-            <input type="text" id="edit-recomment" class="new-undercomment-input flex-grow-1" value=${recomment_content}  />
+            <input type="text" id="edit-recomment" class="new-undercomment-input flex-grow-1 post-input-margin" value=${recomment_content}  />
             <button class="s-btn blue-button" onclick="onClickEditUnder('${comment_id}', '${recomment_id}', document.querySelector('#edit-recomment').value)">저장</button>
         `
     }
@@ -314,8 +316,12 @@
     const underDeleteHandleResponse = (recomment_id) => {
         const element = document.querySelector(`#recomment_${recomment_id}`);
         const ajaxRecomment = document.querySelector(`.recomment_${recomment_id}`);
-        element.remove()
+        if(element){
+        element.remove();
+        }
+        if(ajaxRecomment){
         ajaxRecomment.remove();
+        }
     };
 </script>
 {%endblock%}
