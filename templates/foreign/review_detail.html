@@ -82,7 +82,7 @@
     <div class="d-flex justify-content-between align-items-end">
         {% csrf_token %}
         <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{review.id}}" placeholder='답변 달기...' style="width: 80%;"/>
-        <div class="blue-button create-btn s-btn post-button submit" type="submit" class="blue-button review-detail-submitbtn" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">등록</div>
+        <div class="blue-button create-btn s-btn post-button submit" type="submit" class="blue-button create-btn s-btn post-button submit" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">등록</div>
         <!-- 이유는 모르겠으나 위의 버튼이 div,span가 아닌 button,input이면 오류가 남,,, -->
     </div>
 </div>
@@ -171,7 +171,7 @@
     const UpdateHandleResponse = (comment_id,comment_content,nickname)=>{
         const element = document.querySelector(`.comment_${comment_id}`)
         element.parentNode.innerHTML = `
-        <div class="comment_${comment_id} d-flex justify-content-between">
+        <div class=" d-flex justify-content-between">
             <div>
                 <span class="post-author">${nickname}</span>
                 <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
@@ -219,12 +219,15 @@
 
   const recommentPlus = (comment_id) => {
         const element = document.querySelector(`.recomment_${comment_id}`);
-        element.innerHTML = `
+        const RecommentInput = document.createElement('div');
+        RecommentInput.className = 'post-reinput-margin';
+        RecommentInput.innerHTML = `
             <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
             <span class="post-author">{{ request.user.nickname }}</span>
             <input class="new-undercomment-input flex-grow-1" type="text" id="new-recomment" placeholder="댓글 달기..." class="w-75"/>
-            <button class="s-btn blue-button" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-recomment').value)">등록</button>
+            <button class="blue-button create-btn s-btn post-button" onclick="onClickUnderComment('{{is_authenticated}}', ${comment_id}, document.querySelector('#new-recomment').value)">등록</button>
         `
+        element.appendChild(RecommentInput);
         }
         
         const onClickUnderComment= async(is_authenticated, comment_id, comment_content) => {  
@@ -245,7 +248,6 @@
                 const newDiv = document.createElement('div')
                 newDiv.className = "undercomment-container d-flex justify-content-between";
                 newDiv.id = `recomment_${recomment_id}`
-                
                 newDiv.innerHTML = `
                 <div>
                     <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">
@@ -264,12 +266,17 @@
             
             //대댓글 수정
     const editReComment = (comment_id, recomment_id, recomment_content) => {
-        const element = document.querySelector(`.recomment_${comment_id}`);
-        element.className = `d-flex align-items-center  recomment_${comment_id} post-input-margin`;
-        element.innerHTML = `
-            <input type="text" id="edit-recomment" class="new-undercomment-input flex-grow-1 " value=${recomment_content}  />
-            <button class="s-btn blue-button" onclick="onClickEditUnder('${comment_id}', '${recomment_id}', document.querySelector('#edit-recomment').value)">저장</button>
-        `
+        const element = document.querySelector(`.comment_${comment_id}`);
+        element.innerHTML = ` 
+            <div class=" d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="post-author">{{request.user.nickname}}</span>
+                    <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
+                </div>
+                <button class="blue-button create-btn s-btn post-button" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">저장</button>
+            </div>
+            <input class="edit-comment-input" type="text" id="edit_comment" value='${comment_content}' />
+            `;
     }
 
     const onClickEditUnder= async(comment_id, recomment_id, comment_content) => {  
@@ -286,7 +293,6 @@
     const underEditHandleResponse = (comment_id, recomment_id, recomment_author, recomment_content) => {
         const element = document.querySelector(`#recomment_${recomment_id}`);
         const originHTML = element.innerHTML;
-
         element.innerHTML = `
         <div>
             <img src="/static/css/img/undercomment.png" style="margin-right:10px;" alt="대댓글">

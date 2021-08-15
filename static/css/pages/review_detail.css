@@ -61,3 +61,11 @@
 .post-input-margin {
   margin-bottom: 20px;
 }
+
+.post-reinput-margin {
+  width: 100%;
+  margin-bottom: 14px;
+}
+.post-reinput-margin input {
+  width: 87%;
+}
