@@ -268,7 +268,7 @@ def reset_password(request):
             mail_to = email
             emailing = EmailMessage(mail_title, message_data, to=[mail_to])
             emailing.send()
-            return render(request, 'login/send_email.html')
+            return render(request, 'login/email_for_password.html')
         except:
             reset_error = "회원 정보를 다시 확인해주세요."
             ctx.update({'reset_error': reset_error})
