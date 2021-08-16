@@ -1,4 +1,3 @@
-import foreign
 import json
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -398,14 +397,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
-    now=datetime.now()
+    now = datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
-        'now':now
+        'now': now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -454,7 +453,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
-            'question':question,
+            'question': question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 
