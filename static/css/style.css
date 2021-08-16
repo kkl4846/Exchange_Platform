@@ -6,6 +6,7 @@
 
 /* Components */
 @import "components/header.css";
+@import "components/footer.css";
 @import "components/button.css";
 @import "components/detail.css";
 @import "components/post_list.css";
@@ -13,17 +14,20 @@
 @import "components/post.css";
 @import "components/comment.css";
 @import "components/undercomment.css";
+@import "components/sidebar.css";
 /* Pages */
 @import "pages/main.css";
 @import "pages/list.css";
 @import "pages/univ_search.css";
 @import "pages/review_list.css";
 @import "pages/review_create.css";
+@import "pages/review_detail.css";
 @import "pages/login.css";
 @import "pages/signup.css";
 @import "pages/certificate.css";
 @import "pages/myquestion.css";
 @import "pages/credit.css";
+@import "pages/wiki.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;
