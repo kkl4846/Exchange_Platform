@@ -30,10 +30,13 @@ def user_main(request):
 
 def signup(request):
     if request.method == "POST":
+        username = request.POST['username']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         if len(password1) < 8:
             return render(request, 'login/signup.html', {'error': "비밀번호를 8자 이상 작성해주세요."})
+        elif len(username) > 30:
+            return render(request, 'login/signup.html', {'error': "아이디는 30자를 초과할 수 없습니다."})
         else:
             if password1 == password2:
                 try:
