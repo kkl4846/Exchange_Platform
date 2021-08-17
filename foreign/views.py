@@ -35,37 +35,8 @@ def univ_search(request):
             univ = form.save()
             return redirect('foreign:univ_list')
     else:
-        f = open('config/univ.json', 'r', encoding='UTF8')
-        file = json.load(f)
-        foreign_univs = []
-        search_univs = []
-        for university_dicts in file:
-            for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'name' in key):
-                foreign_univs.append(university_name)
-        foreign_univs.sort()
-        query = request.GET.get('query', '')
-        univ_dict = {}
-        last_alpha = 'A'
-        univ_dict[last_alpha] = []
-        if query:
-            for univ in foreign_univs:
-                if query in univ:
-                    search_univs.append(univ)
-            for univ in search_univs:
-                this_alpha = univ[0]
-                if last_alpha != this_alpha:
-                    univ_dict[this_alpha] = []
-                    univ_dict[this_alpha].append(univ)
-                    last_alpha = this_alpha
-                else:
-                    univ_dict[this_alpha].append(univ)
-        if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
-            del(univ_dict['A'])
-
         form = NewForeignForm()
-
         return render(request, 'foreign/univ_search.html', {
-            'univ_dict': univ_dict,
             'form': form,
         })
 
@@ -95,22 +66,7 @@ def univ_create(request, univ_name):
 def sister(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     sisters = foreign.sisters.all().order_by('home_name')
-    sisters_dict = {}
-    last_cho = 'ㄱ'
-    sisters_dict[last_cho] = []
-
-    for university in sisters:
-        this_university = university.home_name
-        university_cho = j2hcj(h2j(this_university[0]))[0]
-        if last_cho != university_cho:     # 직전 초성과 다른 초성
-            sisters_dict[university_cho] = []
-            sisters_dict[university_cho].append(university)
-            last_cho = university_cho
-        else:                           # 같은 초성
-            sisters_dict[university_cho].append(university)
-    g_cho = 'ㄱ'
-    if len(sisters_dict[g_cho]) == 0:
-        del(sisters_dict[g_cho])
+    sisters_dict = order_domestic(sisters)
     ctx = {
         'sisters_dict': sisters_dict,
         'univ': foreign,
@@ -172,9 +128,11 @@ def review_list(request, foreign_id):
     paginator = Paginator(all_review, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    total_review = all_review.count()
     ctx = {
         'univ': foreign,
         'page_obj': page_obj,
+        'total_review': total_review,
     }
     return render(request, 'foreign/review_list.html', ctx)
 
