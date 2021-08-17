@@ -47,7 +47,7 @@ def country_wiki(request, pk):
 
 
 @login_required(login_url=URL_LOGIN)
-def wiki_edit_visa(request, pk):
+def wiki_edit(request, pk, wiki_type):
     country = get_object_or_404(Country, pk=pk)
     if request.method == 'POST':
         form = CountryForm(request.POST, request.FILES, instance=country)
@@ -59,75 +59,7 @@ def wiki_edit_visa(request, pk):
     return render(request, 'country/wiki_edit.html', {
         'form': form,
         'country': country,
-        'btn': 1,
-    })
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_lifestyle(request, pk):
-    country = get_object_or_404(Country, pk=pk)
-    if request.method == 'POST':
-        form = CountryForm(request.POST, request.FILES, instance=country)
-        if form.is_valid():
-            country = form.save()
-            return redirect('country:country_wiki', country.pk)
-    else:
-        form = CountryForm(instance=country)
-    return render(request, 'country/wiki_edit.html', {
-        'form': form,
-        'country': country,
-        'btn': 2,
-    })
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_money(request, pk):
-    country = get_object_or_404(Country, pk=pk)
-    if request.method == 'POST':
-        form = CountryForm(request.POST, request.FILES, instance=country)
-        if form.is_valid():
-            country = form.save()
-            return redirect('country:country_wiki', country.pk)
-    else:
-        form = CountryForm(instance=country)
-    return render(request, 'country/wiki_edit.html', {
-        'form': form,
-        'country': country,
-        'btn': 3,
-    })
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_culture(request, pk):
-    country = get_object_or_404(Country, pk=pk)
-    if request.method == 'POST':
-        form = CountryForm(request.POST, request.FILES, instance=country)
-        if form.is_valid():
-            country = form.save()
-            return redirect('country:country_wiki', country.pk)
-    else:
-        form = CountryForm(instance=country)
-    return render(request, 'country/wiki_edit.html', {
-        'form': form,
-        'country': country,
-        'btn': 4,
-    })
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_covid_info(request, pk):
-    country = get_object_or_404(Country, pk=pk)
-    if request.method == 'POST':
-        form = CountryForm(request.POST, request.FILES, instance=country)
-        if form.is_valid():
-            country = form.save()
-            return redirect('country:country_wiki', country.pk)
-    else:
-        form = CountryForm(instance=country)
-    return render(request, 'country/wiki_edit.html', {
-        'form': form,
-        'country': country,
-        'btn': 5,
+        'type': wiki_type,
     })
 
 

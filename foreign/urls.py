@@ -9,7 +9,7 @@ urlpatterns = [
 
     path('wiki/<int:pk>', views.wiki, name='wiki'),
     path('wiki/<str:wiki_type>/<int:pk>',
-         views.wiki_detail, name='wiki_detail'),
+         views.wiki_edit, name='wiki_edit'),
 
     path('<int:foreign_id>/review/list', views.review_list, name="review_list"),
     path('<int:foreign_id>/review/create',

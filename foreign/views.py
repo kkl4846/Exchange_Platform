@@ -163,7 +163,7 @@ def wiki(request, pk):
 
 
 @login_required(login_url=URL_LOGIN)
-def wiki_detail(request, pk, wiki_type):
+def wiki_edit(request, pk, wiki_type):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
         form = ForeignForm(request.POST, request.FILES, instance=foreign)
