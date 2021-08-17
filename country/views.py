@@ -2,7 +2,7 @@ import json
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from jamo import h2j, j2hcj
+from config.functions import *
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
@@ -14,31 +14,9 @@ URL_LOGIN = '/login/'
 
 def country_list(request):
     countries = Country.objects.all().order_by('country_name')
-    countries_dict = alpha_group(countries)
-
-    # print(countries_dict)
+    countries_dict = order_country(countries)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
-
-
-def alpha_group(things):
-    things_dict = {}
-    last_alpha = 'ㄱ'
-    things_dict[last_alpha] = []
-
-    for thing in things:
-        this_thing = thing.country_name
-        this_alpha = j2hcj(h2j(this_thing[0]))[0]
-        if last_alpha != this_alpha:     # 직전 초성과 다른 초성
-            things_dict[this_alpha] = []
-            things_dict[this_alpha].append(thing)
-            last_alpha = this_alpha
-        else:                           # 같은 초성
-            things_dict[this_alpha].append(thing)
-    g_cho = 'ㄱ'
-    if len(things_dict[g_cho]) == 0:
-        del(things_dict[g_cho])
-    return things_dict
 
 
 '''

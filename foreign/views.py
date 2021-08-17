@@ -8,7 +8,7 @@ import json
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from .forms import *
-from jamo import h2j, j2hcj
+from config.functions import *
 from django.core.paginator import Paginator
 from datetime import datetime
 
@@ -18,25 +18,11 @@ URL_LOGIN = '/login/'
 
 def univ_list(request):
     unives = Foreign.objects.all().order_by('away_name')
-    univ_dict = {}
-    last_alpha = 'A'
-    univ_dict[last_alpha] = []
-    for univ in unives:
-        u = univ.away_name
-        this_alpha = u[0]
-        if last_alpha != this_alpha:
-            univ_dict[this_alpha] = []
-            univ_dict[this_alpha].append(univ)
-            last_alpha = this_alpha
-        else:
-            univ_dict[this_alpha].append(univ)
-    if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
-        del(univ_dict['A'])
+    univ_dict = order_foreign(unives)
     alphaList = [chr(c) for c in range(ord('A'), ord('Z')+1)]
     return render(request, 'foreign/univ_list.html', {
         'univ_dict': univ_dict,
         'alphaList': alphaList,
-
     })
 
 # 해외 대학 추가

@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from jamo import h2j, j2hcj
+from config.functions import *
 from .models import *
 from .forms import *
 from foreign.models import *
@@ -22,24 +22,7 @@ def is_enrolled(domestic, user):
 
 def univ_list(request):
     universities = Domestic.objects.all().order_by('home_name')
-    universities_dict = {}
-    last_cho = 'ㄱ'
-    universities_dict[last_cho] = []
-
-    for university in universities:
-        this_university = university.home_name
-        university_cho = j2hcj(h2j(this_university[0]))[0]
-        if last_cho != university_cho:     # 직전 초성과 다른 초성
-            universities_dict[university_cho] = []
-            universities_dict[university_cho].append(university)
-            last_cho = university_cho
-        else:                           # 같은 초성
-            universities_dict[university_cho].append(university)
-
-    g_cho = 'ㄱ'
-    if len(universities_dict[g_cho]) == 0:
-        del(universities_dict[g_cho])
-
+    universities_dict = order_domestic(universities)
     ctx = {'universities_dict': universities_dict}
 
     return render(request, 'domestic/univ_list.html', ctx)
@@ -323,7 +306,7 @@ def sister_list(request, domestic_id):
     user = request.user
 
     sisters = domestic.home_sister.all().order_by('away_name')
-    sisters_dict = alpha_group(sisters)
+    sisters_dict = order_foreign(sisters)
 
     ctx = {
         'domestic': domestic,
@@ -355,7 +338,7 @@ def sister_add(request, domestic_id):
             return render(request, template_name='domestic/sister_add.html', context=ctx)
     else:
         sisters = domestic.home_sister.all().order_by('away_name')
-        sisters_dict = alpha_group(sisters)
+        sisters_dict = order_foreign(sisters)
 
         ctx = {
             'domestic': domestic,
