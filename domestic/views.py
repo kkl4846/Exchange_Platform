@@ -61,7 +61,7 @@ def wiki(request, domestic_id):
 def wiki_edit(request, domestic_id, wiki_type):
     user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
+    if is_enrolled(domestic, user):
         if request.method == 'POST':
             form = DomesticForm(request.POST, request.FILES, instance=domestic)
             if form.is_valid():
@@ -76,12 +76,11 @@ def wiki_edit(request, domestic_id, wiki_type):
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
-        is_enrolled = False
         ctx = {
             'univ': domestic,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
+            'is_enrolled': 'False',
         }
         return render(request, 'domestic/wiki.html', context=ctx)
 
@@ -232,8 +231,9 @@ def question_search(request, domestic_id):
     }
     return render(request, template_name='domestic/question_search.html', context=ctx)
 
-
 # 댓글
+
+
 @csrf_exempt
 def comment_create(request, domestic_id, pk):
     req = json.loads(request.body)
@@ -314,7 +314,6 @@ def undercomment_delete(request, domestic_id, pk):
 
     return JsonResponse({'undercomment_id': undercomment_id})
 
-
 # 자매결연대학 목록
 
 
@@ -324,20 +323,7 @@ def sister_list(request, domestic_id):
     user = request.user
 
     sisters = domestic.home_sister.all().order_by('away_name')
-    sisters_dict = {}
-    last_alpha = 'A'
-    sisters_dict[last_alpha] = []
-    for sister in sisters:
-        s = sister.away_name
-        this_alpha = s[0]
-        if last_alpha != this_alpha:
-            sisters_dict[this_alpha] = []
-            sisters_dict[this_alpha].append(sister)
-            last_alpha = this_alpha
-        else:
-            sisters_dict[this_alpha].append(sister)
-    if len(sisters_dict['A']) == 0:
-        del(sisters_dict['A'])
+    sisters_dict = alpha_group(sisters)
 
     ctx = {
         'domestic': domestic,
@@ -369,20 +355,7 @@ def sister_add(request, domestic_id):
             return render(request, template_name='domestic/sister_add.html', context=ctx)
     else:
         sisters = domestic.home_sister.all().order_by('away_name')
-        sisters_dict = {}
-        last_alpha = 'A'
-        sisters_dict[last_alpha] = []
-        for sister in sisters:
-            s = sister.away_name
-            this_alpha = s[0]
-            if last_alpha != this_alpha:
-                sisters_dict[this_alpha] = []
-                sisters_dict[this_alpha].append(sister)
-                last_alpha = this_alpha
-            else:
-                sisters_dict[this_alpha].append(sister)
-        if len(sisters_dict['A']) == 0:
-            del(sisters_dict['A'])
+        sisters_dict = alpha_group(sisters)
 
         ctx = {
             'domestic': domestic,
