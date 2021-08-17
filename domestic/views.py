@@ -13,6 +13,13 @@ from datetime import datetime
 URL_LOGIN = '/login/'
 
 
+def is_enrolled(domestic, user):
+    is_enrolled = 'False'
+    if user.is_authenticated and user.university == domestic.home_name:
+        is_enrolled = 'True'
+    return is_enrolled
+
+
 def univ_list(request):
     universities = Domestic.objects.all().order_by('home_name')
     universities_dict = {}
@@ -41,13 +48,11 @@ def univ_list(request):
 def wiki(request, domestic_id):
     domestic = Domestic.objects.get(pk=domestic_id)
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated and user.university == domestic.home_name:
-        is_enrolled = 'True'
+
     ctx = {
         'domestic': domestic,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
     }
     return render(request, 'domestic/wiki.html', ctx)
 
@@ -208,16 +213,13 @@ def question_list(request, domestic_id):
     page_obj = paginator.get_page(page_number)
 
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated and user.university == domestic.home_name:
-        is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
         'total_question': total_question,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
     }
     return render(request, template_name='domestic/question_list.html', context=ctx)
 
@@ -229,9 +231,6 @@ def question_detail(request, domestic_id, pk):
     undercomments = DUnderComment.objects.all()
 
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated and user.university == domestic.home_name:
-        is_enrolled = 'True'
 
     now = datetime.now()
 
@@ -241,7 +240,7 @@ def question_detail(request, domestic_id, pk):
         'undercomments': undercomments,
         'domestic': domestic,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
         'now': now
     }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
@@ -251,7 +250,7 @@ def question_detail(request, domestic_id, pk):
 def question_create(request, domestic_id):
     user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
+    if is_enrolled(domestic, user):
         if request.method == 'POST':
             form = DQuestionForm(request.POST)
             if form.is_valid():
@@ -337,17 +336,13 @@ def question_search(request, domestic_id):
     page_obj = paginator.get_page(page_number)
 
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated:
-        if user.university == domestic.home_name:
-            is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
         'total_question': total_question,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
         'q': q
     }
     return render(request, template_name='domestic/question_search.html', context=ctx)
@@ -359,6 +354,7 @@ def comment_create(request, domestic_id, pk):
     req = json.loads(request.body)
     question_id = req['question_id']
     new_comment_content = req['comment_content']
+
     new_comment = DComment.objects.create(
         question=DQuestion.objects.get(id=question_id),
         comment_content=new_comment_content,
@@ -441,9 +437,6 @@ def sister_list(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
 
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated and user.university == domestic.home_name:
-        is_enrolled = 'True'
 
     sisters = domestic.home_sister.all().order_by('away_name')
     sisters_dict = {}
@@ -465,7 +458,7 @@ def sister_list(request, domestic_id):
         'domestic': domestic,
         'sisters_dict': sisters_dict,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
     }
     return render(request, 'domestic/sister_list.html', context=ctx)
 
@@ -474,7 +467,7 @@ def sister_list(request, domestic_id):
 def sister_add(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
     user = request.user
-    if user.school_certificate == True and user.university == domestic.home_name:
+    if is_enrolled(domestic, user):
         if request.method == 'POST':
             sister_name = request.POST['sister']
             sister = get_object_or_404(Foreign, away_name=sister_name)
@@ -528,15 +521,12 @@ def credit_list(request, domestic_id):
     page_obj = paginator.get_page(page_number)
 
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated and user.university == domestic.home_name:
-        is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
     }
     return render(request, template_name='domestic/credit_list.html', context=ctx)
 
@@ -545,7 +535,7 @@ def credit_list(request, domestic_id):
 def credit_create(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
     user = request.user
-    if user.school_certificate == True and user.university == domestic.home_name:
+    if is_enrolled(domestic, user):
         if request.method == 'POST':
             form = CreditForm(request.POST)
             if form.is_valid():
@@ -600,15 +590,12 @@ def credit_search(request, domestic_id):
     page_obj = paginator.get_page(page_number)
 
     user = request.user
-    is_enrolled = 'False'
-    if user.is_authenticated and user.university == domestic.home_name:
-        is_enrolled = 'True'
 
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+        'is_enrolled': is_enrolled(domestic, user),
         'q': q,
         'filter': filter
     }
