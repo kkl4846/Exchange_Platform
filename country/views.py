@@ -13,25 +13,31 @@ URL_LOGIN = '/login/'
 
 def country_list(request):
     countries = Country.objects.all().order_by('country_name')
-    countries_dict = {}
-    last_cho = 'ㄱ'
-    countries_dict[last_cho] = []
+    countries_dict = alpha_group(countries)
 
-    for c in countries:
-        this_country = c.country_name
-        country_cho = j2hcj(h2j(this_country[0]))[0]
-        if last_cho != country_cho:     # 직전 초성과 다른 초성
-            countries_dict[country_cho] = []
-            countries_dict[country_cho].append(c)
-            last_cho = country_cho
-        else:                           # 같은 초성
-            countries_dict[country_cho].append(c)
-    g_cho = 'ㄱ'
-    if len(countries_dict[g_cho]) == 0:
-        del(countries_dict[g_cho])
     # print(countries_dict)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
+
+
+def alpha_group(things):
+    things_dict = {}
+    last_alpha = 'ㄱ'
+    things_dict[last_alpha] = []
+
+    for thing in things:
+        this_thing = thing.country_name
+        this_alpha = j2hcj(h2j(this_thing[0]))[0]
+        if last_alpha != this_alpha:     # 직전 초성과 다른 초성
+            things_dict[this_alpha] = []
+            things_dict[this_alpha].append(thing)
+            last_alpha = this_alpha
+        else:                           # 같은 초성
+            things_dict[this_alpha].append(thing)
+    g_cho = 'ㄱ'
+    if len(things_dict[g_cho]) == 0:
+        del(things_dict[g_cho])
+    return things_dict
 
 
 '''
@@ -140,20 +146,7 @@ def country_univ(request, pk):
     country = get_object_or_404(Country, pk=pk)
     unives = country.country_univs.all().order_by('away_name')
 
-    univ_dict = {}
-    last_alpha = 'A'
-    univ_dict[last_alpha] = []
-    for univ in unives:
-        u = univ.away_name
-        this_alpha = u[0]
-        if last_alpha != this_alpha:
-            univ_dict[this_alpha] = []
-            univ_dict[this_alpha].append(univ)
-            last_alpha = this_alpha
-        else:
-            univ_dict[this_alpha].append(univ)
-    if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
-        del(univ_dict['A'])
+    univ_dict = alpha_group(unives)
 
     return render(request, 'country/country_univ.html', {
         'country': country,
