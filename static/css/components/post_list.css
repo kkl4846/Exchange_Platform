@@ -9,13 +9,17 @@
 }
 
 .search-button {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border: none;
   background-color: transparent;
-  position: absolute;
+  position: relative;
   margin-top: 5px;
-  margin-left: 200px;
+  margin-left: -31px;
+}
+
+.safari_only {
+  margin-left: 100px;
 }
 
 .post-list hr {
