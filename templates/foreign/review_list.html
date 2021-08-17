@@ -62,6 +62,7 @@
             {% endif %}
             </div>
         </div>  
+        <span class="total-review">{{ total_review }}</span>
     </div> 
 
 </div>
@@ -69,17 +70,17 @@
 
 {% block extra %}
 <script>
-    function numbering(startnum){
-        var init = startnum;
+    function numbering(){
         var td_list = document.querySelectorAll(`.numbered`);
+        var init = document.querySelector(`.total-review`).innerHTML;
         for(var i=0; i<td_list.length; i++){
             if (i==0){
-                init=init+({{ page_obj.number }}-1)*15;
+                init=init-({{ page_obj.number }}-1)*15;
             }
-            init++;
             td_list[i].innerHTML= `${init}`;
+            init--;
         }
     }
-    numbering(0);
+    numbering();
 </script>
 {% endblock %}

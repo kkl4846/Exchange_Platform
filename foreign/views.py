@@ -144,9 +144,11 @@ def review_list(request, foreign_id):
     paginator = Paginator(all_review, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    total_review = all_review.count()
     ctx = {
         'univ': foreign,
         'page_obj': page_obj,
+        'total_review': total_review,
     }
     return render(request, 'foreign/review_list.html', ctx)
 
