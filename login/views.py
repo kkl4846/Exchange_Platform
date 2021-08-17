@@ -31,28 +31,22 @@ def user_main(request):
 def signup(request):
     if request.method == "POST":
         username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        if len(password1) < 8:
-            return render(request, 'login/signup.html', {'error': "비밀번호를 8자 이상 작성해주세요."})
-        elif len(username) > 30:
+        password = request.POST['real_password']
+        if len(username) > 30:
             return render(request, 'login/signup.html', {'error': "아이디는 30자를 초과할 수 없습니다."})
         else:
-            if password1 == password2:
-                try:
-                    new_user = User.objects.create_user(
-                        username=request.POST['username'], password=request.POST['password1'], nickname=request.POST['nickname'], email=request.POST['email'])
-                    auth.login(request, new_user)
-                    return redirect('login:user_main')
-                except IntegrityError as e:
-                    if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
-                        return render(request, 'login/signup.html', {'error': "이미 사용 중인 아이디입니다."})
-                    elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
-                        return render(request, 'login/signup.html', {'error': "이미 사용 중인 닉네임입니다."})
-                    elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
-                        return render(request, 'login/signup.html', {'error': "이미 사용 중인 이메일입니다."})
-            else:
-                return render(request, 'login/signup.html', {'error': "입력한 비밀번호가 일치하지 않습니다."})
+            try:
+                new_user = User.objects.create_user(
+                    username=username, password=password, nickname=request.POST['nickname'], email=request.POST['email'])
+                auth.login(request, new_user)
+                return redirect('login:user_main')
+            except IntegrityError as e:
+                if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
+                    return render(request, 'login/signup.html', {'error': "이미 사용 중인 아이디입니다."})
+                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
+                    return render(request, 'login/signup.html', {'error': "이미 사용 중인 닉네임입니다."})
+                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
+                    return render(request, 'login/signup.html', {'error': "이미 사용 중인 이메일입니다."})
     else:
         return render(request, 'login/signup.html')
 
@@ -60,7 +54,7 @@ def signup(request):
 def login(request):
     if request.method == "POST":
         username = request.POST['username']
-        password = request.POST['password']
+        password = request.POST['real_password']
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
@@ -75,20 +69,16 @@ def login(request):
 def mypage(request):
     context = {}
     if request.method == "POST":
-        current_password = request.POST.get("origin_password")
+        origin_password = request.POST.get("origin_password")
         user = request.user
-        if check_password(current_password, user.password):
-            new_password = request.POST.get("password1")
-            password_confirm = request.POST.get("password2")
-            if new_password == password_confirm:
-                user.set_password(new_password)
-                user.save()
-                auth.login(request, user)
-                context.update({'message': "비밀번호 변경이 완료되었습니다."})
-            else:
-                context.update({'message': "새로운 비밀번호를 다시 확인해주세요."})
+        if check_password(origin_password, user.password):
+            new_password = request.POST.get("real_password")
+            user.set_password(new_password)
+            user.save()
+            auth.login(request, user)
+            context.update({'message': "비밀번호 변경이 완료되었습니다."})
         else:
-            context.update({'message': "현재 비밀번호가 일치하지 않습니다."})
+            context.update({'message': "기존 비밀번호를 확인해주세요."})
     return render(request, 'login/mypage.html', context)
 
 
