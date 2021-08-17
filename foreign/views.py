@@ -161,11 +161,9 @@ def wiki(request, pk):
     }
     return render(request, 'foreign/wiki.html', ctx)
 
-# wiki 1번 항목
-
 
 @login_required(login_url=URL_LOGIN)
-def wiki_edit_apply(request, pk):
+def wiki_detail(request, pk, wiki_type):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
         form = ForeignForm(request.POST, request.FILES, instance=foreign)
@@ -177,121 +175,140 @@ def wiki_edit_apply(request, pk):
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
-        'btn': 1,
+        'type': wiki_type,
     })
 
-# wiki 2번 항목
+# wiki 1번 항목
 
 
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_language_score(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 2,
-    })
-# wiki 3번 항목
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_apply(request, pk, type):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign = form.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 1,
+#     })
+
+# # wiki 2번 항목
 
 
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_course_enroll(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 3,
-    })
-
-# wiki 4번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_accommodation(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 4,
-    })
-
-# wiki 5번 항목
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_language_score(request, pk):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 2,
+#     })
+# # wiki 3번 항목
 
 
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_atmosphere(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 5,
-    })
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_course_enroll(request, pk):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 3,
+#     })
 
-# wiki 6번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_club(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 6,
-    })
-
-# wiki 7번 항목
+# # wiki 4번 항목
 
 
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_away_scholarship(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 7,
-    })
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_accommodation(request, pk):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 4,
+#     })
+
+# # wiki 5번 항목
+
+
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_atmosphere(request, pk):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 5,
+#     })
+
+# # wiki 6번 항목
+
+
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_club(request, pk):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 6,
+#     })
+
+# # wiki 7번 항목
+
+
+# @login_required(login_url=URL_LOGIN)
+# def wiki_edit_away_scholarship(request, pk):
+#     foreign = get_object_or_404(Foreign, pk=pk)
+#     if request.method == 'POST':
+#         form = ForeignForm(request.POST, request.FILES, instance=foreign)
+#         if form.is_valid():
+#             foreign.save()
+#             return redirect('foreign:wiki', foreign.pk)
+#     else:
+#         form = ForeignForm(instance=foreign)
+#     return render(request, 'foreign/wiki_edit.html', {
+#         'form': form,
+#         'univ': foreign,
+#         'btn': 7,
+#     })
 
 
 # review
@@ -398,14 +415,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
-    now=datetime.now()
+    now = datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
-        'now':now
+        'now': now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -454,7 +471,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
-            'question':question,
+            'question': question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 
