@@ -10,7 +10,8 @@
 
   <hr>
 
-    <div>
+  <div>
+    {% if univ_dict %}
         {% for key, val in univ_dict.items %}
         <ul class="lgroup" >
             <h5 class="lalpha">{{ key }}</h5>
@@ -22,7 +23,13 @@
         </ul>
         <br>
         {% endfor %}
-    </div>
+      {% else %}
+      <div class='text-center m-4'>
+          <h5 style="margin-bottom: 5px;">등록된 정보가 없습니다</h5>
+          <h6>첫 번째로 정보를 등록해주세요!</h6>
+      </div>
+  {% endif %}
+  </div>
 </div>
 
 {%endblock%}
