@@ -206,10 +206,12 @@ def question_list(request, domestic_id):
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
         is_enrolled = 'True'
+
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
@@ -225,11 +227,14 @@ def question_detail(request, domestic_id, pk):
     question = DQuestion.objects.get(id=pk)
     comments = question.dcomment_set.all()
     undercomments = DUnderComment.objects.all()
+
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
         is_enrolled = 'True'
+
     now = datetime.now()
+
     ctx = {
         'question': question,
         'comments': comments,
@@ -458,7 +463,6 @@ def sister_list(request, domestic_id):
 
     ctx = {
         'domestic': domestic,
-        'sisters': sisters,
         'sisters_dict': sisters_dict,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
@@ -504,7 +508,6 @@ def sister_add(request, domestic_id):
 
         ctx = {
             'domestic': domestic,
-            'sisters': sisters,
             'sisters_dict': sisters_dict,
             'certificate_error': True,
             'is_authenticated': user.is_authenticated,
