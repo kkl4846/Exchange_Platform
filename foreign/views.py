@@ -383,11 +383,13 @@ def question_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     questions = FQuestion.objects.filter(away_university=foreign)
     questions = questions.order_by('-pk')
+    total_question = questions.count()
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     ctx = {
         'page_obj': page_obj,
+        'total_question': total_question,
         'univ': foreign,
     }
     return render(request, 'foreign/question_list.html', context=ctx)
@@ -398,14 +400,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
-    now=datetime.now()
+    now = datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
-        'now':now
+        'now': now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -454,7 +456,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
-            'question':question,
+            'question': question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 
@@ -472,6 +474,7 @@ def question_search(request, foreign_id):
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
+    total_question = searched.count()
 
     paginator = Paginator(searched, 15)
     page_number = request.GET.get('page')
@@ -486,6 +489,7 @@ def question_search(request, foreign_id):
     ctx = {
         'univ': foreign,
         'page_obj': page_obj,
+        'total_question': total_question,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
         'q': q

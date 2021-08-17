@@ -201,6 +201,7 @@ def wiki_edit_insurance(request, domestic_id):
 def question_list(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     questions = domestic.dquestion_set.order_by('-pk')
+    total_question = questions.count()
 
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
@@ -212,6 +213,7 @@ def question_list(request, domestic_id):
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
+        'total_question': total_question,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
     }
@@ -324,7 +326,7 @@ def question_search(request, domestic_id):
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
-
+    total_question = searched.count()
     paginator = Paginator(searched, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -338,6 +340,7 @@ def question_search(request, domestic_id):
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
+        'total_question': total_question,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
         'q': q

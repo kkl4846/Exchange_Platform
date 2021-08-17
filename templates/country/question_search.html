@@ -59,21 +59,24 @@
                 {% endif %}
             </div>
         </div>
+        <span class="total-question">{{ total_question }}</span>
     </div>
 
     <script>
-        function numbering(startnum){
-        var init = startnum;
+        function numbering(){
+        var init = document.querySelector(`.total-question`).innerHTML;
+        console.log(init)
         var td_list = document.querySelectorAll(`.numbered`);
         for(var i=0; i<td_list.length; i++){
             if (i==0){
-                init=init+({{ page_obj.number }}-1)*15;
+                init=init-({{ page_obj.number }}-1)*15;
             }
-            init++;
             td_list[i].innerHTML= `${init}`;
+            init--;
+            
         }
     }
-    numbering(0);
+    numbering();
     
         const canIPost= (is_authenticated)=> {
             if (is_authenticated == 'False') {

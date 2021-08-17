@@ -170,6 +170,7 @@ def question_list(request, country_id):
     country = get_object_or_404(Country, pk=country_id)
     questions = CQuestion.objects.filter(country=country)
     questions = questions.order_by('-pk')
+    total_question = questions.count()
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -177,6 +178,7 @@ def question_list(request, country_id):
         'page_obj': page_obj,
         'country_id': country_id,
         'country': country,
+        'total_question': total_question,
     }
     return render(request, 'country/question_list.html', context=ctx)
 
@@ -187,6 +189,7 @@ def question_search(request, country_id):
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
+    total_question = searched.count()
 
     paginator = Paginator(searched, 15)
     page_number = request.GET.get('page')
@@ -196,6 +199,7 @@ def question_search(request, country_id):
         'country': country,
         'country_id': country_id,
         'page_obj': page_obj,
+        'total_question': total_question,
         'q': q
     }
     return render(request, template_name='country/question_search.html', context=ctx)
