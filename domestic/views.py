@@ -58,7 +58,7 @@ def wiki(request, domestic_id):
 
 
 @login_required(login_url=URL_LOGIN)
-def wiki_edit_apply(request, domestic_id):
+def wiki_edit(request, domestic_id, wiki_type):
     user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if user.school_certificate == True and user.university == domestic.home_name:
@@ -72,7 +72,7 @@ def wiki_edit_apply(request, domestic_id):
             ctx = {
                 'form': form,
                 'domestic': domestic,
-                'btn': 1,
+                'type': wiki_type,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
@@ -85,121 +85,6 @@ def wiki_edit_apply(request, domestic_id):
         }
         return render(request, 'domestic/wiki.html', context=ctx)
 
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_document(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic = form.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'domestic': domestic,
-                'btn': 2,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_semester(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'domestic': domestic,
-                'btn': 3,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_scholarship(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'domestic': domestic,
-                'btn': 4,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_insurance(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'domestic': domestic,
-                'btn': 5,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
 # QnA
 
 

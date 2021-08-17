@@ -56,7 +56,7 @@
             window.location.href='{% url "login:login" %}';
         }else{
            
-            var view=`/country/wiki/edit_${str}/`           //url 연결
+            var view=`/country/wiki/${str}/`           //url 연결
         
             window.location.href=view+'{{country.pk}}'
 

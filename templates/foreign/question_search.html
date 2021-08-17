@@ -3,7 +3,7 @@
 <div class="container2 category-detail post-list">
         <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-end">
-                <h3>{{ univ.away_name }}</h3>
+                <h3 style="max-width: 575px;">{{ univ.away_name }}</h3>
                 <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
             </div>
             <div class="d-flex justify-content-end">
@@ -87,11 +87,7 @@
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
         }else{
-            if(is_enrolled == 'False'){
-                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
-            }else{
-                window.location.href='{% url "foreign:question_create" univ.pk %}';
-            }
+            window.location.href='{% url "foreign:question_create" univ.pk %}';
         }
     };
 
