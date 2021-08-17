@@ -8,6 +8,7 @@ from jamo import h2j, j2hcj
 from .models import *
 from .forms import *
 from foreign.models import *
+from datetime import datetime
 
 URL_LOGIN = '/login/'
 
@@ -52,7 +53,7 @@ def wiki(request, domestic_id):
 
 
 @login_required(login_url=URL_LOGIN)
-def wiki_edit_apply(request, domestic_id):
+def wiki_edit(request, domestic_id, wiki_type):
     user = request.user
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     if user.school_certificate == True and user.university == domestic.home_name:
@@ -66,7 +67,7 @@ def wiki_edit_apply(request, domestic_id):
             ctx = {
                 'form': form,
                 'domestic': domestic,
-                'btn': 1,
+                'type': wiki_type,
             }
             return render(request, 'domestic/wiki_edit.html', context=ctx)
     else:
@@ -79,134 +80,20 @@ def wiki_edit_apply(request, domestic_id):
         }
         return render(request, 'domestic/wiki.html', context=ctx)
 
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_document(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic = form.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx= {
-                'form': form,
-                'univ': domestic,
-                'btn': 2,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_semester(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'univ': domestic,
-                'btn': 3,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_scholarship(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'univ': domestic,
-                'btn': 4,
-            }
-            return render(request, 'domestic/wiki_edit.html', context= ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_insurance(request, domestic_id):
-    user = request.user
-    domestic = get_object_or_404(Domestic, pk=domestic_id)
-    if user.school_certificate == True and user.university == domestic.home_name:
-        if request.method == 'POST':
-            form = DomesticForm(request.POST, request.FILES, instance=domestic)
-            if form.is_valid():
-                domestic.save()
-                return redirect('domestic:wiki', domestic_id)
-        else:
-            form = DomesticForm(instance=domestic)
-            ctx = {
-                'form': form,
-                'univ': domestic,
-                'btn': 5,
-            }
-            return render(request, 'domestic/wiki_edit.html', context=ctx)
-    else:
-        is_enrolled = False
-        ctx = {
-            'univ': domestic,
-            'certificate_error': True,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': is_enrolled,
-        }
-        return render(request, 'domestic/wiki.html', context=ctx)
 # QnA
 
 
 def question_list(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    questions = domestic.dquestion_set.all()
+    questions = domestic.dquestion_set.order_by('-pk')
 
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
         is_enrolled = 'True'
-
     ctx = {
         'domestic': domestic,
         'page_obj': page_obj,
@@ -224,14 +111,16 @@ def question_detail(request, domestic_id, pk):
     user = request.user
     is_enrolled = 'False'
     if user.is_authenticated and user.university == domestic.home_name:
-            is_enrolled = 'True'
+        is_enrolled = 'True'
+    now = datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
-        'undercomments':undercomments,
+        'undercomments': undercomments,
         'domestic': domestic,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
+        'now': now
     }
     return render(request, template_name='domestic/question_detail.html', context=ctx)
 
@@ -252,10 +141,10 @@ def question_create(request, domestic_id):
         else:
             form = DQuestionForm()
             ctx = {
-            'form': form,
-            'domestic': domestic,
-            'is_authenticated': user.is_authenticated,
-            'is_enrolled': 'True',
+                'form': form,
+                'domestic': domestic,
+                'is_authenticated': user.is_authenticated,
+                'is_enrolled': 'True',
             }
             return render(request, template_name='domestic/question_form.html', context=ctx)
     else:
@@ -266,7 +155,7 @@ def question_create(request, domestic_id):
         ctx = {
             'domestic': domestic,
             'page_obj': page_obj,
-            'certificate_error':True,
+            'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': 'False',
         }
@@ -278,7 +167,7 @@ def question_edit(request, domestic_id, pk):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
     question = get_object_or_404(DQuestion, id=pk)
     user = request.user
-    if user == question.author :
+    if user == question.author:
         if request.method == 'POST':
             form = DQuestionForm(request.POST, instance=question)
             if form.is_valid():
@@ -287,22 +176,24 @@ def question_edit(request, domestic_id, pk):
         else:
             form = DQuestionForm(instance=question)
             ctx = {
-            'form': form,
-            'domestic': domestic
+                'form': form,
+                'domestic': domestic,
+                'question': question
             }
             return render(request, template_name='domestic/question_form.html', context=ctx)
     else:
         is_enrolled = False
         comments = question.dcomment_set.all()
         ctx = {
-        'question': question,
-        'comments': comments,
-        'domestic': domestic,
-        'q_verification_error': True,
-        'is_authenticated': user.is_authenticated,
-        'is_enrolled': is_enrolled,
+            'question': question,
+            'comments': comments,
+            'domestic': domestic,
+            'q_verification_error': True,
+            'is_authenticated': user.is_authenticated,
+            'is_enrolled': is_enrolled,
         }
         return render(request, template_name='domestic/question_detail.html', context=ctx)
+
 
 def question_delete(request, domestic_id, pk):
     question = DQuestion.objects.get(id=pk)
@@ -311,13 +202,14 @@ def question_delete(request, domestic_id, pk):
 
     return redirect('domestic:question_list', domestic_id)
 
+
 def question_search(request, domestic_id):
     domestic = get_object_or_404(Domestic, pk=domestic_id)
-    questions = domestic.dquestion_set.all()
+    questions = domestic.dquestion_set.order_by('-pk')
 
-    q = request.POST.get('q', "") 
+    q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
-    
+
     paginator = Paginator(searched, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -333,7 +225,7 @@ def question_search(request, domestic_id):
         'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
-        'q' : q
+        'q': q
     }
     return render(request, template_name='domestic/question_search.html', context=ctx)
 
@@ -344,7 +236,6 @@ def comment_create(request, domestic_id, pk):
     req = json.loads(request.body)
     question_id = req['question_id']
     new_comment_content = req['comment_content']
-
     new_comment = DComment.objects.create(
         question=DQuestion.objects.get(id=question_id),
         comment_content=new_comment_content,
@@ -352,19 +243,20 @@ def comment_create(request, domestic_id, pk):
     )
     new_comment.save()
 
-    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id,'comment_content': new_comment_content})
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content})
+
 
 @csrf_exempt
 def comment_update(request, domestic_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     edit_comment_content = req['comment_content']
-
     edit_comment = DComment.objects.get(id=comment_id)
     edit_comment.comment_content = edit_comment_content
     edit_comment.save()
 
     return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
+
 
 @csrf_exempt
 def comment_delete(request, domestic_id, pk):
@@ -375,7 +267,9 @@ def comment_delete(request, domestic_id, pk):
 
     return JsonResponse({'comment_id': comment_id})
 
-#대댓글
+# 대댓글
+
+
 @csrf_exempt
 def undercomment_create(request, domestic_id, pk):
     req = json.loads(request.body)
@@ -397,7 +291,7 @@ def undercomment_update(request, domestic_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     undercomment_id = req['undercomment_id']
-    undercomment_author=request.user
+    undercomment_author = request.user
     edit_comment_content = req['comment_content']
 
     edit_comment = DUnderComment.objects.get(id=undercomment_id)
@@ -415,8 +309,6 @@ def undercomment_delete(request, domestic_id, pk):
     delete_comment.delete()
 
     return JsonResponse({'undercomment_id': undercomment_id})
-
-
 
 
 # 자매결연대학 목록
@@ -468,7 +360,6 @@ def sister_add(request, domestic_id):
             return redirect('domestic:sister_list', domestic_id)
         else:
             univs = Foreign.objects.all()
-            print(univs)
             ctx = {
                 'domestic': domestic,
                 'is_authenticated': user.is_authenticated,
@@ -497,7 +388,7 @@ def sister_add(request, domestic_id):
             'domestic': domestic,
             'sisters': sisters,
             'sisters_dict': sisters_dict,
-            'certificate_error':True,
+            'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': 'False',
         }
@@ -509,7 +400,7 @@ def sister_add(request, domestic_id):
 
 def credit_list(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
-    credit_posts = domestic.credit_set.all()
+    credit_posts = domestic.credit_set.order_by('-pk')
 
     paginator = Paginator(credit_posts, 20)
     page_number = request.GET.get('page')
@@ -522,7 +413,7 @@ def credit_list(request, domestic_id):
 
     ctx = {
         'domestic': domestic,
-        'page_obj':page_obj,
+        'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
     }
@@ -564,18 +455,19 @@ def credit_create(request, domestic_id):
         page_obj = paginator.get_page(page_number)
         ctx = {
             'domestic': domestic,
-            'page_obj':page_obj,
-            'certificate_error':True,
+            'page_obj': page_obj,
+            'certificate_error': True,
             'is_authenticated': user.is_authenticated,
             'is_enrolled': 'False',
         }
         return render(request, template_name='domestic/credit_list.html', context=ctx)
 
+
 def credit_search(request, domestic_id):
     domestic = Domestic.objects.get(id=domestic_id)
-    credit_posts = domestic.credit_set.all()
+    credit_posts = domestic.credit_set.order_by('-pk')
 
-    filter = request.POST.get('filter', "") 
+    filter = request.POST.get('filter', "")
     q = request.POST.get('q', "")
     if filter == '단과대학':
         searched = credit_posts.filter(college__icontains=q)
@@ -593,7 +485,7 @@ def credit_search(request, domestic_id):
 
     ctx = {
         'domestic': domestic,
-        'page_obj':page_obj,
+        'page_obj': page_obj,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
         'q': q,

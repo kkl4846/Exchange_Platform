@@ -1,19 +1,23 @@
 {% extends "domestic/domestic_base.html" %}
 {% block contents %}
-    <div class="container2 category-detail">
+<div class="container2 category-detail">
         <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center ">
                 <h3>{{ domestic.home_name }}</h3>
             </div>
-            <button form="frm" type="submit" class="blue-button create-btn md-btn"> 저장하기 </button>
+            <button form="sister_add" type="submit" class="blue-button create-btn md-btn"> 저장하기 </button>
         </div>
-        <hr>
-        <form  id="frm" method="POST"  enctype="multipart/form-data">
+        <hr class="mb25-hr">
+        <div class = "create-sister-form d-flex align-items-center justify-content-around">
+            <span class="">대학선택</span>
+            <form  id="sister_add" method="POST"  enctype="multipart/form-data">
             {% csrf_token %}
             <select name="sister">
                 {% for univ in univs %}
-                <option>{{ univ.away_name}}</option>
+                    <option>{{ univ.away_name}}</option>
                 {% endfor %}
             </select>
         </form>
+    </div>
+</div>
 {% endblock %}

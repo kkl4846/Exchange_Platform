@@ -12,6 +12,7 @@
         <div class="d-flex flex-column category-list">
             <h5>국내대학별</h5>
             <hr />
+            {% if page_obj1 %}
             <table>
                 <tr align='center'>
                     <th width='50'>번호</th>
@@ -26,6 +27,18 @@
                 </tr>
                 {% endfor %}
             </table>
+            {% else %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+            </table>
+            <div class='text-center m-4' style="font-size: 15px;">
+                <span>등록된 정보가 없습니다.</span>
+            </div>
+            {% endif %}
             <div class="pagination d-flex justify-content-center">
                 <div>
                     {% if page_obj1.has_previous %}
@@ -58,6 +71,7 @@
         <div class="d-flex flex-column category-list">
             <h5>해외파견교별</h5>
             <hr />
+            {% if page_obj2 %}
             <table>
                 <tr align='center'>
                     <th width='50'>번호</th>
@@ -72,6 +86,18 @@
                 </tr>
                 {% endfor %}
             </table>
+            {% else %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+            </table>
+            <div class='text-center m-4' style="font-size: 15px;">
+                <span>등록된 정보가 없습니다.</span>
+            </div>
+            {% endif %}
             <div class="pagination d-flex justify-content-center">
                 <div>
                     {% if page_obj2.has_previous %}
@@ -104,6 +130,7 @@
         <div class="d-flex flex-column category-list">
             <h5>파견국가별</h5>
             <hr />
+            {% if page_obj3 %}
             <table>
                 <tr align='center'>
                     <th width='50'>번호</th>
@@ -118,6 +145,18 @@
                 </tr>
                 {% endfor %}
             </table>
+            {% else %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+            </table>
+            <div class='text-center m-4' style="font-size: 15px;">
+                <span>등록된 정보가 없습니다.</span>
+            </div>
+            {% endif %}
             <div class="pagination d-flex justify-content-center">
                 <div>
                     {% if page_obj3.has_previous %}

@@ -4,7 +4,10 @@
   border-radius: 14px;
   border: none;
   padding: 9px 0px 9px 12px;
+  outline: none;
+  margin-left: 10px;
 }
+
 .search-button {
   width: 14px;
   height: 14px;
@@ -64,4 +67,8 @@
 .post-list .fa-chevron-right:hover,
 .post-list .fa-chevron-left:hover {
   cursor: pointer;
+}
+
+.qna-pagination {
+  margin-top: 35px;
 }

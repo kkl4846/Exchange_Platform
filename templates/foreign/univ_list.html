@@ -4,16 +4,16 @@
 <div class="lbody d-flex flex-column">
     <div class="container">
     <div class="lbar d-flex align-items-center">
-    <div class="lforeign_list d-flex justify-content-around text-center ">
-    {% for key, val in univ_dict.items %}
-    <a href="#{{ key }}" class="lbar_alpha">{{ key }}</a>
-    {% endfor %}
-    </div>
-    <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교 추가</button>
+        <div class="lforeign_list d-flex justify-content-around text-center ">
+        {% for key, val in univ_dict.items %}
+        <a href="#{{ key }}" class="lbar_alpha list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
+        {% endfor %}
+        </div>
+        <button class="light-button lgbtn-gray" onclick="location.href='{% url "foreign:univ_search" %}'">학교추가</button>
     </div>
     <div>
         {% for key, val in univ_dict.items %}
-        <div class="lgroup ">
+        <div class="lgroup">
                 <div id="{{ key }}" class="lalpha">{{ key }}</div>
                 <div class="lforeign_name ">
                 {% for univ in val %}
@@ -32,10 +32,11 @@ function list(startAlpha){
     var parent = document.querySelector('.lforeign_list')
     var foreign_list = document.querySelectorAll(`.lforeign_list .lbar_alpha`);
     var startnum =startAlpha.charCodeAt(0);
-    
+    console.log(foreign_list.length)
     for(i=0;i<foreign_list.length;i++){
         for(j=startnum ; j<foreign_list[i].innerHTML.charCodeAt(0) ; j++){
             var newSpan = document.createElement('span');
+            newSpan.className = "list-nullKey"
             newSpan.textContent = String.fromCharCode(j);
             parent.insertBefore(newSpan, foreign_list[i]);
         }
@@ -52,5 +53,22 @@ function list(startAlpha){
     
 }
 list('A');
+</script>
+<script>
+
+const clickAlpha = (key)=>{
+    var topKey = document.querySelectorAll('.lforeign_list a');
+    for(i=0;i<topKey.length;i++){
+        topKey[i].className="list-unactive"    /*초기화*/
+        var element = topKey[i].innerHTML;
+        var midKey = document.querySelector(`#${element}`)
+            midKey.className = "lalpha"
+        if(key == topKey[i].innerHTML){
+            topKey[i].className="list-active"
+            midKey = document.querySelector(`#${key}`)
+            midKey.className = "lalpha-active"
+        }
+    }
+}
 </script>
 {%endblock%}

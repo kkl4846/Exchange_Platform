@@ -1,50 +1,45 @@
 {%extends "country/country_base.html"%}
 {%block contents%}
-<div class="container2 category-detail">
+<div class="container2 category-detail wiki__content">
     <div class="d-flex justify-content-between ">
         <div class="d-flex align-items-center ">
             <h3>{{country.country_name}}</h3>
         </div>
     </div>
     <hr />
-
-        <form action="" method="POST" enctype="multipart/form-data" class="table">
-            {% csrf_token %}
-            {% for field in form %}
-            {% if btn == forloop.counter%}
-            {%if field.name == 'visa'%} <p>1. 비자 발급 방법</p>  {%endif%}
-            {%if field.name == 'lifestyle'%}<p>2. 현지생활 및 치안</p>   {%endif%}
-            {%if field.name == 'money'%} <p>3. 물가 및 체류 비용</p>  {%endif%}
-            {%if field.name == 'culture'%} <p>4. 문화적 특징</p> {%endif%}
-            {%if field.name == 'covid_info'%} <p>5. 코로나 정보</p> {%endif%}
-            
-            
-            <div class="form-group">
-                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
-            </div>
-            <input type="submit" value="저장하기" onclick="onClickEditWiki()"/>
+    <form action="" method="POST" enctype="multipart/form-data" class="table">
+        {% csrf_token %}
+        {% for field in form %}
+            {%if type == field.name%}
+                <div class="d-flex justify-content-between align-items-center wiki__li-title">
+                    {%if field.name == 'visa'%} <h4>1. 비자 발급 방법</h4>  {%endif%}
+                    {%if field.name == 'lifestyle'%}<h4>2. 현지생활 및 치안</h4>   {%endif%}
+                    {%if field.name == 'money'%} <h4>3. 물가 및 체류 비용</h4>  {%endif%}
+                    {%if field.name == 'culture'%} <h4>4. 문화적 특징</h4> {%endif%}
+                    {%if field.name == 'covid_info'%} <h4>5. 코로나 정보</h4> {%endif%}
+                    <input class="blue-button m-btn" type="submit" value="저장하기" onclick="onClickEditWiki()"/>
+                </div>
+                <div class="form-group">
+                    <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
+                        id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
+                </div>
             {% else %}
-            <div class="form-group">
-                <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
-                    id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
-            </div>
-          
+                <div class="form-group">
+                    <textarea type="{{ field.field.widget.textarea_type }}" class="form-control "
+                        id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
+                </div>
             {%endif%}
-            {% endfor %}
+        {% endfor %}
+    </form>
+</div>
+    
+{%endblock%}
 
-        </form>
-
-    </div>
-    </div>
-    </div>
-    <script>
+{% block extra %}
+<script>
     const onClickEditWiki= () => {  
         alert('위키 수정이 완료되었습니다');
-        
         window.location.href='{% url "country:country_wiki" country.pk%}';
-        
-        
     };
     </script>
-{%endblock%}
+{% endblock %}

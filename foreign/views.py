@@ -10,6 +10,8 @@ from .models import *
 from .forms import *
 from jamo import h2j, j2hcj
 from django.core.paginator import Paginator
+from datetime import datetime
+
 
 URL_LOGIN = '/login/'
 
@@ -159,11 +161,9 @@ def wiki(request, pk):
     }
     return render(request, 'foreign/wiki.html', ctx)
 
-# wiki 1번 항목
-
 
 @login_required(login_url=URL_LOGIN)
-def wiki_edit_apply(request, pk):
+def wiki_edit(request, pk, wiki_type):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
         form = ForeignForm(request.POST, request.FILES, instance=foreign)
@@ -175,124 +175,11 @@ def wiki_edit_apply(request, pk):
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
-        'btn': 1,
+        'type': wiki_type,
     })
-
-# wiki 2번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_language_score(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 2,
-    })
-# wiki 3번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_course_enroll(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 3,
-    })
-
-# wiki 4번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_accommodation(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 4,
-    })
-
-# wiki 5번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_atmosphere(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 5,
-    })
-
-# wiki 6번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_club(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 6,
-    })
-
-# wiki 7번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_away_scholarship(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 7,
-    })
-
 
 # review
+
 
 def review_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
@@ -317,13 +204,14 @@ def review_detail(request, pk, foreign_id):
         IsReviewAuthor = True
     else:
         IsReviewAuthor = False
-
+    now = datetime.now()
     ctx = {
         'review': review,
         'univ': foreign,
         'all_comment': all_comment,
         'IsReviewAuthor': IsReviewAuthor,
         'recomments': recomments,
+        'now': now,
     }
     return render(request, 'foreign/review_detail.html', ctx)
 
@@ -379,7 +267,7 @@ def review_update(request, pk, foreign_id):
 def question_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     questions = FQuestion.objects.filter(away_university=foreign)
-    questions = questions.order_by('-created_at')
+    questions = questions.order_by('-pk')
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -395,12 +283,14 @@ def question_detail(request, foreign_id, pk):
     question = FQuestion.objects.get(id=pk)
     comments = question.fcomment_set.all()
     undercomments = FUnderComment.objects.all()
+    now = datetime.now()
     ctx = {
         'question': question,
         'comments': comments,
         'univ': foreign,
         'is_authenticated': request.user.is_authenticated,
         'undercomments': undercomments,
+        'now': now
     }
     return render(request, 'foreign/question_detail.html', context=ctx)
 
@@ -449,6 +339,7 @@ def question_edit(request, foreign_id, pk):
             'univ': foreign,
             'IsQuestionAuthor': IsQuestionAuthor,
             'type': type,
+            'question': question,
         }
         return render(request, template_name='foreign/question_form.html', context=ctx)
 
@@ -462,7 +353,7 @@ def question_delete(request, foreign_id, pk):
 
 def question_search(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
-    questions = foreign.fquestion_set.all()
+    questions = foreign.fquestion_set.order_by('-pk')
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)

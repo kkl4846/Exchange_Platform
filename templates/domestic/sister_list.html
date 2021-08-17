@@ -8,14 +8,18 @@
             <button class="light-button create-btn md-btn" onclick="canIAdd('{{ is_authenticated }}','{{ is_enrolled }}')"> 학교추가 </button>
         </div>
         <hr>
+        <div>
         {% if sisters_dict.items %}
             {% for key, val in sisters_dict.items %}
-            <ul>
-                <h4>{{ key }}</h4>
+            <ul class="lgroup ">
+                <h4 class="lalpha">{{ key }}</h4>
+                <div class="lforeign_name ">
                 {% for sister in val %}
                     <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
                 {% endfor %}
+                </div>
             </ul>
+            <br>
             {% endfor %}
         {% else %}
             <div class='text-center m-5'>
@@ -23,6 +27,9 @@
                 <h6>첫 번째로 정보를 등록해주세요!</h6>
             </div>
         {% endif %}
+    </div>
+</div>
+
 {% endblock %}
 {% block extra %}
 <script>

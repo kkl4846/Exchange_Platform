@@ -1,12 +1,12 @@
 {%extends "base.html"%} 
 {% block content %}
 <div class="lbody">
-    <div class="container">
+    <div class="container containers">  <!-- conntainers-현재 국가가 적어서 min-heighy를 설정함 만약 국가가 많을 예정이라면 containers 빼도됨 -->
     {% autoescape off %}
     <div class="lbar d-flex align-items-center">
-        <div class="lforeign_list d-flex justify-content-around text-center ">
+        <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
         {% for key, val in countries_dict.items %}
-        <a href="#{{ key }}">{{ key }}</a>
+        <a href="#{{ key }}" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
         {% endfor %}
         </div>
     </div>
@@ -28,4 +28,47 @@
     {% endautoescape %}
     </div>
 </div>
+<script>
+    
+function list(){
+    var cho_list = document.querySelector('.cho_list');
+    var exist = document.querySelectorAll(`.cho`);
+    const compare = ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+    var j_value=0;
+    var j=0;
+    for( i=0; i<compare.length; i++ ){
+        for( j=j_value; j<exist.length; j++ ){
+            if(exist[j].innerHTML.charCodeAt(0)>compare[i].charCodeAt(0)){
+                var newSpan = document.createElement('span');
+                newSpan.textContent = compare[i];
+                cho_list.insertBefore(newSpan, exist[j]);
+                break;
+            }else if(exist[j].innerHTML.charCodeAt(0)==compare[i].charCodeAt(0)){
+                j_value++;
+                break;
+            }else{
+                j_value++;
+            };
+        };
+    };
+};
+list();
+</script>
+<script>
+
+    const clickAlpha = (key)=>{
+        var topKey = document.querySelectorAll('.lforeign_list a');
+        for(i=0;i<topKey.length;i++){
+            topKey[i].className="list-unactive"    /*초기화*/
+            var element = topKey[i].innerHTML;
+            var midKey = document.querySelector(`#${element}`)
+                midKey.className = "lalpha"
+            if(key == topKey[i].innerHTML){
+                topKey[i].className="list-active"
+                midKey = document.querySelector(`#${key}`)
+                midKey.className = "lalpha-active"
+            }
+        }
+    }
+    </script>
 {% endblock %}

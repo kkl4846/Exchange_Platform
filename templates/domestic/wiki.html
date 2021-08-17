@@ -11,14 +11,14 @@
             <div class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>1. 지원 방법</h4>
-                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','apply')"> 수정 </button>                              
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','home_apply')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.home_apply }}</pre>
             </div>
             <div class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>2. 필요 서류</h4>
-                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','document')"> 수정 </button>                              
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','home_document')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.home_document }}</pre>
             </div>
@@ -32,7 +32,7 @@
             <div class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>4. 교내 장학금 정보</h4>
-                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','scholarship')"> 수정 </button>                              
+                    <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','home_scholarship')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.home_scholarship }}</pre>
             </div>
@@ -55,7 +55,7 @@
             if(is_enrolled == 'False'){
                 alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
             }else{
-                window.location.href=`edit_${str}`; 
+                window.location.href=`${str}`; 
             }
         }
     };
