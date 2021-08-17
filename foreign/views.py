@@ -67,22 +67,7 @@ def univ_create(request, univ_name):
 def sister(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     sisters = foreign.sisters.all().order_by('home_name')
-    sisters_dict = {}
-    last_cho = 'ㄱ'
-    sisters_dict[last_cho] = []
-
-    for university in sisters:
-        this_university = university.home_name
-        university_cho = j2hcj(h2j(this_university[0]))[0]
-        if last_cho != university_cho:     # 직전 초성과 다른 초성
-            sisters_dict[university_cho] = []
-            sisters_dict[university_cho].append(university)
-            last_cho = university_cho
-        else:                           # 같은 초성
-            sisters_dict[university_cho].append(university)
-    g_cho = 'ㄱ'
-    if len(sisters_dict[g_cho]) == 0:
-        del(sisters_dict[g_cho])
+    sisters_dict = order_domestic(sisters)
     ctx = {
         'sisters_dict': sisters_dict,
         'univ': foreign,
