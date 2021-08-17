@@ -208,22 +208,22 @@ def myquestion(request):
     d_questions = DQuestion.objects.filter(author=user).order_by('-pk')
     paginator1 = Paginator(d_questions, 10)
     page_number1 = request.GET.get('page1')
-    page_obj1 = paginator1.get_page(page_number1)
+    d_question_list = paginator1.get_page(page_number1)
 
     f_questions = FQuestion.objects.filter(author=user).order_by('-pk')
     paginator2 = Paginator(f_questions, 10)
     page_number2 = request.GET.get('page2')
-    page_obj2 = paginator2.get_page(page_number2)
+    f_question_list = paginator2.get_page(page_number2)
 
     c_questions = CQuestion.objects.filter(author=user).order_by('-pk')
     paginator3 = Paginator(c_questions, 10)
     page_number3 = request.GET.get('page3')
-    page_obj3 = paginator3.get_page(page_number3)
+    c_question_list = paginator3.get_page(page_number3)
 
     ctx = {
-        'page_obj1': page_obj1,
-        'page_obj2': page_obj2,
-        'page_obj3': page_obj3,
+        'd_question_list': d_question_list,
+        'f_question_list': f_question_list,
+        'c_question_list': c_question_list,
     }
     return render(request, 'login/myquestion.html', context=ctx)
 
@@ -234,22 +234,22 @@ def mycomment(request):
     d_comments = DComment.objects.filter(comment_author=user).order_by('-pk')
     paginator1 = Paginator(d_comments, 10)
     page_number1 = request.GET.get('page1')
-    page_obj1 = paginator1.get_page(page_number1)
+    d_comment_list = paginator1.get_page(page_number1)
 
     f_comments = FComment.objects.filter(comment_author=user).order_by('-pk')
     paginator2 = Paginator(f_comments, 10)
     page_number2 = request.GET.get('page2')
-    page_obj2 = paginator2.get_page(page_number2)
+    f_comment_list = paginator2.get_page(page_number2)
 
     c_comments = CComment.objects.filter(comment_author=user).order_by('-pk')
     paginator3 = Paginator(c_comments, 10)
     page_number3 = request.GET.get('page3')
-    page_obj3 = paginator3.get_page(page_number3)
+    c_comment_list = paginator3.get_page(page_number3)
 
     ctx = {
-        'page_obj1': page_obj1,
-        'page_obj2': page_obj2,
-        'page_obj3': page_obj3,
+        'd_comment_list': d_comment_list,
+        'f_comment_list': f_comment_list,
+        'c_comment_list': c_comment_list,
     }
     return render(request, 'login/mycomment.html', context=ctx)
 
