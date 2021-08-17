@@ -72,3 +72,7 @@
 .qna-pagination {
   margin-top: 35px;
 }
+
+.total-question {
+  color: var(--bg);
+}
