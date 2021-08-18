@@ -6,8 +6,7 @@
             <div class="d-flex align-items-center ">
                 <h3>{{country.country_name}}</h3>
             </div>
-            <button class="light-button create-btn sm-btn" onclick="canIPost('{{ is_authenticated }}')"> 글쓰기 </button>
-        </div>
+            <button class="light-button create-btn md-btn" onclick="location.href='{% url "country:question_list" country.pk %}'"> 목록보기 </button>        </div>
         <hr>
         <div class="post-header d-flex justify-content-between">
             <span class="post-title">{{ question.question_title }}</span>

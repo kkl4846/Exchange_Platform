@@ -10,6 +10,15 @@ class ForeignForm(forms.ModelForm):
         model = Foreign
         fields = ['away_apply', 'language_score', 'course_enroll',
                   'accommodation', 'atmosphere', 'club', 'away_scholarship']
+        labels = {
+            'away_apply': '지원 방법',
+            'language_score': '필요 어학 점수',
+            'course_enroll': '수강신청 방법',
+            'accommodation': ' 기숙사 정보',
+            'atmosphere': '학교 분위기',
+            'club': '동아리',
+            'away_scholarship': '장학금',
+        }
 
 
 class NewForeignForm(forms.ModelForm):

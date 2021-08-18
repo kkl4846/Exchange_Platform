@@ -15,10 +15,6 @@ class Country(models.Model):
 
 class CQuestion(models.Model):
     author = models.ForeignKey(to='login.User', on_delete=models.CASCADE)
-    home_university = models.ForeignKey(
-        to='domestic.Domestic', on_delete=models.CASCADE, null=True, blank=True)
-    away_university = models.ForeignKey(
-        to='foreign.Foreign', on_delete=models.CASCADE, null=True, blank=True)
     country = models.ForeignKey(
         to='country.Country', on_delete=models.CASCADE, null=True, blank=True)
     question_title = models.CharField(max_length=50)

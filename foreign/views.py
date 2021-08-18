@@ -7,7 +7,7 @@ import json
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from .forms import *
-from jamo import h2j, j2hcj
+from config.functions import *
 from django.core.paginator import Paginator
 from datetime import datetime
 
@@ -17,25 +17,11 @@ URL_LOGIN = '/login/'
 
 def univ_list(request):
     unives = Foreign.objects.all().order_by('away_name')
-    univ_dict = {}
-    last_alpha = 'A'
-    univ_dict[last_alpha] = []
-    for univ in unives:
-        u = univ.away_name
-        this_alpha = u[0]
-        if last_alpha != this_alpha:
-            univ_dict[this_alpha] = []
-            univ_dict[this_alpha].append(univ)
-            last_alpha = this_alpha
-        else:
-            univ_dict[this_alpha].append(univ)
-    if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
-        del(univ_dict['A'])
+    univ_dict = order_foreign(unives)
     alphaList = [chr(c) for c in range(ord('A'), ord('Z')+1)]
     return render(request, 'foreign/univ_list.html', {
         'univ_dict': univ_dict,
         'alphaList': alphaList,
-
     })
 
 # 해외 대학 추가
@@ -49,37 +35,8 @@ def univ_search(request):
             univ = form.save()
             return redirect('foreign:univ_list')
     else:
-        f = open('config/univ.json', 'r', encoding='UTF8')
-        file = json.load(f)
-        foreign_univs = []
-        search_univs = []
-        for university_dicts in file:
-            for university_name in (university_dicts.get(key) for key in university_dicts.keys() if 'name' in key):
-                foreign_univs.append(university_name)
-        foreign_univs.sort()
-        query = request.GET.get('query', '')
-        univ_dict = {}
-        last_alpha = 'A'
-        univ_dict[last_alpha] = []
-        if query:
-            for univ in foreign_univs:
-                if query in univ:
-                    search_univs.append(univ)
-            for univ in search_univs:
-                this_alpha = univ[0]
-                if last_alpha != this_alpha:
-                    univ_dict[this_alpha] = []
-                    univ_dict[this_alpha].append(univ)
-                    last_alpha = this_alpha
-                else:
-                    univ_dict[this_alpha].append(univ)
-        if len(univ_dict['A']) == 0:  # A인 대학이 없을 때 A출력 제거
-            del(univ_dict['A'])
-
         form = NewForeignForm()
-
         return render(request, 'foreign/univ_search.html', {
-            'univ_dict': univ_dict,
             'form': form,
         })
 
@@ -109,22 +66,7 @@ def univ_create(request, univ_name):
 def sister(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     sisters = foreign.sisters.all().order_by('home_name')
-    sisters_dict = {}
-    last_cho = 'ㄱ'
-    sisters_dict[last_cho] = []
-
-    for university in sisters:
-        this_university = university.home_name
-        university_cho = j2hcj(h2j(this_university[0]))[0]
-        if last_cho != university_cho:     # 직전 초성과 다른 초성
-            sisters_dict[university_cho] = []
-            sisters_dict[university_cho].append(university)
-            last_cho = university_cho
-        else:                           # 같은 초성
-            sisters_dict[university_cho].append(university)
-    g_cho = 'ㄱ'
-    if len(sisters_dict[g_cho]) == 0:
-        del(sisters_dict[g_cho])
+    sisters_dict = order_domestic(sisters)
     ctx = {
         'sisters_dict': sisters_dict,
         'univ': foreign,
@@ -160,11 +102,9 @@ def wiki(request, pk):
     }
     return render(request, 'foreign/wiki.html', ctx)
 
-# wiki 1번 항목
-
 
 @login_required(login_url=URL_LOGIN)
-def wiki_edit_apply(request, pk):
+def wiki_edit(request, pk, wiki_type):
     foreign = get_object_or_404(Foreign, pk=pk)
     if request.method == 'POST':
         form = ForeignForm(request.POST, request.FILES, instance=foreign)
@@ -176,124 +116,11 @@ def wiki_edit_apply(request, pk):
     return render(request, 'foreign/wiki_edit.html', {
         'form': form,
         'univ': foreign,
-        'btn': 1,
+        'type': wiki_type,
     })
-
-# wiki 2번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_language_score(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 2,
-    })
-# wiki 3번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_course_enroll(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 3,
-    })
-
-# wiki 4번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_accommodation(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 4,
-    })
-
-# wiki 5번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_atmosphere(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 5,
-    })
-
-# wiki 6번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_club(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 6,
-    })
-
-# wiki 7번 항목
-
-
-@login_required(login_url=URL_LOGIN)
-def wiki_edit_away_scholarship(request, pk):
-    foreign = get_object_or_404(Foreign, pk=pk)
-    if request.method == 'POST':
-        form = ForeignForm(request.POST, request.FILES, instance=foreign)
-        if form.is_valid():
-            foreign.save()
-            return redirect('foreign:wiki', foreign.pk)
-    else:
-        form = ForeignForm(instance=foreign)
-    return render(request, 'foreign/wiki_edit.html', {
-        'form': form,
-        'univ': foreign,
-        'btn': 7,
-    })
-
 
 # review
+
 
 def review_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
@@ -301,9 +128,11 @@ def review_list(request, foreign_id):
     paginator = Paginator(all_review, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    total_review = all_review.count()
     ctx = {
         'univ': foreign,
         'page_obj': page_obj,
+        'total_review': total_review,
     }
     return render(request, 'foreign/review_list.html', ctx)
 
@@ -382,11 +211,13 @@ def question_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
     questions = FQuestion.objects.filter(away_university=foreign)
     questions = questions.order_by('-pk')
+    total_question = questions.count()
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     ctx = {
         'page_obj': page_obj,
+        'total_question': total_question,
         'univ': foreign,
     }
     return render(request, 'foreign/question_list.html', context=ctx)
@@ -471,6 +302,7 @@ def question_search(request, foreign_id):
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
+    total_question = searched.count()
 
     paginator = Paginator(searched, 15)
     page_number = request.GET.get('page')
@@ -485,6 +317,7 @@ def question_search(request, foreign_id):
     ctx = {
         'univ': foreign,
         'page_obj': page_obj,
+        'total_question': total_question,
         'is_authenticated': user.is_authenticated,
         'is_enrolled': is_enrolled,
         'q': q

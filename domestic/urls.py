@@ -7,16 +7,8 @@ urlpatterns = [
     path('', views.univ_list, name='univ_list'),
 
     path('<int:domestic_id>/wiki/', views.wiki, name='wiki'),
-    path('<int:domestic_id>/wiki/edit_apply/',
-         views.wiki_edit_apply, name='wiki_edit_apply'),
-    path('<int:domestic_id>/wiki/edit_document/',
-         views.wiki_edit_document, name='wiki_edit_document'),
-    path('<int:domestic_id>/wiki/edit_semester/',
-         views.wiki_edit_semester, name='wiki_edit_semester'),
-    path('<int:domestic_id>/wiki/edit_scholarship/',
-         views.wiki_edit_scholarship, name='wiki_edit_scholarship'),
-    path('<int:domestic_id>/wiki/edit_insurance/',
-         views.wiki_edit_insurance, name='wiki_edit_insurance'),
+    path('<int:domestic_id>/wiki/<str:wiki_type>/',
+         views.wiki_edit, name='wiki_edit'),
 
 
     path('<int:domestic_id>/qna/', views.question_list, name='question_list'),

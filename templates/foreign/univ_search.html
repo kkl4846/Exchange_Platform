@@ -59,7 +59,7 @@
                 </div>
             </div>
         </form>
-        <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='addForeign'>
+        <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='addForeign' onsubmit="return ForeignValid(document.querySelector('#myInput').value)">
             {% csrf_token %}
             <input name="away_name" style="display: none;" id="formUniversity">
             <div class="addForeign-group">
@@ -159,5 +159,17 @@
 </script>
 <script>
     autocomplete(document.getElementById("myInput"), university_names);
+</script>
+
+<script>
+    const ForeignValid=(foreign) => {
+        if (foreign == ''){
+            alert('해외 학교명을 입력하세요.');
+            return false;
+       
+        }else{
+            return true;
+        }
+    } ;
 </script>
 {%endblock%}
