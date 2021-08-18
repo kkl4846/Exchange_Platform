@@ -1,6 +1,8 @@
 footer {
   background: var(--d-gray);
   color: white;
+  z-index: 2;
+  position: relative;
 }
 footer img {
   height: 65px;

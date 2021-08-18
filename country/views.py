@@ -13,15 +13,15 @@ URL_LOGIN = '/login/'
 
 
 def country_list(request):
-    countries = Country.objects.all().order_by('country_name')
-    countries_dict = alpha_group(countries)
+    countries = Country.objects.values().order_by('country_name')
+    countries_dict = alpha_group(countries, 'country_name')
 
     # print(countries_dict)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
 
 
-def alpha_group(things):
+def alpha_group(things, type):
     things_dict = {}
     last_alpha = 'ㄱ'
     things_dict[last_alpha] = []
