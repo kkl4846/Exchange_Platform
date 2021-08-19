@@ -3,19 +3,26 @@
 <script src="https://kit.fontawesome.com/67d418f4de.js" crossorigin="anonymous"></script>
 {% endblock %}
 {% block content%}
-    <div class="d-flex  ">
-        <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center"
-            style="width:200px; height:150px;">
-            <ul>
-                <li><a href="{% url "foreign:sister" univ.pk%}">자매 결연 대학</a></li>
-                <li><a href="{% url "foreign:wiki" univ.pk%}">위키</a></li>
-                <li><a href="{% url "foreign:question_list" univ.pk%}">QnA</a></li>
-                <li><a href="{% url "foreign:review_list" univ.pk%}">파견교 후기 공유</a></li>
-            </ul>
+    <div class="d-flex">
+        <div class="sidebar">
+            <div class="sidebar__text">
+                <h3><a href="{% url 'foreign:sister' univ.pk %}">자매 결연 대학</a></h3>
+                <h3 class="sidebar__selected"><a href="{% url 'foreign:wiki' univ.pk %}">위키</a></h3>
+                    <h4><a href="#">파견로의 지원방법</a></h4>
+                    <h4><a href="#">필요 어학 점수</a></h4>
+                    <h4><a href="#">수강신청방법</a></h4>
+                    <h4><a href="#">기숙사 정보</a></h4>
+                    <h4><a href="#">학교 분위기</a></h4>
+                    <h4><a href="#">동아리</a></h4>
+                    <h4><a href="#">장학금</a></h4>
+                <h3><a href="{% url 'foreign:question_list' univ.pk %}">QnA</a></h3>
+                <h3><a href="{% url 'foreign:review_list' univ.pk %}">파견교 후기 공유</a></h3>
+            </div>
         </div>
-        <div>
-    {% block contents %}
-    {% endblock %}
+        
+        <div class="contents">
+            {% block contents %}
+            {% endblock %}
         </div>
     </div>
 

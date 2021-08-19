@@ -4,15 +4,20 @@
 {% endblock %}
 {% block content %}
 <div class="d-flex">
-    <div class="m-5 border border-dark rounded d-flex flex-column justify-content-center" style="width:200px; height:150px;">
-        <ul>
-            <li><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></li>
-            <li><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></li>
-            <li><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></li>
-            <li><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></li>
-        </ul>
+    <div class="sidebar">
+        <div class="sidebar__text">
+            <h3><a href="{% url 'domestic:sister_list' domestic.pk %}">자매 결연 대학</a></h3>
+            <h3 class="sidebar__selected"><a href="{% url 'domestic:wiki' domestic.pk %}">위키</a></h3>
+                <h4><a href="#">지원 방법</a></h4>
+                <h4><a href="#">필요 서류</a></h4>
+                <h4><a href="#">수학 가능 학기</a></h4>
+                <h4><a href="#">교내 장학금 정보</a></h4>
+                <h4><a href="#">유학생 보험 준비</a></h4>
+            <h3><a href="{% url 'domestic:question_list' domestic.pk %}">QnA</a></h3>
+            <h3><a href="{% url 'domestic:credit_list' domestic.pk %}">파견교별 학점컷</a></h3>
+        </div>
     </div>
-    <div>
+    <div class="contents">
     {% block contents %}
     {% endblock %}
     </div>
