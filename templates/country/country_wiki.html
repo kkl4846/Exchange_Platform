@@ -8,40 +8,40 @@
     </div>
     <hr>
     <div class="wiki__content">
-        <div class="wiki__li">
-        <div class="wiki__li-title">
-            <h4 class="p-test">1. 비자 발급 방법</h4>
-            <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','visa')">수정</button>
+        <div id="country_1" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4 class="p-test">1. 비자 발급 방법</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','visa')">수정</button>
+            </div>
+                <pre>{{country.visa}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
         </div>
-            <pre>{{country.visa}}</pre>                              <!--textarea에 입력한대로 보여주는 pre tag-->
+        <div id="country_2" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>2. 현지생활 및 치안</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','lifestyle')">수정</button>
+            </div>
+                <pre>{{country.lifestyle}}</pre>
         </div>
-        <div class="wiki__li">
-        <div class="wiki__li-title">
-            <h4>2. 현지생활 및 치안</h4>
-            <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','lifestyle')">수정</button>
+        <div id="country_3" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>3. 물가 및 체류 비용</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','money')">수정</button>
+            </div>
+                <pre>{{country.money}}</pre>
         </div>
-            <pre>{{country.lifestyle}}</pre>
+        <div id="country_4" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>4. 문화적 특징</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','culture')">수정</button>
+            </div>
+                <pre>{{country.culture}}</pre>
         </div>
-        <div class="wiki__li">
-        <div class="wiki__li-title">
-            <h4>3. 물가 및 체류 비용</h4>
-            <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','money')">수정</button>
-        </div>
-            <pre>{{country.money}}</pre>
-        </div>
-        <div class="wiki__li">
-        <div class="wiki__li-title">
-            <h4>4. 문화적 특징</h4>
-            <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','culture')">수정</button>
-        </div>
-            <pre>{{country.culture}}</pre>
-        </div>
-        <div class="wiki__li">
-        <div class="wiki__li-title">
-            <h4>5. 코로나 정보</h4>
-            <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','covid_info')">수정</button>
-        </div>
-            <pre>{{country.covid_info}}</pre>
+        <div id="country_5" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>5. 코로나 정보</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','covid_info')">수정</button>
+            </div>
+                <pre>{{country.covid_info}}</pre>
         </div>
     </div>
 </div>

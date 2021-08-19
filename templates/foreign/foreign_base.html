@@ -7,14 +7,14 @@
         <div class="sidebar">
             <div class="sidebar__text">
                 <h3><a href="{% url 'foreign:sister' univ.pk %}">자매 결연 대학</a></h3>
-                <h3 class="sidebar__selected"><a href="{% url 'foreign:wiki' univ.pk %}">위키</a></h3>
-                    <h4><a href="#">파견로의 지원방법</a></h4>
-                    <h4><a href="#">필요 어학 점수</a></h4>
-                    <h4><a href="#">수강신청방법</a></h4>
-                    <h4><a href="#">기숙사 정보</a></h4>
-                    <h4><a href="#">학교 분위기</a></h4>
-                    <h4><a href="#">동아리</a></h4>
-                    <h4><a href="#">장학금</a></h4>
+                <h3 class=""><a href="{% url 'foreign:wiki' univ.pk %}">위키</a></h3>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_1">파견로의 지원방법</a></h4>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_2">필요 어학 점수</a></h4>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_3">수강신청방법</a></h4>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_4">기숙사 정보</a></h4>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_5">학교 분위기</a></h4>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_6">동아리</a></h4>
+                    <h4><a href="{% url 'foreign:wiki' univ.pk %}#foreign_7">장학금</a></h4>
                 <h3><a href="{% url 'foreign:question_list' univ.pk %}">QnA</a></h3>
                 <h3><a href="{% url 'foreign:review_list' univ.pk %}">파견교 후기 공유</a></h3>
             </div>
@@ -26,4 +26,12 @@
         </div>
     </div>
 
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        var url = window.location.pathname;
+        $('.sidebar__text').find('a').each(function() {
+            $(this).parent().toggleClass('sidebar__selected', $(this).attr('href') == url);
+        });
+        
+    </script>
 {%endblock%}

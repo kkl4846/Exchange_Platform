@@ -7,14 +7,14 @@
     <div class="d-flex">
         <div class="sidebar">
             <div class="sidebar__text">
-                <h3><a href="{% url 'country:country_univ' country.pk %}">학교 목록</a></h3>
-                <h3 class="sidebar__selected"><a href="{% url 'country:country_wiki' country.pk %}">위키</a></h3>
-                    <h4><a href="#">비자 발급 방법</a></h4>
-                    <h4><a href="#">현지 생활 및 치안</a></h4>
-                    <h4><a href="#">물가 및 체류 비용</a></h4>
-                    <h4><a href="#">문화적 특징</a></h4>
-                    <h4><a href="#">코로나 정보</a></h4>
-                <h3><a href="{% url 'country:question_list' country.pk %}">QnA</a></h3>
+                <h3 class=""><a href="{% url 'country:country_univ' country.pk %}">학교 목록</a></h3>
+                <h3 class=""><a href="{% url 'country:country_wiki' country.pk %}">위키</a></h3>
+                    <h4><a href="{% url 'country:country_wiki' country.pk %}#country_1">비자 발급 방법</a></h4>
+                    <h4><a href="{% url 'country:country_wiki' country.pk %}#country_2">현지 생활 및 치안</a></h4>
+                    <h4><a href="{% url 'country:country_wiki' country.pk %}#country_3">물가 및 체류 비용</a></h4>
+                    <h4><a href="{% url 'country:country_wiki' country.pk %}#country_4">문화적 특징</a></h4>
+                    <h4><a href="{% url 'country:country_wiki' country.pk %}#country_5">코로나 정보</a></h4>
+                <h3 class=""><a href="{% url 'country:question_list' country.pk %}">QnA</a></h3>
             </div>
         </div>
         <div class="contents">
@@ -22,5 +22,12 @@
             {% endblock %}
         </div>
     </div>
-
+    
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        var url = window.location.pathname;
+        $('.sidebar__text').find('a').each(function() {
+            $(this).parent().toggleClass('sidebar__selected', $(this).attr('href') == url);
+        });
+    </script>
 {% endblock %}
