@@ -8,35 +8,35 @@
         </div>
         <hr>
         <div class="wiki__content">
-            <div class="wiki__li">
+            <div id="domestic_1" class="wiki__li"><a name="domestic_1"></a>
                 <div class="wiki__li-title">
                     <h4>1. 지원 방법</h4>
                     <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','home_apply')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.home_apply }}</pre>
             </div>
-            <div class="wiki__li">
+            <div id="domestic_2" class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>2. 필요 서류</h4>
                     <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','home_document')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.home_document }}</pre>
             </div>
-            <div class="wiki__li">
+            <div id="domestic_3" class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>3. 수학 가능 학기</h4>
                     <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','semester')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.semester }}</pre>
             </div>
-            <div class="wiki__li">
+            <div id="domestic_4" class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>4. 교내 장학금 정보</h4>
                     <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','home_scholarship')"> 수정 </button>                              
                 </div>
                 <pre>{{ domestic.home_scholarship }}</pre>
             </div>
-            <div class="wiki__li">
+            <div id="domestic_5" class="wiki__li">
                 <div class="wiki__li-title">
                     <h4>5. 유학생 보험 준비</h4>
                     <button class="light-button m-btn" onclick="canIEdit('{{ is_authenticated }}','{{ is_enrolled }}','insurance')"> 수정 </button>                              

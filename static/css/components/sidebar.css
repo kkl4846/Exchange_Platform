@@ -23,6 +23,9 @@
 .sidebar a:hover {
   color: var(--blue);
 }
+.sidebar__selected a:hover {
+  color: white;
+}
 .sidebar h3,
 .sidebar h4 {
   margin: 0px 14px 18px 14px;
