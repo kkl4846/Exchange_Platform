@@ -96,7 +96,7 @@ def rename(request):
 
 @login_required(login_url=URL_LOGIN)
 def certificate(request):
-    f = open('config/univ.json', 'r')
+    f = open('config/univ.json', 'r', encoding='UTF-8')
     file = json.load(f)
 
     school_names = []
@@ -158,7 +158,7 @@ def school_search(request):
     user.university = school_name
     user.save()
 
-    f = open('config/univ.json', 'r')
+    f = open('config/univ.json', 'r', encoding='UTF-8')
     file = json.load(f)
 
     school_names = []

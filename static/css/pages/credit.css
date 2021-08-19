@@ -29,6 +29,7 @@
   width: 69px;
   padding: 0;
   border-radius: 20px;
+  color: var(--d-gray);
 }
 
 .credit-option:focus {
@@ -43,6 +44,7 @@
   position: relative;
   margin-top: 5px;
   margin-left: -32px;
+  color: var(--d-gray);
 }
 
 .credit-list th {
@@ -60,12 +62,12 @@
 }
 
 .credit-list .numbering {
-  font-size: 17px;
+  font-size: 12px;
   border-radius: 14px;
   background-color: var(--l-gray);
   width: 22px;
   height: 22px;
-  padding: 0 8px;
+  padding: 2px 7px;
   margin: 0 3px;
   text-decoration: none;
   color: var(--d-gray);
