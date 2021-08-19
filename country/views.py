@@ -57,7 +57,7 @@ def country_univ(request, pk):
     country = get_object_or_404(Country, pk=pk)
     unives = country.country_univs.all().order_by('away_name')
 
-    univ_dict = alpha_group(unives)
+    univ_dict = order_foreign(unives)
 
     return render(request, 'country/country_univ.html', {
         'country': country,
