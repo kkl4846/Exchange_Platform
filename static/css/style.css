@@ -38,9 +38,11 @@ body {
 
 .container {
   width: 1040px;
+  padding: 0;
 }
 
 .container2 {
   width: 990px;
   min-height: 100vh;
+  margin-left: 50px;
 }

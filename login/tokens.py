@@ -1,4 +1,3 @@
-from datetime import time
 import six
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 

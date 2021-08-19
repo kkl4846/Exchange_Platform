@@ -16,19 +16,20 @@
             </div>
             <div id="repassword">
                 <h5>비밀번호 변경</h5>
-                <form method="POST">
+                <form method="POST" id="form">
                     {% csrf_token %}
                     <div class="mt-2">
                         <span class="mypage-title">기존 비밀번호</span>
-                        <input name="origin_password" type="password" class="mypage-input"/>
+                        <input name="origin_password" type="password" class="mypage-input" id="origin_password"/>
                     </div>
+                    <input type="hidden" id="real_password" name="real_password">
                     <div class="mt-2">
                         <span class="mypage-title">변경 비밀번호</span>
-                        <input name="password1" type="password" class="mypage-input"/>
+                        <input name="password1" type="password" class="mypage-input" id="id_password1"/>
                     </div>
                     <div class="mt-2">
                         <span class="mypage-title">비밀번호 확인</span>
-                        <input name="password2" type="password" class="mypage-input" />
+                        <input name="password2" type="password" class="mypage-input" id="id_password2"/>
                     </div>
                     <input class="blue-button mypage-btn change-btn" type="submit" value="변경하기" />
                 </form>
@@ -93,9 +94,33 @@
                 nicknameHandleResponse();
             };
         };
-
-    //비밀번호 변경시 팝업
     </script>
+
+    <script	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+    <script>
+        const form = document.getElementById("form")
+        const origin_password = document.querySelector('#origin_password')
+        const password1 = document.querySelector('#id_password1')
+        const password2 = document.querySelector('#id_password2')
+        const real_password = document.querySelector('#real_password')
+
+        form.addEventListener('submit', (e) => {
+            if (password1.value.length < 8) {
+                alert("비밀번호를 8자 이상 작성해주세요.")
+                form.setAttribute("method", "GET")
+            } else if (password1.value != password2.value) {
+                alert("비밀번호가 일치하지 않습니다.")
+                form.setAttribute("method", "GET")
+            } else {
+                real_password.value = sha256(password1.value)
+                origin_password.value = sha256(origin_password.value)
+                password1.value = ''
+                password2.value = ''
+            }
+        })
+    </script>
+
+    <!-- 비밀번호 변경시 팝업 -->
     {% if message %}
     <script>alert('{{ message }}')</script>  
     {% endif %}

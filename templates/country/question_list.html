@@ -30,9 +30,12 @@
             {% endfor %}
         </table>
         {% if not page_obj %}
-        <p align='center' class="m-4">검색 결과가 없습니다.</p>
+        <div class='text-center m-4'>
+            <h5 style="margin-bottom: 5px;">등록된 정보가 없습니다</h5>
+            <h6>첫 번째로 정보를 등록해주세요!</h6>
+        </div>
         {% endif %}
-        <div class="pagination qna-pagination d-flex justify-content-center">
+        <div class="pagination d-flex justify-content-center">
             <div>
                 {% if page_obj.has_previous %}
                     <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
@@ -88,7 +91,6 @@
                 window.location.href='{% url "country:question_create" country.pk %}';
             }
         };
-    
     </script>
 
 {% endblock %}
