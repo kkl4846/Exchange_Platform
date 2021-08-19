@@ -15,9 +15,11 @@
 
 .m-btn {
   font-size: 14px;
+  line-height: 14px;
   padding: 7px 11px;
   border: none;
-  border-radius: 15px;
+  border-radius: 14px;
+  height: 28px;
 }
 .s-btn {
   font-size: 12px;
