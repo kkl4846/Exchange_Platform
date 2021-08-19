@@ -2,7 +2,7 @@ import json
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from jamo import h2j, j2hcj
+from config.functions import *
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
@@ -13,32 +13,10 @@ URL_LOGIN = '/login/'
 
 
 def country_list(request):
-    countries = Country.objects.values().order_by('country_name')
-    countries_dict = alpha_group(countries, 'country_name')
-
-    # print(countries_dict)
+    countries = Country.objects.all().order_by('country_name')
+    countries_dict = order_country(countries)
 
     return render(request, 'country/country_list.html', {'countries_dict': countries_dict})
-
-
-def alpha_group(things, type):
-    things_dict = {}
-    last_alpha = 'ㄱ'
-    things_dict[last_alpha] = []
-
-    for thing in things:
-        this_thing = thing.country_name
-        this_alpha = j2hcj(h2j(this_thing[0]))[0]
-        if last_alpha != this_alpha:     # 직전 초성과 다른 초성
-            things_dict[this_alpha] = []
-            things_dict[this_alpha].append(thing)
-            last_alpha = this_alpha
-        else:                           # 같은 초성
-            things_dict[this_alpha].append(thing)
-    g_cho = 'ㄱ'
-    if len(things_dict[g_cho]) == 0:
-        del(things_dict[g_cho])
-    return things_dict
 
 
 '''
@@ -79,7 +57,7 @@ def country_univ(request, pk):
     country = get_object_or_404(Country, pk=pk)
     unives = country.country_univs.all().order_by('away_name')
 
-    univ_dict = alpha_group(unives)
+    univ_dict = order_foreign(unives)
 
     return render(request, 'country/country_univ.html', {
         'country': country,
@@ -96,6 +74,7 @@ def question_list(request, country_id):
     country = get_object_or_404(Country, pk=country_id)
     questions = CQuestion.objects.filter(country=country)
     questions = questions.order_by('-pk')
+    total_question = questions.count()
     paginator = Paginator(questions, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -103,6 +82,7 @@ def question_list(request, country_id):
         'page_obj': page_obj,
         'country_id': country_id,
         'country': country,
+        'total_question': total_question,
     }
     return render(request, 'country/question_list.html', context=ctx)
 
@@ -113,6 +93,7 @@ def question_search(request, country_id):
 
     q = request.POST.get('q', "")
     searched = questions.filter(question_title__icontains=q)
+    total_question = searched.count()
 
     paginator = Paginator(searched, 15)
     page_number = request.GET.get('page')
@@ -122,6 +103,7 @@ def question_search(request, country_id):
         'country': country,
         'country_id': country_id,
         'page_obj': page_obj,
+        'total_question': total_question,
         'q': q
     }
     return render(request, template_name='country/question_search.html', context=ctx)

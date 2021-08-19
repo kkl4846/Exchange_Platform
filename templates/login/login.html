@@ -6,11 +6,12 @@
     <h3>로그인</h3>
     <br />
     <hr />
-    <form method="POST">
+    <form method="POST" id="form">
         {% csrf_token %}
         <input class="login-input" name="username" type="text" placeholder="아이디" required/>
         <br/>
-        <input class="login-input" name="password" type="password" placeholder="비밀번호" required/>
+        <input class="login-input" name="password" type="password" id="password" placeholder="비밀번호" required/>
+        <input type="hidden" id="real_password" name="real_password">
         <br />
         <div class="reset-password">
             <a href="{% url 'login:reset_password' %}" class="reset-button">비밀번호 재설정</a>
@@ -22,6 +23,17 @@
 {% endblock %}
 
 {% block extra %}
+    <script	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+    <script>
+        const form = document.getElementById("form")
+        const password = document.querySelector('#password')
+        const real_password = document.querySelector('#real_password')
+
+
+        form.addEventListener('submit', (e) => {
+            real_password.value = sha256(password.value)
+        })
+    </script>
     {% if login_error %}
         <script>alert("아이디 혹은 비밀번호를 확인해주세요.")</script>
     {% endif %}
