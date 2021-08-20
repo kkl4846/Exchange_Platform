@@ -8,11 +8,18 @@
             <button class="light-button create-btn md-btn" onclick="canIAdd('{{ is_authenticated }}','{{ is_enrolled }}')"> 학교추가 </button>
         </div>
         <hr>
+        <div class="lbar d-flex align-items-center">
+            <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
+            {% for key, val in sisters_dict.items %}
+                <a id="{{ key }}" href="#{{ key }}_list" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
+            {% endfor %}
+            </div>
+        </div>
         <div>
         {% if sisters_dict.items %}
             {% for key, val in sisters_dict.items %}
             <ul class="lgroup ">
-                <h4 class="lalpha">{{ key }}</h4>
+                <h4 id="{{ key }}_list" class="lalpha">{{ key }}</h4>
                 <div class="lforeign_name ">
                 {% for sister in val %}
                     <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
@@ -46,6 +53,20 @@
         }
     };
     
+    const clickAlpha = (key)=>{
+        var topKey = document.querySelectorAll('.lforeign_list a');
+        for(i=0;i<topKey.length;i++){
+            topKey[i].className="list-unactive";  /*초기화*/
+            var element = topKey[i].innerHTML;
+            var midKey = document.querySelector(`#${element}_list`);
+                midKey.className = "lalpha";
+            if(key == topKey[i].innerHTML){
+                topKey[i].className="list-active";
+                midKey = document.querySelector(`#${key}_list`);
+                midKey.className = "lalpha-active";
+            };
+        };
+    };
 </script>
     {% if certificate_error %}
         <script>
