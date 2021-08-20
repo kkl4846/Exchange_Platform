@@ -1,4 +1,5 @@
 from domestic.models import *
+from country.models import *
 from .models import *
 from django import forms
 
@@ -23,12 +24,14 @@ class ForeignForm(forms.ModelForm):
 
 class NewForeignForm(forms.ModelForm):
     domestics = forms.ModelChoiceField(queryset=Domestic.objects.all())
+    country = forms.ModelChoiceField(
+        queryset=Country.objects.all().order_by('country_name'))
 
     class Meta:
         model = Foreign
         fields = ['away_name', 'country', 'domestics']
 
-    def __init__(self, *args, **kwargs):  # tuple/dictionary
+    def __init__(self, *args, **kwargs):
         # instance 생성
         if kwargs.get('instance'):
             # We get the 'initial' keyword argument or initialize it
