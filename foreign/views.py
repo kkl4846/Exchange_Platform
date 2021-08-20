@@ -34,11 +34,13 @@ def univ_search(request):
         if form.is_valid():
             univ = form.save()
             return redirect('foreign:univ_list')
+        else:
+            ctx = {'message': "이미 등록된 대학입니다.", 'form': form, }
     else:
         form = NewForeignForm()
-        return render(request, 'foreign/univ_search.html', {
-            'form': form,
-        })
+        ctx = {'form': form, }
+
+    return render(request, 'foreign/univ_search.html', context=ctx)
 
 
 # 해외 대학 추가 폼
