@@ -328,7 +328,7 @@ def sister_add(request, domestic_id):
             domestic.home_sister.add(sister.id)
             return redirect('domestic:sister_list', domestic_id)
         else:
-            univs = Foreign.objects.all()
+            univs = Foreign.objects.order_by('away_name')
             ctx = {
                 'domestic': domestic,
                 'is_authenticated': user.is_authenticated,
