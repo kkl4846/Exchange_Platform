@@ -1,4 +1,5 @@
 import json
+import hashlib
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
@@ -96,7 +97,7 @@ def rename(request):
 
 @login_required(login_url=URL_LOGIN)
 def certificate(request):
-    f = open('config/univ.json', 'r')
+    f = open('config/univ.json', 'r', encoding='UTF-8')
     file = json.load(f)
 
     school_names = []
@@ -158,7 +159,7 @@ def school_search(request):
     user.university = school_name
     user.save()
 
-    f = open('config/univ.json', 'r')
+    f = open('config/univ.json', 'r', encoding='UTF-8')
     file = json.load(f)
 
     school_names = []
@@ -253,7 +254,8 @@ def reset_password(request):
             target_user = User.objects.get(
                 username=username, email=email)
             auth_num = helper.email_auth_num()
-            target_user.set_password(auth_num)
+            new_password = hashlib.sha256(auth_num.encode())
+            target_user.set_password(new_password.hexdigest())
             target_user.save()
             message_data = text.password_message(auth_num)
 

@@ -3,6 +3,7 @@
   height: 100%;
   position: fixed;
   background-color: white;
+  z-index: 3;
 }
 
 .contents {
@@ -21,6 +22,9 @@
 }
 .sidebar a:hover {
   color: var(--blue);
+}
+.sidebar__selected a:hover {
+  color: white;
 }
 .sidebar h3,
 .sidebar h4 {
