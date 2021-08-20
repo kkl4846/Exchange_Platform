@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Foreign(models.Model):
-    away_name = models.CharField(max_length=50)
+    away_name = models.CharField(max_length=50, unique=True)
     country = models.ForeignKey(
         "country.Country", on_delete=models.CASCADE, related_name="country_univs")
     away_apply = models.TextField(blank=True)
