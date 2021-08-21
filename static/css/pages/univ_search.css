@@ -11,6 +11,7 @@
 .foreign-name {
   color: var(--m-gray);
   line-height: 35px;
+  width: 120px;
 }
 .foreign-search {
   width: 935px;

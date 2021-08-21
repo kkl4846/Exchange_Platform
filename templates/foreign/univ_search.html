@@ -8,15 +8,13 @@
             <input class="blue-button lgbtn-blue" type="submit" form="addForeign" value="저장하기" />
         </div>
         <hr />
-        <form autocomplete="off">
-            <div class="autocomplete">
-                <span class="foreign-name">해외학교명</span>
-                <div style="display:inline;">
+        <form autocomplete="off" class="d-flex align-items-center">
+            <span class="foreign-name">해외학교명</span>
+            <div class="flex-grow-1 autocomplete">
                 <input class="foreign-search" type="text" id="myInput" name="newUniversity"
                     placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다. " autocomplete="off">
                 <input type="submit" value="확인" style="display: none;">
                 <ion-icon name="search" class = "lsearch-icon"></ion-icon>
-                </div>
             </div>
         </form>
         <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='addForeign' onsubmit="return ForeignValid(document.querySelector('#myInput').value)">
