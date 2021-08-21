@@ -31,6 +31,7 @@
 @import "pages/myquestion.css";
 @import "pages/credit.css";
 @import "pages/wiki.css";
+@import "pages/sister_search.css";
 
 body {
   font-family: "Noto Sans KR", sans-serif;
