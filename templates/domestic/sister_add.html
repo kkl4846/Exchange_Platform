@@ -9,20 +9,16 @@
     </div>
     <hr class="mb25-hr">
     {% for univ in univs %}
-        <p class="univ" style="display: none;">{{ univ.away_name}}</p>
+        <p class="univ" style="display: none;">{{ univ.away_name }}</p>
     {% endfor %}
-    <div class = "d-flex align-items-center">
+    <form autocomplete="off" class="d-flex align-items-center">
         <span class="title-search-foreign">대학선택</span>
-        <form autocomplete="off" class="flex-grow-1">
-            <div class="autocomplete">
-                <div style="display:inline;">
-                    <input class="search-sister" type="text" id="myInput" name="newUniversity" placeholder="대학명을 입력해 검색해주세요." autocomplete="off">
-                    <input type="submit" value="확인" style="display: none;">
-                    <ion-icon name="search" class = "lsearch-icon"></ion-icon>
-                </div>
-            </div>
-        </form>
-    </div>
+        <div class="autocomplete flex-grow-1">
+            <input class="search-sister" type="text" id="myInput" name="newUniversity" placeholder="대학명을 입력해 검색해주세요." autocomplete="off">
+            <input type="submit" value="확인" style="display: none;">
+            <ion-icon name="search" class = "lsearch-icon"></ion-icon>
+        </div>
+    </form>
 </div>
 {% endblock %}
 
