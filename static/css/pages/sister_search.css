@@ -2,6 +2,8 @@
   display: inline;
   color: var(--m-gray);
   margin-right: 32px;
+  width: 70px;
+  margin-top: 15px;
 }
 
 .search-sister {
