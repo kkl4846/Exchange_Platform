@@ -126,7 +126,7 @@ def wiki_edit(request, pk, wiki_type):
 
 def review_list(request, foreign_id):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
-    all_review = foreign.reviews.order_by('-created_at')
+    all_review = foreign.reviews.order_by('-pk')
     paginator = Paginator(all_review, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
