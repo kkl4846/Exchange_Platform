@@ -17,10 +17,10 @@
             </div>
             <div>
                 {% if IsReviewAuthor %}
-                <button class="light-button ra_btn" onclick="location.href='{% url "foreign:review_update" univ.pk review.pk%}' ">수정</button>
+                <button class="light-button ra_btn m-btn" onclick="location.href='{% url "foreign:review_update" univ.pk review.pk%}' ">수정</button>
                     <form action="{% url "foreign:review_delete" univ.pk review.pk %}" method="post" class="ReviewDeleteForm" style="  display: inline; background: transparent">
                         {% csrf_token %}
-                        <button class="light-button " onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
+                        <button class="light-button m-btn" onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
                     </form>
                 {% endif %}
             </div>
