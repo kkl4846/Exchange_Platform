@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,django,visualstudiocode,venv,python
 .DS_Store
 .env
+secrets.json
 ### Django ###
 *.log
 *.pot
