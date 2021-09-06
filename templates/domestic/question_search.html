@@ -1,0 +1,100 @@
+{% extends "domestic/domestic_base.html" %}
+{% block contents %}
+    <div class="container2 category-detail post-list">
+        <div class="d-flex justify-content-between align-items-end">
+            <div class="d-flex align-items-center ">
+                <h3>{{ domestic.home_name }}</h3>
+            </div>
+            <div class="d-flex justify-content-end">
+                <form class="d-flex justify-content-center" action="{% url 'domestic:question_search' domestic.pk %}" method="post">
+                    {% csrf_token %}
+                    <input class="search-input" placeholder="검색" name="q" value="{{q}}">
+                    <button class="search-button" type="submit"><ion-icon name="search"></ion-icon></button>
+                </form>
+                <button class="light-button create-btn sm-btn" style="margin-left:15px;" onclick="canIPost('{{ is_authenticated }}','{{ is_enrolled }}')"> 글쓰기 </button>
+            </div>
+        </div>
+        <hr>
+        <table>
+            <tr align='center'>
+                <th width='50'>번호</th>
+                <th width='880' >제목</th>
+                <th width='80'>날짜</th>
+            </tr>
+            {% for question in page_obj %}
+            <tr>
+                <td class="numbered" align='center'></td>
+                <td><a href="{% url 'domestic:question_detail' domestic.pk question.pk %}">{{ question.question_title }}</a></td>
+                <td>{{ question.created_at|date:"Y.m.d" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if not page_obj %}   
+        <p align='center' class="m-4">검색 결과가 없습니다.</p>
+        {% endif %}
+        
+        <div class="pagination qna-pagination d-flex justify-content-center">
+            <div>
+                {% if page_obj.has_previous %}
+                    <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                {% else %}
+                    <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                {% endif %}
+            </div>
+            <div class="page-number">
+                {% for page in page_obj.paginator.page_range %}
+                    {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                        <span class="{% if page == page_obj.number %}current{% endif %}">
+                            <a class="numbering" href="?page={{ page }}" {% if page == page_obj.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page }}</a>
+                        </span>
+                    {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
+                        <span>..</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div>
+                {% if page_obj.has_next %}
+                    <a class="abutton" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                {% else %}
+                    <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+        <span class="total-question">{{ total_question }}</span>
+
+    </div>
+{% endblock %}
+
+{% block extra %}
+<script>
+    function numbering(){
+        var init = document.querySelector(`.total-question`).innerHTML;
+        console.log(init)
+        var td_list = document.querySelectorAll(`.numbered`);
+        for(var i=0; i<td_list.length; i++){
+            if (i==0){
+                init=init-({{ page_obj.number }}-1)*15;
+            }
+            td_list[i].innerHTML= `${init}`;
+            init--;
+            
+        }
+    }
+    numbering();
+
+    const canIPost = (is_authenticated, is_enrolled)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href='{% url "domestic:question_create" domestic.pk %}';
+            }
+        }
+    };
+
+</script>
+
+{% endblock %}

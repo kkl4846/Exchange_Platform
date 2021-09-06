@@ -1,0 +1,98 @@
+.righteous {
+  font-family: "Righteous", cursive;
+}
+
+.main__img {
+  width: 100%;
+  height: 95vh;
+  background-image: url("../img/main_bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main__img .text {
+  color: white;
+  margin-left: 20%;
+}
+
+.main__img .main-title {
+  font-size: 65px;
+}
+.main__img .main-con {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 22px;
+  margin-top: 35px;
+}
+.main__img .main-sub {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25px;
+  margin-top: 10px;
+}
+
+.main__intro {
+  height: 120px;
+  background-color: white;
+}
+.main__intro .quotation-mark {
+  font-size: 35px;
+}
+.main__intro .text {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  margin: 0px 37px;
+}
+
+.main__team {
+  height: 680px;
+}
+.main__team .team-title {
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  top: -45px;
+}
+
+.profile-set {
+  width: 1040px;
+  flex-wrap: wrap;
+}
+.profile-card {
+  background-color: white;
+  width: 510px;
+  height: 210px;
+  border-radius: 10px;
+}
+.pc-space {
+  margin-bottom: 20px;
+}
+
+.p-position {
+  font-weight: 300;
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+.p-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.p-border {
+  width: 50px;
+  height: 1px;
+  background-color: var(--blue);
+  margin-bottom: 15px;
+}
+.p-content {
+  font-size: 13px;
+  line-height: 20px;
+}
+.p-text {
+  margin-left: 10px;
+}
+.p-img {
+  margin-left: 10px;
+}

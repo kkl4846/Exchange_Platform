@@ -1,0 +1,50 @@
+{% extends "foreign/foreign_base.html" %}
+{% block contents %}
+<div class="container2 category-detail wiki__content">
+    <div class="d-flex justify-content-between align-items-end">
+        <div class="d-flex align-items-end ">
+            <h3>{{univ.away_name}}</h3>
+            <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
+        </div>
+    </div>
+
+    <hr>
+    <form action="" method="POST" enctype="multipart/form-data" class="table">
+        {% csrf_token %}
+        {% for field in form %}
+            {%if type == field.name%}
+                <div class="d-flex justify-content-between align-items-center wiki__li-title">
+                    {%if type == 'away_apply'%} <h4>1.파견로의 지원방법</h4>  {%endif%}
+                    {%if type == 'language_score'%}<h4>2.필요 어학 점수</h4>   {%endif%}
+                    {%if type == 'course_enroll'%} <h4>3.수강신청방법</h4>  {%endif%}
+                    {%if type == 'accommodation'%} <h4> 4.기숙사 정보</h4> {%endif%}
+                    {%if type == 'atmosphere'%} <h4>5.학교 분위기</h4> {%endif%}
+                    {%if type == 'club'%}  <h4>6.동아리</h4> {%endif%}
+                    {%if type == 'away_scholarship'%} <h4>7.장학금</h4> {%endif%}
+                    <input class="blue-button m-btn" type="submit" value="저장하기" onclick="onClickEditWiki()"/>
+                </div>
+                <div class="form-group">
+                    <textarea type="{{ field.field.widget.textarea_type }}" class="form-control"
+                        id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" 	cols = "100" rows="20" >{{field.value}}</textarea>
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <textarea type="{{ field.field.widget.textarea_type }}" class="form-control " id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" readonly style="display:none" cols = "100" rows="20" >{{field.value}}</textarea>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    </form>
+
+</div>
+{% endblock %}
+
+{% block extra %}
+<script>
+    const onClickEditWiki= () => {  
+        alert('위키 수정이 완료되었습니다');
+        window.location.href='{% url "foreign:wiki" univ.pk%}';
+    };
+    
+</script>
+{% endblock %}

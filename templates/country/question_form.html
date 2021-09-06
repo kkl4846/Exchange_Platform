@@ -1,0 +1,30 @@
+{%extends "country/country_base.html"%} {% block contents %}
+
+<div class="container2 category-detail">
+  <div class="d-flex justify-content-between align-items-end">
+    <div class="d-flex align-items-center">
+      <h3>{{ country.country_name }}</h3>
+    </div>
+    <input class="blue-button create-btn md-btn" form="frm" type="submit" value="저장하기" />
+  </div>
+  <hr />
+  <form id="frm" method="POST" enctype="multipart/form-data">
+    {% csrf_token %} 
+    <p><input class="question-title" name="question_title" placeholder="제목을 입력하세요." required {% if question.question_title %} value="{{ question.question_title }}" {% endif %}></p>
+    <p><textarea class="question-content" name="question_content" placeholder="내용을 입력하세요." required >{{ question.question_content }}</textarea></p>
+  </form>
+</div>
+{% endblock %}
+{% block extra %}
+<script>
+  const canIPost = (is_authenticated) => {
+    if (is_authenticated == "False") {
+      alert("로그인이 필요한 서비스입니다.");
+      window.location.href = '{% url "login:login" %}';
+    } else {
+      window.location.href = '{% url "country:question_create" country.pk %}';
+    }
+  };
+</script>
+
+{% endblock %}

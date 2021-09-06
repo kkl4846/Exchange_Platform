@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+
+{% block style %}
+<script src="https://kit.fontawesome.com/67d418f4de.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="container login mypage mylist" style="margin-bottom: 50px;">
+        <h3>내가 답변을 남긴 질문 목록</h3>
+        <br />
+        <hr />
+        <div class="d-flex flex-column category-list">
+            <h5>국내대학별</h5>
+            <hr />
+            {% if d_comment_list %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for comment in d_comment_list %}
+                <tr>
+                    <td class="numbered1" align='center'></td>
+                    <td style="padding-left: 30px;"><a href="{% url 'domestic:question_detail' comment.question.home_university.pk comment.question.pk %}">{{ comment.question.question_title }}</a></td>
+                    <td align="center">{{ comment.question.created_at|date:"Y.m.d" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+            </table>
+            <div class='text-center m-4' style="font-size: 15px;">
+                <span>등록된 정보가 없습니다.</span>
+            </div>
+            {% endif %}
+            <div class="pagination d-flex justify-content-center">
+                <div>
+                    {% if d_comment_list.has_previous %}
+                        <a class="abutton" href="?page1={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+                </div>
+                <div class="page-number">
+                    {% for page1 in d_comment_list.paginator.page_range %}
+                        {% if page1 >= d_comment_list.number|add:-2 and page1 <= d_comment_list.number|add:2 %}
+                            <span class="{% if page1 == d_comment_list.number %}current{% endif %}">
+                                <a class="numbering" href="?page1={{ page1 }}" {% if page1 == d_comment_list.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page1 }}</a>
+                            </span>
+                        {% elif page1 >= d_comment_list.number|add:-3 and page1 <= d_comment_list.number|add:3 %}
+                            <span>..</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    {% if d_comment_list.has_next %}
+                        <a class="abutton" href="?page1={{ d_comment_list.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="d-flex flex-column category-list">
+            <h5>해외파견교별</h5>
+            <hr />
+            {% if f_comment_list %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for comment in f_comment_list %}
+                <tr>
+                    <td class="numbered2" align='center'></td>
+                    <td style="padding-left: 30px;"><a href="{% url 'foreign:question_detail' comment.question.away_university.pk comment.question.pk %}">{{ comment.question.question_title }}</a></td>
+                    <td align="center">{{ comment.question.created_at|date:"Y.m.d" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+            </table>
+            <div class='text-center m-4' style="font-size: 15px;">
+                <span>등록된 정보가 없습니다.</span>
+            </div>
+            {% endif %}
+            <div class="pagination d-flex justify-content-center">
+                <div>
+                    {% if f_comment_list.has_previous %}
+                        <a class="abutton" href="?page={{ bpage_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+                </div>
+                <div class="page-number">
+                    {% for page2 in f_comment_list.paginator.page_range %}
+                        {% if page2 >= f_comment_list.number|add:-2 and page2 <= f_comment_list.number|add:2 %}
+                            <span class="{% if page2 == f_comment_list.number %}current{% endif %}">
+                                <a class="numbering" href="?page2={{ page2 }}" {% if page2 == f_comment_list.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page2 }}</a>
+                            </span>
+                        {% elif page2 >= f_comment_list.number|add:-3 and page2 <= f_comment_list.number|add:3 %}
+                            <span>..</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    {% if f_comment_list.has_next %}
+                        <a class="abutton" href="?page2={{ f_comment_list.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="d-flex flex-column category-list">
+            <h5>파견국가별</h5>
+            <hr />
+            {% if c_comment_list %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+                {% for comment in c_comment_list %}
+                <tr>
+                    <td class="numbered3" align='center'></td>
+                    <td style="padding-left: 30px;"><a href="{% url 'country:question_detail' comment.question.country.pk comment.question.pk %}">{{ comment.question.question_title }}</a></td>
+                    <td align="center">{{ comment.question.created_at|date:"Y.m.d" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <table>
+                <tr align='center'>
+                    <th width='50'>번호</th>
+                    <th width='750' >제목</th>
+                    <th>날짜</th>
+                </tr>
+            </table>
+            <div class='text-center m-4' style="font-size: 15px;">
+                <span>등록된 정보가 없습니다.</span>
+            </div>
+            {% endif %}
+            <div class="pagination d-flex justify-content-center">
+                <div>
+                    {% if c_comment_list.has_previous %}
+                        <a class="abutton" href="?page3={{ bpage_obj3.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+                </div>
+                <div class="page-number">
+                    {% for page3 in c_comment_list.paginator.page_range %}
+                        {% if page3 >= c_comment_list.number|add:-2 and page3 <= c_comment_list.number|add:2 %}
+                            <span class="{% if page3 == c_comment_list.number %}current{% endif %}">
+                                <a class="numbering" href="?page3={{ page3 }}" {% if page3 == c_comment_list.number %} style="background-color: var(--blue); color: white;" {%endif%}>{{ page3 }}</a>
+                            </span>
+                        {% elif page3 >= c_comment_list.number|add:-3 and page3 <= c_comment_list.number|add:3 %}
+                            <span>..</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    {% if c_comment_list.has_next %}
+                        <a class="abutton" href="?page3={{ c_comment_list.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    {% else %}
+                        <a class="abutton"><i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}
+
+{% block extra %}
+<script>
+    function numbering(startnum){
+        var init1 = startnum;
+        var td_list1 = document.querySelectorAll(`.numbered1`);
+        for(var i=0; i<td_list1.length; i++){
+            if (i==0){
+                init1=init1+({{ d_comment_list.number }}-1)*15;
+            }
+            init1++;
+            td_list1[i].innerHTML= `${init1}`;
+        }
+    }
+    numbering(0);
+
+    function numbering2(startnum){
+        var init2 = startnum;
+        var td_list2 = document.querySelectorAll(`.numbered2`);
+        for(var j=0; j<td_list2.length; j++){
+            if (j==0){
+                init2=init2+({{ f_comment_list.number }}-1)*15;
+            }
+            init2++;
+            td_list2[j].innerHTML= `${init2}`;
+        }
+    }
+    numbering2(0);
+
+    function numbering3(startnum){
+        var init3 = startnum;
+        var td_list3 = document.querySelectorAll(`.numbered3`);
+        for(var k=0; k<td_list3.length; k++){
+            if (k==0){
+                init3=init3+({{ c_comment_list.number }}-1)*15;
+            }
+            init3++;
+            td_list3[k].innerHTML= `${init3}`;
+        }
+    }
+    numbering3(0);
+</script>
+{% endblock %}

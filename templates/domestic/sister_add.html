@@ -1,0 +1,106 @@
+{% extends "domestic/domestic_base.html" %}
+{% block contents %}
+<div class="container2 category-detail">
+    <div class="d-flex justify-content-between align-items-end">
+        <div class="d-flex align-items-center ">
+            <h3>{{ domestic.home_name }}</h3>
+        </div>
+        <button form="sister_add" type="submit" class="blue-button create-btn md-btn"> 저장하기 </button>
+    </div>
+    <hr class="mb25-hr">
+    {% for univ in univs %}
+        <p class="univ" style="display: none;">{{ univ.away_name }}</p>
+    {% endfor %}
+    <form autocomplete="off" class="d-flex align-items-center">
+        <span class="title-search-foreign">대학선택</span>
+        <div class="autocomplete flex-grow-1">
+            <input class="search-sister" type="text" id="myInput" name="newUniversity" placeholder="대학명을 입력해 검색해주세요." autocomplete="off">
+            <input type="submit" value="확인" style="display: none;">
+            <ion-icon name="search" class = "lsearch-icon"></ion-icon>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra %}
+<script>
+    var universities = document.querySelectorAll(`.univ`);
+    var univs=[]
+    universities.forEach(function(Item) {
+        univs.push(Item.innerHTML);
+    });
+    console.log(univs)
+    function autocomplete(input, univs) {
+        var currentFocus;
+        input.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+
+            for (i = 0; i < univs.length; i++) {
+                if (univs[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    b = document.createElement("DIV");
+                    b.innerHTML = "<strong>" + univs[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += univs[i].substr(val.length);
+                    b.innerHTML += "<input type='hidden' value='" + univs[i] + "'>";
+                    b.addEventListener("click", function(e) {
+                        input.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+
+        input.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { 
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != input) {
+                x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+    autocomplete(document.getElementById("myInput"), univs);
+</script>
+{% endblock %}

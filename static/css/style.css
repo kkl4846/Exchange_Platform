@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+
+@import "reset.css";
+@import "variables.css";
+
+/* Components */
+@import "components/header.css";
+@import "components/footer.css";
+@import "components/button.css";
+@import "components/detail.css";
+@import "components/post_list.css";
+@import "components/post_form.css";
+@import "components/post.css";
+@import "components/comment.css";
+@import "components/undercomment.css";
+@import "components/sidebar.css";
+@import "components/autocomplete.css";
+
+/* Pages */
+@import "pages/main.css";
+@import "pages/list.css";
+@import "pages/univ_search.css";
+@import "pages/review_list.css";
+@import "pages/review_create.css";
+@import "pages/review_detail.css";
+@import "pages/create_sister.css";
+@import "pages/login.css";
+@import "pages/signup.css";
+@import "pages/certificate.css";
+@import "pages/myquestion.css";
+@import "pages/credit.css";
+@import "pages/wiki.css";
+@import "pages/sister_search.css";
+
+html {
+  min-width: 1440px;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: var(--bg);
+  color: var(--d-gray);
+}
+
+.container {
+  width: 1040px;
+  padding: 0;
+}
+
+.container2 {
+  width: 990px;
+  min-height: 100vh;
+  margin-left: 50px;
+}

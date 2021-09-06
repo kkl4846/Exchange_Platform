@@ -1,0 +1,76 @@
+{% extends "domestic/domestic_base.html" %}
+{% block contents %}
+    <div class="container2 category-detail">
+        <div class="d-flex justify-content-between align-items-end">
+            <div class="d-flex align-items-center ">
+                <h3>{{ domestic.home_name }}</h3>
+            </div>
+            <button class="light-button create-btn md-btn" onclick="canIAdd('{{ is_authenticated }}','{{ is_enrolled }}')"> 학교추가 </button>
+        </div>
+        <hr>
+        <div class="lbar d-flex align-items-center">
+            <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
+            {% for key, val in sisters_dict.items %}
+                <a id="{{ key }}" href="#{{ key }}_list" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
+            {% endfor %}
+            </div>
+        </div>
+        <div>
+        {% if sisters_dict.items %}
+            {% for key, val in sisters_dict.items %}
+            <ul class="lgroup ">
+                <h4 id="{{ key }}_list" class="lalpha">{{ key }}</h4>
+                <div class="lforeign_name ">
+                {% for sister in val %}
+                    <a href="{% url 'foreign:wiki' sister.pk %}">{{ sister.away_name }}</a>
+                {% endfor %}
+                </div>
+            </ul>
+            <br>
+            {% endfor %}
+        {% else %}
+            <div class='text-center m-4'>
+                <h5 style="margin-bottom: 5px;">등록된 정보가 없습니다</h5>
+                <h6>첫 번째로 정보를 등록해주세요!</h6>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+{% block extra %}
+<script>
+    const canIAdd= (is_authenticated, is_enrolled)=> {
+        if (is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+            if(is_enrolled == 'False'){
+                alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+            }else{
+                window.location.href=`add`;            
+            }
+        }
+    };
+    
+    const clickAlpha = (key)=>{
+        var topKey = document.querySelectorAll('.lforeign_list a');
+        for(i=0;i<topKey.length;i++){
+            topKey[i].className="list-unactive";  /*초기화*/
+            var element = topKey[i].innerHTML;
+            var midKey = document.querySelector(`#${element}_list`);
+                midKey.className = "lalpha";
+            if(key == topKey[i].innerHTML){
+                topKey[i].className="list-active";
+                midKey = document.querySelector(`#${key}_list`);
+                midKey.className = "lalpha-active";
+            };
+        };
+    };
+</script>
+    {% if certificate_error %}
+        <script>
+            alert('해당 학교 학생만 이용할 수 있는 서비스입니다.');
+        </script>
+    {% endif %}
+{% endblock %}

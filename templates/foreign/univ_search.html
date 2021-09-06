@@ -1,0 +1,138 @@
+{%extends "base.html"%}
+
+{%block content%}
+<div class="containers d-flex flex-column">
+    <div class="container" style="padding: 0%;">
+        <div class="marginy-40">
+            <div class="addForeign-top">파견교 추가</div>
+            <input class="blue-button lgbtn-blue" type="submit" form="addForeign" value="저장하기" />
+        </div>
+        <hr />
+        <form autocomplete="off" class="d-flex align-items-center">
+            <span class="foreign-name">해외학교명</span>
+            <div class="flex-grow-1 autocomplete">
+                <input class="foreign-search" type="text" id="myInput" name="newUniversity"
+                    placeholder="영어로 먼저 검색해보신 후 결과가 없을 경우 해당 국가의 언어로 검색하는 것을 추천드립니다. " autocomplete="off">
+                <input type="submit" value="확인" style="display: none;">
+                <ion-icon name="search" class = "lsearch-icon"></ion-icon>
+            </div>
+        </form>
+        <form method="POST" enctype="multipart/form-data" class="addForeign-form" id='addForeign' onsubmit="return ForeignValid(document.querySelector('#myInput').value)">
+            {% csrf_token %}
+            <input name="away_name" style="display: none;" id="formUniversity">
+            <div class="addForeign-group">
+                <p class="addForeign-country">해당 국가</p> {{form.country}}
+            </div>
+            <div class="addForeign-group">
+                <p class="addForeign-sister">자매 결연 대학</p> {{form.domestics}}
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const endpoint = 'https://raw.githubusercontent.com/Joanne19-drive/Exchange_Platform/develop/config/univ.json'
+    const universities = [];
+    const university_names = [];
+
+    fetch(endpoint)
+        .then(blob => blob.json())
+        .then(data => universities.push(...data))
+        .then(function () {
+            for (var i = 0; i < universities.length; i++) {
+                var university = universities[i];
+                university_names.push(university.name);
+            }
+        })
+
+
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("div");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    b = document.createElement("div");
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        const addUniversity = document.querySelector("#formUniversity");
+                        addUniversity.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) {
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+</script>
+<script>
+    autocomplete(document.getElementById("myInput"), university_names);
+</script>
+
+<script>
+    const ForeignValid=(foreign) => {
+        if (foreign == ''){
+            alert('해외 학교명을 입력하세요.');
+            return false;
+       
+        }else{
+            return true;
+        }
+    } ;
+</script>
+{% if message %}
+    <script>
+        alert("{{message}}")
+    </script>
+{% endif %}
+{%endblock%}

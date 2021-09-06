@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container login" style="height: 800px;">
+    <h3>학교 인증</h3>
+    <br />
+    <hr />
+    <p class="sending-mail">이메일 인증이 완료되었습니다.</p>
+</div>
+{% endblock %}
+
+{% block extra %}
+    {% if message %}
+        <script>alert("{{message}}")</script>
+    {% endif %}
+{% endblock %}

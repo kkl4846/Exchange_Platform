@@ -1,0 +1,79 @@
+{%extends "foreign/foreign_base.html"%}
+{%block contents%}
+<div class="container2 category-detail">
+    <div class="d-flex justify-content-between align-items-end">
+        <div class="d-flex align-items-end ">
+            <h3>{{univ.away_name}}</h3>
+            <a class="dark-button country-btn" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
+        </div>
+    </div>
+    <hr>
+    <div class="wiki__content">
+        <div id="foreign_1" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>1. 파견로의 지원방법</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','away_apply')">수정</button>
+            </div>
+            <pre>{{univ.away_apply}}</pre>  <!--textarea에 입력한대로 보여주는 pre tag-->
+        </div>
+        <div id="foreign_2" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>2. 필요 어학 점수</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','language_score')">수정</button>
+            </div>
+            <pre>{{univ.language_score}}</pre>
+        </div>
+        <div id="foreign_3" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>3. 수강신청방법</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','course_enroll')">수정</button>
+            </div>
+            <pre>{{univ.course_enroll}}</pre>
+        </div>
+        <div id="foreign_4" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>4. 기숙사 정보</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','accommodation')">수정</button>
+            </div>
+            <pre>{{univ.accommodation}}</pre>
+        </div>
+        <div id="foreign_5" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>5. 학교 분위기</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','atmosphere')">수정</button>
+            </div>
+            <pre>{{univ.atmosphere}}</pre>
+        </div>
+        <div id="foreign_6" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>6. 동아리</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','club')">수정</button>
+            </div>
+            <pre>{{univ.club}}</pre>
+        </div>
+        <div id="foreign_7" class="wiki__li">
+            <div class="wiki__li-title">
+                <h4>7. 장학금</h4>
+                <button class="light-button m-btn" onclick="Edit('{{ user.is_authenticated }}','away_scholarship')">수정</button>
+            </div>
+            <pre>{{univ.away_scholarship}}</pre>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    function Edit(is_authenticated,str){
+    if(is_authenticated == 'False') {
+            alert('로그인이 필요한 서비스입니다.');
+            window.location.href='{% url "login:login" %}';
+        }else{
+           
+            var view=`/foreign/wiki/${str}/`           //url 연결
+        
+            window.location.href=view+'{{univ.pk}}'
+
+        }
+    }
+</script>
+{%endblock%}

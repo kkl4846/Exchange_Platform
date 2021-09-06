@@ -1,0 +1,27 @@
+{% extends "foreign/foreign_base.html" %}
+
+{% block contents %}
+<div class="container2 category-detail">
+    <div class="d-flex justify-content-between align-items-end">
+        <div class="d-flex align-items-end">
+            <h3>{{univ.away_name}}</h3>
+            <a class="country-btn dark-button" href="{% url "country:country_wiki" univ.country.pk%}">{{univ.country}}</a>
+        </div>
+        <button type="submit" class="blue-button create-btn md-btn" form="sister_add">저장하기</button>
+    </div>
+    <hr class="mb25-hr">
+    <div class = "create-sister-form d-flex align-items-center justify-content-around">
+        <span class="">대학선택</span>
+        <form  action ="" method="POST"  enctype="multipart/form-data" id="sister_add">
+        {% csrf_token %}
+        <select name="sister">
+            {% for domestic_univ in domestic_univs %}
+                <option>{{ domestic_univ.home_name }}</option>
+            {% endfor %}
+        </select>
+        
+        </form>
+    </div>
+
+</div>
+{% endblock %}

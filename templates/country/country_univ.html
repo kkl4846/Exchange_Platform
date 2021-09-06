@@ -1,0 +1,35 @@
+{%extends "country/country_base.html"%} 
+
+{%block contents%}
+<div class="container2 category-detail">
+  <div class="d-flex justify-content-between align-items-end">
+    <div class="d-flex align-items-end">
+      <h3>{{country.country_name}}</h3>
+    </div>
+  </div>
+
+  <hr>
+
+  <div>
+    {% if univ_dict %}
+        {% for key, val in univ_dict.items %}
+        <ul class="lgroup" >
+            <h5 class="lalpha">{{ key }}</h5>
+            <div class="lforeign_name ">
+              {% for univ in val %}
+              <a href="{% url "foreign:wiki" univ.pk %}">{{univ.away_name}}</a>
+              {% endfor %}
+            </div>
+        </ul>
+        <br>
+        {% endfor %}
+      {% else %}
+      <div class='text-center m-4'>
+          <h5 style="margin-bottom: 5px;">등록된 정보가 없습니다</h5>
+          <h6>첫 번째로 정보를 등록해주세요!</h6>
+      </div>
+  {% endif %}
+  </div>
+</div>
+
+{%endblock%}

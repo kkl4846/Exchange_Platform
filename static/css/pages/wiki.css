@@ -1,0 +1,28 @@
+.wiki__li {
+  margin-bottom: 40px;
+}
+.wiki__content h4 {
+  font-weight: 500;
+  font-size: 22px;
+  display: inline;
+}
+.wiki__content pre {
+  font-size: 15px;
+  line-height: 22px;
+  white-space: pre-wrap;
+  margin-left: 20px;
+}
+.wiki__li-title {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.wiki__content textarea {
+  border: none;
+  border-radius: 10px;
+  height: 275px;
+  margin-bottom: 70px;
+}
+textarea:focus {
+  outline: none;
+}

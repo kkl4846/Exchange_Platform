@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container login"  style="height: 900px;">
+    <h3>회원가입</h3>
+    <br />
+    <hr />
+    <form method="POST" action="{% url 'login:signup' %}" id="form">
+        {% csrf_token %}
+        <p>
+            <label for="id_username">아이디</label><br />
+            <input class="login-input" type="text" name="username" max="30" autofocus required id="id_username" autocomplete="off" style="margin-bottom: 10px;"/><br />
+            <small class="reset-button">문자, 숫자, 특수문자(@/./+/-/_)를 포함한 30자 이하</small>
+        </p>
+        <p class="each-input">
+            <label for="id_nickname">닉네임</label><br />
+            <input class="login-input" type="text" name="nickname" maxlength="20" required id="id_nickname" autocomplete="off">
+        </p>
+        <p class="each-input">
+            <label for="id_email">이메일</label><br />
+            <input class="login-input" type="email" name="email" maxlength="100" required id="id_email" autocomplete="off"/>
+        </p>
+        <input type="hidden" id="real_password" name="real_password">
+        <p class="each-input">
+            <label for="id_password1">비밀번호</label><br />
+            <input class="login-input" type="password" name="password1" autocomplete="new-password" required id="id_password1" style="margin-bottom: 10px;"><br />
+            <small class="reset-button">문자, 숫자를 조합한 최소 8자 이상</small>
+        </p>
+        <p class="each-input">
+            <label for="id_password2">비밀번호 확인</label><br />
+            <input class="login-input" type="password" name="password2" autocomplete="new-password" required id="id_password2">
+        </p>
+        <input class="blue-button login-btn" type="submit" value="회원가입" style="margin-top: 30px;"/>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra %}
+    <script	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+    <script>
+        const form = document.getElementById("form")
+        const password1 = document.querySelector('#id_password1')
+        const password2 = document.querySelector('#id_password2')
+        const real_password = document.querySelector('#real_password')
+
+        form.addEventListener('submit', (e) => {
+            if (password1.value.length < 8) {
+                alert("비밀번호를 8자 이상 작성해주세요.")
+            } else if (password1.value != password2.value) {
+                alert("비밀번호가 일치하지 않습니다.")
+            } else {
+                real_password.value = sha256(password1.value)
+                password1.value = ''
+                password2.value = ''
+            }
+        })
+    </script>
+    {% if error %}
+        <script>alert('{{ error }}')</script>
+    {% endif %}
+{% endblock %}

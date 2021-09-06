@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container login" style="height: 800px;">
+    <h3>학교 인증</h3>
+    <br />
+    <hr />
+    <div class="search-form">
+        <span>학교명</span>
+        <select name="school_list" id="school_list" name="school_list">
+            {% for school_name in school_names %}
+                <option>{{ school_name }}</option>
+            {% endfor %}
+        </select>
+        <!-- <input type="text" class="search_uni" placeholder="학교 이름"> -->
+        <button class="blue-button mypage-btn" onclick="onClickSchool(document.querySelector('#school_list').value)">학교검색</button>
+    </div>
+    <form class="mt-2" method="POST">
+        {% csrf_token %}
+        <div class="domain mt-2">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 학교 검색 ajax
+        const onClickSchool = async(school_name) => {
+                const url = '/search_school/';
+                const {data} = await axios.post(url, {
+                    school_name
+                });
+                schoolHandleResponse(data.school_domain);
+            };
+
+        const schoolHandleResponse = (school_domain) => {
+            const element = document.querySelector('.domain');
+            const originHTML = element.innerHTML;
+            
+            element.innerHTML = `
+            <div style="margin: 20px 0">
+                <span>@${school_domain}</span>
+                <span>라는 도메인이 들어가는 메일 주소를 적어주세요.</span>
+            </div>
+            <div class="mt-1 d-flex align-items-center">
+                <input type="email" name="email" />
+                <input class="blue-button mailing" type="submit" value="메일 보내기"></input>
+                <input style="display: none;" name="school_domain" value="${school_domain}"/>
+            </div>
+            `
+        };
+
+    </script>
+    {% if alert_flag %}
+        <script>alert("이미 존재하는 이메일입니다.")</script>  
+    {% endif %}
+    {% if domain_error %}
+        <script>alert("{{ domain_error }}")</script>
+    {% endif %}
+</script>
+{% endblock %}
