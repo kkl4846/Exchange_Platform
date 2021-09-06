@@ -33,6 +33,10 @@
 @import "pages/wiki.css";
 @import "pages/sister_search.css";
 
+html {
+  min-width: 1440px;
+}
+
 body {
   font-family: "Noto Sans KR", sans-serif;
   background-color: var(--bg);
