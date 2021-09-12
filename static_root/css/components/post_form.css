@@ -1,0 +1,17 @@
+.question-title {
+  height: 35px;
+  margin-bottom: 20px;
+}
+
+.question-content {
+  height: 336px;
+  padding-top: 13px;
+}
+
+.question-title,
+.question-content {
+  width: 950px;
+  border-style: none;
+  border-radius: 10px;
+  padding-left: 12px;
+}

@@ -45,9 +45,11 @@
 
         form.addEventListener('submit', (e) => {
             if (password1.value.length < 8) {
-                alert("비밀번호를 8자 이상 작성해주세요.")
+                alert("비밀번호를 8자 이상 작성해주세요.");
+		form.method = 'GET';
             } else if (password1.value != password2.value) {
-                alert("비밀번호가 일치하지 않습니다.")
+                alert("비밀번호가 일치하지 않습니다.");
+		form.method = 'GET';
             } else {
                 real_password.value = sha256(password1.value)
                 password1.value = ''

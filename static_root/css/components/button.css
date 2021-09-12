@@ -1,0 +1,29 @@
+.blue-button {
+  color: white;
+  background-color: var(--blue);
+}
+
+.dark-button {
+  color: white;
+  background-color: var(--d-gray);
+}
+
+.light-button {
+  color: var(--d-gray);
+  background-color: var(--l-gray);
+}
+
+.m-btn {
+  font-size: 14px;
+  line-height: 14px;
+  padding: 7px 11px;
+  border: none;
+  border-radius: 14px;
+  height: 28px;
+}
+.s-btn {
+  font-size: 12px;
+  padding: 5px 8px;
+  border: none;
+  border-radius: 15px;
+}

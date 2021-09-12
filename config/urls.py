@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('piro_admin/', admin.site.urls),
     path('foreign/', include("foreign.urls")),  # foreign url추가
     path('', include('login.urls')),
     path('domestic/', include('domestic.urls'), name='domestic'),

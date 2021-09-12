@@ -1,0 +1,41 @@
+.category-detail h3 {
+  font-weight: bold;
+  font-size: 32px;
+  margin-top: 40px;
+  color: var(--d-gray);
+}
+
+.category-detail hr {
+  margin-top: 40px;
+  margin-bottom: 25px;
+}
+
+.create-btn {
+  border-radius: 15px;
+  border: none;
+  height: 28px;
+  font-size: 14px;
+}
+
+.sm-btn {
+  width: 62px;
+}
+
+.md-btn {
+  width: 72px;
+}
+
+.country-btn {
+  margin-bottom: 1px;
+  margin-left: 10px;
+  padding: 7px 11px;
+  border-radius: 15px;
+  font-size: 14px;
+  height: 28px;
+  min-width: 48px;
+  text-decoration: none;
+}
+
+.country-btn:hover {
+  color: white;
+}

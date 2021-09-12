@@ -48,6 +48,8 @@ def signup(request):
                     return render(request, 'login/signup.html', {'error': "이미 사용 중인 닉네임입니다."})
                 elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
                     return render(request, 'login/signup.html', {'error': "이미 사용 중인 이메일입니다."})
+                else:
+                    return render(request, 'login/signup.html', {'error': "이미 사용 중인 아이디, 닉네임, 또는 이메일이 있습니다."})
     else:
         return render(request, 'login/signup.html')
 
