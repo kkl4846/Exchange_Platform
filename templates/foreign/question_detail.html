@@ -35,6 +35,9 @@
                         <div class="d-flex align-items-center">
                             <span class="post-author">{{ comment.comment_author.nickname }}</span>
                             <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
+                            {% if comment.secret == True %}
+                            비밀댓글
+                            {% endif %}
                         </div>
                         <div>
                             {% if request.user == comment.comment_author %}
@@ -74,8 +77,10 @@
             </div>
             {% if is_authenticated == True %}
             <div class="new-comment d-flex align-items-center">
-                <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{ question.pk }}" placeholder='댓글달기...' style="width: 80%;"/>
-                <button class="blue-button s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}', '{{ question.pk }}', document.querySelector('#comment_{{ question.pk }}').value )">등록</button>
+                비밀댓글
+                <input class="new-comment-unchecked" id="GetSecret" type="checkbox" name="secret" onclick="onClickSecret()"/>
+                <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{ question.pk }}" placeholder='댓글달기...' style="width: 80%;"/>                
+                <button class="blue-button s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}', '{{ question.pk }}', document.querySelector('#comment_{{ question.pk }}').value ,document.querySelector('#GetSecret').className)">등록</button>
             </div>
             {% endif %}
         </div>
@@ -86,7 +91,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 //댓글
-    const onClickComment= async(is_authenticated, question_id, comment_content) => {  
+    const onClickComment= async(is_authenticated, question_id, comment_content,is_secret) => {  
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
@@ -97,15 +102,14 @@
                 headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: JSON.stringify({ is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content})
+                body: JSON.stringify({ is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content, is_secret:is_secret })
             }); 
-        
-            const {question_id:id, comment_content:content, comment_id:c_id,now:now}= await res.json();        
-            commentHandleResponse(id, content, c_id, now);
+            const {question_id:id, comment_content:content, comment_id:c_id,secret:secret}= await res.json();        
+            commentHandleResponse(id, content, c_id, secret);
         };
     };
 
-    const commentHandleResponse=(question_id, comment_content, comment_id, now) => {
+    const commentHandleResponse=(question_id, comment_content, comment_id,secret) => {
         const element=document.querySelector(`.post_${question_id}`);
         element.innerHTML += `
         <div class="comment_${comment_id} comment-container">
@@ -125,6 +129,13 @@
         <div class="undercomment_list_${comment_id}"></div>
         <div class="undercomment-container undercomment_${comment_id}"></div>
         `;
+        if(secret){
+            const parent = document.querySelector(`.comment_${comment_id}`)
+            const inform_secret = parent.firstElementChild.firstElementChild
+            const newspan = document.createElement('span')
+            newspan.textContent = '비밀댓글'
+            inform_secret.appendChild(newspan)
+        }
         const input_content = document.querySelector(`#comment_${question_id}`);
         input_content.value = null;
     };
@@ -314,6 +325,18 @@
         element.remove();
     };
 
+    var count=0;
+    //비밀 댓글
+    const onClickSecret = ()=>{
+        const element = document.querySelector('#GetSecret')
+        count+=1;
+        if(count%2==1){
+            element.className = 'new-comment-checked'
+        }
+        else{
+            element.className = 'new-comment-unchecked'
+        }
+    }
     </script>
 
 {% endblock %}

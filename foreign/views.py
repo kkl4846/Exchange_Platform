@@ -335,15 +335,20 @@ def q_comment_create(request, foreign_id, pk):
     req = json.loads(request.body)
     question_id = req['question_id']
     new_comment_content = req['comment_content']
+    is_secret = req['is_secret']
 
     new_comment = FComment.objects.create(
         question=FQuestion.objects.get(id=question_id),
         comment_content=new_comment_content,
         comment_author=request.user
     )
+
+    if is_secret == 'new-comment-checked':
+        new_comment.secret = True
     new_comment.save()
 
-    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content})
+    print(new_comment.secret)
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content, 'secret': new_comment.secret})
 
 
 @csrf_exempt
