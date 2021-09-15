@@ -343,8 +343,7 @@ def q_comment_create(request, foreign_id, pk):
         comment_author=request.user
     )
 
-    if is_secret == 'new-comment-checked':
-        new_comment.secret = True
+    new_comment.secret = is_secret
     new_comment.save()
 
     print(new_comment.secret)
@@ -357,12 +356,14 @@ def q_comment_edit(request, foreign_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     edit_comment_content = req['comment_content']
+    edit_comment_secret = req['secret']
 
     edit_comment = FComment.objects.get(id=comment_id)
     edit_comment.comment_content = edit_comment_content
+    edit_comment.secret = edit_comment_secret
     edit_comment.save()
 
-    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
+    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname, 'secret': edit_comment.secret})
 
 
 @csrf_exempt
