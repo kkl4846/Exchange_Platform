@@ -14,6 +14,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.db import IntegrityError
+from django.db.models import Count
 from django.core.paginator import Paginator
 from . import tokens, text, helper
 from .models import *
@@ -33,20 +34,22 @@ def signup(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['real_password']
+        nickname = request.POST['nickname']
+        email = request.POST['email']
         if len(username) > 30:
             return render(request, 'login/signup.html', {'error': "아이디는 30자를 초과할 수 없습니다."})
         else:
             try:
                 new_user = User.objects.create_user(
-                    username=username, password=password, nickname=request.POST['nickname'], email=request.POST['email'])
+                    username=username, password=password, nickname=nickname, email=email)
                 auth.login(request, new_user)
                 return redirect('login:user_main')
-            except IntegrityError as e:
-                if repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.username')":
+            except:
+                if User.objects.filter(username=username).exists() == True:
                     return render(request, 'login/signup.html', {'error': "이미 사용 중인 아이디입니다."})
-                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.nickname')":
+                elif User.objects.filter(nickname=nickname).exists() == True:
                     return render(request, 'login/signup.html', {'error': "이미 사용 중인 닉네임입니다."})
-                elif repr(e) == "IntegrityError('UNIQUE constraint failed: login_user.email')":
+                elif User.objects.filter(email=email).exists() == True:
                     return render(request, 'login/signup.html', {'error': "이미 사용 중인 이메일입니다."})
                 else:
                     return render(request, 'login/signup.html', {'error': "이미 사용 중인 아이디, 닉네임, 또는 이메일이 있습니다."})
