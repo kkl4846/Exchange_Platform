@@ -9,7 +9,10 @@
             <button class="light-button create-btn md-btn" onclick="location.href='{% url "country:question_list" country.pk %}'"> 목록보기 </button>        </div>
         <hr>
         <div class="post-header d-flex justify-content-between">
-            <span class="post-title">{{ question.question_title }}</span>
+            <div>
+                <span class="post-title">{{ question.question_title }}</span>
+                <span style="margin-left: 10px; font-size: 15px;">조회수 : {{ question.hits }}</span>
+            </div>
             <div class="d-flex justify-content-end">
                 {% if question.author.pk == user.pk %}
                 <button class="light-button m-btn " onclick="location.href='{% url "country:question_edit" country.pk question.pk %}'"> 수정 </button>

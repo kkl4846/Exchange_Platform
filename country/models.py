@@ -19,6 +19,7 @@ class CQuestion(models.Model):
         to='country.Country', on_delete=models.CASCADE, null=True, blank=True)
     question_title = models.CharField(max_length=50)
     question_content = models.TextField()
+    hits = models.PositiveIntegerField(default=0, verbose_name='조회수')
 
     created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
