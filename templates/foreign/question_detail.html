@@ -53,7 +53,7 @@
                         {% if request.user == comment.comment_author or request.user == question.author %}
                             <p class="comment-content">{{ comment.comment_content }}</p>
                         {% else %}
-                            <span>비밀 댓글입니다</span>
+                            <p class="comment-content">비밀 댓글입니다</p>
                         {% endif %}
                     {% else %}
                         <p class="comment-content">{{ comment.comment_content }}</p>
@@ -67,7 +67,15 @@
                                 <div>
                                     <img class="undercomment-icon" src="/static/css/img/undercomment.png" alt="대댓글">
                                     <span class="post-author">{{ undercomment.comment_author.nickname }}</span>
-                                    <p class="comment-content">{{ undercomment.comment_content }}</p>
+                                    {% if comment.secret == True %}
+                                        {% if request.user == comment.comment_author or request.user == question.author %}
+                                            <p class="comment-content">{{ undercomment.comment_content }}</p>
+                                        {% else %}
+                                        <p class="comment-content">비밀 댓글입니다</p>
+                                        {% endif %}
+                                    {% else %}
+                                        <p class="comment-content">{{ undercomment.comment_content }}</p>
+                                    {% endif %}
                                 </div>
                                 {% if undercomment.comment_author == request.user %}
                                 <div>
@@ -141,8 +149,8 @@
         if(secret){
             const parent = document.querySelector(`.comment_${comment_id}`)
             const inform_secret = parent.firstElementChild.firstElementChild
-            const newspan = document.createElement('span')
-            newspan.textContent = '비밀댓글'
+            const newspan = document.createElement('i')
+            newspan.className = 'fas fa-lock fa-xs post-lock'
             inform_secret.appendChild(newspan)
         }
         const input_content = document.querySelector(`#comment_${question_id}`);
