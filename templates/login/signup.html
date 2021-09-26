@@ -1,51 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="d-flex justify-content-end">
-<div class="container login"  style="height: 900px;">
-    <h3>회원가입</h3>
-    <br />
-    <hr />
-    <form method="POST" action="{% url 'login:signup' %}" id="form">
-        {% csrf_token %}
-        <p>
-            <label for="id_username">아이디</label><br />
-            <input class="login-input" type="text" name="username" max="30" autofocus required id="id_username" autocomplete="off" style="margin-bottom: 10px;"/><br />
-            <small class="reset-button">문자, 숫자, 특수문자(@/./+/-/_)를 포함한 30자 이하</small>
-        </p>
-        <p class="each-input">
-            <label for="id_nickname">닉네임</label><br />
-            <input class="login-input" type="text" name="nickname" maxlength="20" required id="id_nickname" autocomplete="off">
-        </p>
-        <p class="each-input">
-            <label for="id_email">이메일</label><br />
-            <input class="login-input" type="email" name="email" maxlength="100" required id="id_email" autocomplete="off"/>
-        </p>
-        <input type="hidden" id="real_password" name="real_password">
-        <p class="each-input">
-            <label for="id_password1">비밀번호</label><br />
-            <input class="login-input" type="password" name="password1" autocomplete="new-password" required id="id_password1" style="margin-bottom: 10px;"><br />
-            <small class="reset-button">문자, 숫자를 조합한 최소 8자 이상</small>
-        </p>
-        <p class="each-input">
-            <label for="id_password2">비밀번호 확인</label><br />
-            <input class="login-input" type="password" name="password2" autocomplete="new-password" required id="id_password2">
-        </p>
-        <input class="blue-button login-btn" type="submit" value="회원가입" style="margin-top: 30px;"/>
-    </form>
-</div>
-<div style=" margin-right: 50px; margin-top: 50px;">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2153488758273914"
-    crossorigin="anonymous"></script>
-<!-- Vertical -->
-<ins class="adsbygoogle"
-    style="display:inline-block;width:150px;height:500px"
-    data-ad-client="ca-pub-2153488758273914"
-    data-ad-slot="8947820764"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
+<div class="d-flex justify-content-end ">
+    <div class="container login"  style="height: 900px; margin-right: 50px; ">
+        <h3>회원가입</h3>
+        <br />
+        <hr />
+        <form method="POST" action="{% url 'login:signup' %}" id="form">
+            {% csrf_token %}
+            <p>
+                <label for="id_username">아이디</label><br />
+                <input class="login-input" type="text" name="username" max="30" autofocus required id="id_username" autocomplete="off" style="margin-bottom: 10px;"/><br />
+                <small class="reset-button">문자, 숫자, 특수문자(@/./+/-/_)를 포함한 30자 이하</small>
+            </p>
+            <p class="each-input">
+                <label for="id_nickname">닉네임</label><br />
+                <input class="login-input" type="text" name="nickname" maxlength="20" required id="id_nickname" autocomplete="off">
+            </p>
+            <p class="each-input">
+                <label for="id_email">이메일</label><br />
+                <input class="login-input" type="email" name="email" maxlength="100" required id="id_email" autocomplete="off"/>
+            </p>
+            <input type="hidden" id="real_password" name="real_password">
+            <p class="each-input">
+                <label for="id_password1">비밀번호</label><br />
+                <input class="login-input" type="password" name="password1" autocomplete="new-password" required id="id_password1" style="margin-bottom: 10px;"><br />
+                <small class="reset-button">문자, 숫자를 조합한 최소 8자 이상</small>
+            </p>
+            <p class="each-input">
+                <label for="id_password2">비밀번호 확인</label><br />
+                <input class="login-input" type="password" name="password2" autocomplete="new-password" required id="id_password2">
+            </p>
+            <input class="blue-button login-btn" type="submit" value="회원가입" style="margin-top: 30px;"/>
+        </form>
+    </div>
+    <div style="margin-top: 50px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2153488758273914"
+        crossorigin="anonymous"></script>
+        <!-- Vertical -->
+        <ins class="adsbygoogle"
+            style="display:inline-block;width:150px;height:500px"
+            data-ad-client="ca-pub-2153488758273914"
+            data-ad-slot="8947820764"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
 </div>
 {% endblock %}
 
