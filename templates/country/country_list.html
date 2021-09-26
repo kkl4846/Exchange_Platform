@@ -1,31 +1,45 @@
 {%extends "base.html"%} 
 {% block content %}
-<div class="lbody">
-    <div class="container containers">  <!-- conntainers-현재 국가가 적어서 min-heighy를 설정함 만약 국가가 많을 예정이라면 containers 빼도됨 -->
-    {% autoescape off %}
-    <div class="lbar d-flex align-items-center">
-        <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
-        {% for key, val in countries_dict.items %}
-        <a href="#{{ key }}" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
-        {% endfor %}
-        </div>
-    </div>
-    <div>
-        {% for key, val in countries_dict.items %}
-        <div class="lgroup d-flex">
-            <div class="lalpha" id="{{ key }}">{{ key }}</div>
-            <div class="lforeign_name ">
-            {% for country in val %}
-                <a href="{% url 'country:country_wiki' pk=country.pk %}">
-                    {{ country.country_name }}
-                </a>
+<div class="d-flex justify-content-end">
+    <div class="lbody">
+        <div class="container containers">  <!-- conntainers-현재 국가가 적어서 min-heighy를 설정함 만약 국가가 많을 예정이라면 containers 빼도됨 -->
+        {% autoescape off %}
+        <div class="lbar d-flex align-items-center">
+            <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
+            {% for key, val in countries_dict.items %}
+            <a href="#{{ key }}" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
             {% endfor %}
             </div>
-            <br>
         </div>
-        {% endfor %}
+        <div>
+            {% for key, val in countries_dict.items %}
+            <div class="lgroup d-flex">
+                <div class="lalpha" id="{{ key }}">{{ key }}</div>
+                <div class="lforeign_name ">
+                {% for country in val %}
+                    <a href="{% url 'country:country_wiki' pk=country.pk %}">
+                        {{ country.country_name }}
+                    </a>
+                {% endfor %}
+                </div>
+                <br>
+            </div>
+            {% endfor %}
+        </div>
+        {% endautoescape %}
+        </div>
     </div>
-    {% endautoescape %}
+    <div style="margin-left: 50px; margin-top: 50px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2153488758273914"
+        crossorigin="anonymous"></script>
+    <!-- Vertical -->
+    <ins class="adsbygoogle"
+            style="display:inline-block;width:150px;height:500px"
+            data-ad-client="ca-pub-2153488758273914"
+            data-ad-slot="8947820764"></ins>
+    <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     </div>
 </div>
 <script>
