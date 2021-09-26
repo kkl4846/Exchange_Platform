@@ -2,24 +2,38 @@
 
 
 {% block content %}
-<div class="d-flex flex-column align-items-center container login" style="height: 800px;">
-    <h3>로그인</h3>
-    <br />
-    <hr />
-    <form method="POST" id="form">
-        {% csrf_token %}
-        <input class="login-input" name="username" type="text" placeholder="아이디" required/>
-        <br/>
-        <input class="login-input" name="password" type="password" id="password" placeholder="비밀번호" required/>
-        <input type="hidden" id="real_password" name="real_password">
+    <div class="d-flex flex-column align-items-center container login" style="height: 1000px;">
+        <h3>로그인</h3>
         <br />
-        <div class="reset-password">
-            <a href="{% url 'login:reset_password' %}" class="reset-button">비밀번호 재설정</a>
+        <hr />
+        <form method="POST" id="form">
+            {% csrf_token %}
+            <input class="login-input" name="username" type="text" placeholder="아이디" required/>
+            <br/>
+            <input class="login-input" name="password" type="password" id="password" placeholder="비밀번호" required/>
+            <input type="hidden" id="real_password" name="real_password">
+            <br />
+            <div class="reset-password">
+                <a href="{% url 'login:reset_password' %}" class="reset-button">비밀번호 재설정</a>
+            </div>
+            <input class="login-btn blue-button" type="submit" value="로그인" />
+            
+        </form>
+        <div>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2153488758273914"
+            crossorigin="anonymous"></script>
+        <!-- Vertical -->
+        <ins class="adsbygoogle"
+            style="display:inline-block;width:200px;height:100px"
+            data-ad-client="ca-pub-2153488758273914"
+            data-ad-slot="8947820764"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
         </div>
-        <input class="login-btn blue-button" type="submit" value="로그인" />
-        
-    </form>
-</div>
+    </div>
+    
+
 {% endblock %}
 
 {% block extra %}
