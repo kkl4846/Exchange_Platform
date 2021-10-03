@@ -101,3 +101,39 @@ class FReComment(models.Model):
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+
+
+class FFriend(models.Model):
+    foreign = models.ForeignKey(
+        Foreign, on_delete=models.CASCADE, related_name="find_friend", default='')
+    friend_author = models.ForeignKey(
+        "login.User", on_delete=models.CASCADE, related_name="user_friend")
+    title = models.CharField(max_length=50)
+    content = models.TextField(blank=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+class FriendComment(models.Model):
+    comment_author = models.ForeignKey(
+        to='login.User', on_delete=models.CASCADE, null=True)
+    ffriend = models.ForeignKey('FFriend', on_delete=models.CASCADE)
+    comment_content = models.TextField(null=True)
+    created_at = models.DateField(auto_now_add=True, blank=False)
+    updated_at = models.DateField(auto_now=True)
+    secret = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.comment_content
+
+
+class FriendUnderComment(models.Model):
+    comment = models.ForeignKey('FriendComment', on_delete=models.CASCADE)
+    comment_author = models.ForeignKey('login.User', on_delete=models.CASCADE)
+    comment_content = models.TextField(blank=True)
+
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
