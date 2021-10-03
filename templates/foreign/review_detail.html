@@ -83,7 +83,6 @@
         {% csrf_token %}
         <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{review.id}}" placeholder='답변 달기...' style="width: 80%;"/>
         <div class="blue-button s-btn post-button submit" type="submit" class="blue-button s-btn post-button submit" onclick="onClickComment('{{user.is_authenticated}}',{{review.id}}, document.querySelector('#comment_{{review.id}}').value)">등록</div>
-        <!-- 이유는 모르겠으나 위의 버튼이 div,span가 아닌 button,input이면 오류가 남,,, -->
     </div>
 </div>
 
@@ -148,7 +147,7 @@
                 </div>
                 <button class="blue-button s-btn post-button" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">저장</button>
             </div>
-            <input type="text" class="edit-comment-input" id="edit_comment" value=${comment_content} />
+            <input type="text" class="edit-comment-input" id="edit_comment" value='${comment_content}' />
             `
 
     }

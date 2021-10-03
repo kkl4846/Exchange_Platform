@@ -346,7 +346,6 @@ def q_comment_create(request, foreign_id, pk):
     new_comment.secret = is_secret
     new_comment.save()
 
-    print(new_comment.secret)
     return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content, 'secret': new_comment.secret})
 
 
