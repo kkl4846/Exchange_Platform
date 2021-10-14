@@ -41,9 +41,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', 'uniconnect.world']
 
 
 # Application definition
@@ -101,11 +101,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': my_settings.DATABASES['ENGINE'],
+        'NAME': my_settings.DATABASES['NAME'],
+        'USER': my_settings.DATABASES['USER'],
+        'PASSWORD': my_settings.DATABASES['PASSWORD'],
+        'HOST': my_settings.DATABASES['HOST'],
+        'PORT': my_settings.DATABASES['PORT'],
+        'OPTIONS': my_settings.DATABASES['OPTIONS'],
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -151,7 +155,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

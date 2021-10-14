@@ -1,0 +1,20 @@
+.title-search-foreign {
+  display: inline;
+  color: var(--m-gray);
+  margin-right: 32px;
+  width: 70px;
+  margin-top: 15px;
+}
+
+.search-sister {
+  border: none;
+  border-radius: 10px;
+  padding-left: 15px;
+  color: var(--d-gray);
+  width: 100%;
+}
+
+.title-search-foreign,
+.search-sister {
+  font-size: 15px;
+}

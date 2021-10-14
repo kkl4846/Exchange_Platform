@@ -1,25 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container login" style="height: 800px;">
-    <h3>학교 인증</h3>
-    <br />
-    <hr />
-    <div class="search-form">
-        <span>학교명</span>
-        <select name="school_list" id="school_list" name="school_list">
-            {% for school_name in school_names %}
-                <option>{{ school_name }}</option>
-            {% endfor %}
-        </select>
-        <!-- <input type="text" class="search_uni" placeholder="학교 이름"> -->
-        <button class="blue-button mypage-btn" onclick="onClickSchool(document.querySelector('#school_list').value)">학교검색</button>
-    </div>
-    <form class="mt-2" method="POST">
-        {% csrf_token %}
-        <div class="domain mt-2">
+<div class="d-flex justify-content-end">
+    <div class="container login" style="height: 800px; margin-right: 50px; ">
+        <h3>학교 인증</h3>
+        <br />
+        <hr />
+        <div class="search-form">
+            <span>학교명</span>
+            <select name="school_list" id="school_list" name="school_list">
+                {% for school_name in school_names %}
+                    <option>{{ school_name }}</option>
+                {% endfor %}
+            </select>
+            <!-- <input type="text" class="search_uni" placeholder="학교 이름"> -->
+            <button class="blue-button mypage-btn" onclick="onClickSchool(document.querySelector('#school_list').value)">학교검색</button>
         </div>
-    </form>
+        <form class="mt-2" method="POST">
+            {% csrf_token %}
+            <div class="domain mt-2">
+            </div>
+        </form>
+    </div>
+    <div style="margin-top: 50px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2153488758273914"
+        crossorigin="anonymous"></script>
+        <!-- Vertical -->
+        <ins class="adsbygoogle"
+                style="display:inline-block;width:150px;height:500px"
+                data-ad-client="ca-pub-2153488758273914"
+                data-ad-slot="8947820764"></ins>
+        <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
 </div>
 {% endblock %}
 

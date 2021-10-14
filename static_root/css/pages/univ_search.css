@@ -1,0 +1,64 @@
+.containers {
+  font-size: 15px;
+  min-height: 100vh;
+}
+
+.addForeign-top {
+  font-size: 32px;
+  font-weight: bold;
+  display: inline;
+}
+.foreign-name {
+  color: var(--m-gray);
+  line-height: 35px;
+  width: 120px;
+}
+.foreign-search {
+  width: 935px;
+  height: 35px;
+  border: none;
+  float: right;
+  display: inline-block;
+  border-radius: 29px;
+}
+.foreign-search::placeholder {
+  color: var(--d-gray);
+}
+.addForeign-form {
+  color: var(--m-gray);
+}
+
+.addForeign-group {
+  display: flex;
+  justify-content: space-between;
+  line-height: 35px;
+}
+.addForeign-group select {
+  width: 935px;
+  height: 35px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 29px;
+}
+.marginy-40 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.lgbtn-blue {
+  width: 74px;
+  height: 28px;
+  font-size: 14px;
+  border-radius: 21px;
+  border: none;
+  float: right;
+  display: inline-block;
+}
+
+.lsearch-icon {
+  position: absolute;
+  font-size: 12px;
+  right: 1%;
+  height: 100%;
+  color: var(--d-gray);
+}

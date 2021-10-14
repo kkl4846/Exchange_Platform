@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('piro_admin/', admin.site.urls),
     path('foreign/', include("foreign.urls")),  # foreign url추가
     path('', include('login.urls')),
     path('domestic/', include('domestic.urls'), name='domestic'),
     path('country/', include('country.urls')),
     path('summernote/', include('django_summernote.urls')),
+    path('ads.txt', views.ads)
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

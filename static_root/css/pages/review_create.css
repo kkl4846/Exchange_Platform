@@ -1,0 +1,40 @@
+#review-form input {
+  height: 35px;
+  border: none;
+  margin-bottom: 20px;
+  border-radius: 28px;
+}
+#id_title {
+  width: 950px;
+}
+.review-content {
+  width: 950px;
+}
+#review-form input::placeholder {
+  color: var(--d-gray);
+}
+
+.review-away_year {
+  width: 950px;
+  margin-top: 20px;
+  color: var(--m-gray);
+}
+.review-away_year input {
+  width: 92.5%;
+  margin-top: 20px;
+  color: var(--d-gray);
+}
+.review-away_semester {
+  width: 950px;
+  color: var(--m-gray);
+}
+#review-form div select {
+  width: 92.5%;
+  height: 35px;
+  border: none;
+  margin-bottom: 20px;
+  border-radius: 28px;
+}
+.review-create {
+  height: 1024px;
+}

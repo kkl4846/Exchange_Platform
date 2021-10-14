@@ -1,27 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="lbody d-flex flex-column">
-    <div class="container">
-        <div class="lbar d-flex align-items-center">
-            <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
-            {% for key, val in universities_dict.items %}
-                <a id="{{ key }}" href="#{{ key }}_list" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
-            {% endfor %}
-            </div>
-        </div>
-        <div>
-            {% for key, val in universities_dict.items %}
-            <div class="lgroup ">
-                <h3 id="{{ key }}_list" class="lalpha">{{ key }}</h3>
-                <div class="lforeign_name ">
-                {% for university in val %}
-                    <a href="{% url 'domestic:wiki' university.pk %}">{{university.home_name}}</a>
+<div class="d-flex justify-content-end">
+    <div class="lbody d-flex flex-column">
+        <div class="container">
+            <div class="lbar d-flex align-items-center">
+                <div class="cho_list lforeign_list d-flex justify-content-around text-center ">
+                {% for key, val in universities_dict.items %}
+                    <a id="{{ key }}" href="#{{ key }}_list" class="cho list-unactive" onclick="clickAlpha('{{key}}')">{{ key }}</a>
                 {% endfor %}
                 </div>
             </div>
-            <br>
-            {% endfor %}
+            <div>
+                {% for key, val in universities_dict.items %}
+                <div class="lgroup ">
+                    <h3 id="{{ key }}_list" class="lalpha">{{ key }}</h3>
+                    <div class="lforeign_name ">
+                    {% for university in val %}
+                        <a href="{% url 'domestic:wiki' university.pk %}">{{university.home_name}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
         </div>
+    </div>
+    <div style="margin-left: 50px; margin-top: 50px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2153488758273914"
+        crossorigin="anonymous"></script>
+    <!-- Vertical -->
+    <ins class="adsbygoogle"
+            style="display:inline-block;width:150px;height:500px"
+            data-ad-client="ca-pub-2153488758273914"
+            data-ad-slot="8947820764"></ins>
+    <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     </div>
 </div>
 {% endblock %}
