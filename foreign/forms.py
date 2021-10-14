@@ -104,3 +104,24 @@ class CommentForm(forms.ModelForm):
 
             'comment_content': '내용'
         }
+
+
+class FriendForm(forms.ModelForm):
+    class Meta:
+        model = FFriend
+        fields = ['title', 'content']
+        labels = {
+
+            'title': '제목',
+            'content': '내용',
+        }
+
+
+class FindCommentForm(forms.ModelForm):
+    class Meta:
+        model = FriendComment
+        fields = ['comment_content']
+        labels = {
+
+            'comment_content': '내용'
+        }

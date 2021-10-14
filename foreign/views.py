@@ -1,4 +1,5 @@
 import json
+import re
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -485,3 +486,94 @@ def Rrecomment_delete(request, foreign_id, pk):
     delete_comment.delete()
 
     return JsonResponse({'recomment_id': recomment_id})
+
+
+# 친구찾기
+
+def friend_list(request, foreign_id):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    all_friend = foreign.find_friend.order_by('-pk')
+    paginator = Paginator(all_friend, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    total_friend = all_friend.count()
+    ctx = {
+        'univ': foreign,
+        'page_obj': page_obj,
+        'total_friend': total_friend,
+    }
+    return render(request, 'foreign/friend_list.html', ctx)
+
+
+def friend_detail(request, foreign_id, pk):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    friend = FFriend.objects.get(id=pk)
+    comments = friend.friendcomment_set.all()
+    undercomments = FriendUnderComment.objects.all()
+    now = datetime.now()
+    ctx = {
+        'friend': friend,
+        'comments': comments,
+        'univ': foreign,
+        'is_authenticated': request.user.is_authenticated,
+        'undercomments': undercomments,
+        'now': now
+    }
+    return render(request, 'foreign/friend_detail.html', context=ctx)
+
+
+@login_required(login_url=URL_LOGIN)
+def friend_create(request, foreign_id):
+    foreign_univ = get_object_or_404(Foreign, pk=foreign_id)
+    if request.method == 'POST':
+        form = FriendForm(request.POST)
+        form.friend_author = request.user
+        print(form)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.friend_author = request.user
+            post.foreign = foreign_univ
+            post.save()
+            return redirect('foreign:friend_detail', foreign_id, post.pk)
+    else:
+        form = FriendForm()
+        ctx = {
+            'form': form,
+            'univ': foreign_univ,
+        }
+        return render(request, template_name='foreign/friend_form.html', context=ctx)
+
+
+@login_required(login_url=URL_LOGIN)
+def friend_edit(request, foreign_id, pk):
+    foreign = get_object_or_404(Foreign, pk=foreign_id)
+    friend = get_object_or_404(FFriend, id=pk)
+    IsFriendAuthor = True
+    if request.method == 'POST':
+        form = FriendForm(request.POST, instance=friend)
+        if form.is_valid():
+            friend = form.save()
+            return redirect('foreign:friend_detail', foreign_id, pk)
+    else:
+        if friend != None:                # 수정할 때
+            if request.user != friend.friend_author:
+                IsFriendAuthor = False
+            type = 'update'
+        else:                           # 새로 생성할 때
+            type = 'create'
+        form = FriendForm(instance=friend)
+        ctx = {
+            'form': form,
+            'univ': foreign,
+            'IsFriendAuthor': IsFriendAuthor,
+            'type': type,
+            'friend': friend,
+        }
+        return render(request, template_name='foreign/friend_form.html', context=ctx)
+
+
+def friend_delete(request, foreign_id, pk):
+    friend = get_object_or_404(FFriend, id=pk)
+    if request.method == 'POST':
+        friend.delete()
+    return redirect('foreign:friend_list', foreign_id)
