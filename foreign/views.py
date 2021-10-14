@@ -336,15 +336,18 @@ def q_comment_create(request, foreign_id, pk):
     req = json.loads(request.body)
     question_id = req['question_id']
     new_comment_content = req['comment_content']
+    is_secret = req['is_secret']
 
     new_comment = FComment.objects.create(
         question=FQuestion.objects.get(id=question_id),
         comment_content=new_comment_content,
         comment_author=request.user
     )
+
+    new_comment.secret = is_secret
     new_comment.save()
 
-    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content})
+    return JsonResponse({'question_id': question_id, 'comment_id': new_comment.id, 'comment_content': new_comment_content, 'secret': new_comment.secret})
 
 
 @csrf_exempt
@@ -353,12 +356,14 @@ def q_comment_edit(request, foreign_id, pk):
     req = json.loads(request.body)
     comment_id = req['comment_id']
     edit_comment_content = req['comment_content']
+    edit_comment_secret = req['secret']
 
     edit_comment = FComment.objects.get(id=comment_id)
     edit_comment.comment_content = edit_comment_content
+    edit_comment.secret = edit_comment_secret
     edit_comment.save()
 
-    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname})
+    return JsonResponse({'comment_id': comment_id, 'comment_content': edit_comment_content, 'nickname': request.user.nickname, 'secret': edit_comment.secret})
 
 
 @csrf_exempt

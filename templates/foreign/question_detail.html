@@ -35,10 +35,13 @@
                         <div class="d-flex align-items-center">
                             <span class="post-author">{{ comment.comment_author.nickname }}</span>
                             <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }} </span>
+                            {% if comment.secret == True %}
+                            <i class="fas fa-lock fa-xs post-lock"></i>
+                            {% endif %}
                         </div>
                         <div>
                             {% if request.user == comment.comment_author %}
-                            <button class="light-button s-btn update " onclick="EditComment('{{ comment.id }}' ,'{{ comment.comment_content }}')">수정</button>
+                            <button class="light-button s-btn update " onclick="EditComment('{{ comment.id }}' ,'{{ comment.comment_content }}','{{comment.secret}}')">수정</button>
                             <button class="light-button s-btn post-button delete " onclick="onClickDelete('{{ comment.id }}' )">삭제</button>
                             {% endif %}
                             {% if is_authenticated == True %}
@@ -46,7 +49,15 @@
                             {% endif %}
                         </div>
                     </div>
-                    <p class="comment-content">{{ comment.comment_content }}</p>
+                    {% if comment.secret == True %}
+                        {% if request.user == comment.comment_author or request.user == question.author %}
+                            <p class="comment-content">{{ comment.comment_content }}</p>
+                        {% else %}
+                            <p class="comment-content">비밀 댓글입니다</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="comment-content">{{ comment.comment_content }}</p>
+                    {% endif %}
                 </div>
                 <div class="undercomment_list_{{ comment.pk }}">
                     {% for undercomment in undercomments  %}
@@ -56,7 +67,15 @@
                                 <div>
                                     <img class="undercomment-icon" src="/static/css/img/undercomment.png" alt="대댓글">
                                     <span class="post-author">{{ undercomment.comment_author.nickname }}</span>
-                                    <p class="comment-content">{{ undercomment.comment_content }}</p>
+                                    {% if comment.secret == True %}
+                                        {% if request.user == comment.comment_author or request.user == question.author %}
+                                            <p class="comment-content">{{ undercomment.comment_content }}</p>
+                                        {% else %}
+                                        <p class="comment-content">비밀 댓글입니다</p>
+                                        {% endif %}
+                                    {% else %}
+                                        <p class="comment-content">{{ undercomment.comment_content }}</p>
+                                    {% endif %}
                                 </div>
                                 {% if undercomment.comment_author == request.user %}
                                 <div>
@@ -74,8 +93,10 @@
             </div>
             {% if is_authenticated == True %}
             <div class="new-comment d-flex align-items-center">
-                <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{ question.pk }}" placeholder='댓글달기...' style="width: 80%;"/>
-                <button class="blue-button s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}', '{{ question.pk }}', document.querySelector('#comment_{{ question.pk }}').value )">등록</button>
+                비밀댓글
+                <input class="new-comment-checked" id="GetSecret" type="checkbox"  name="secret" /> 
+                <input class="new-comment-input flex-grow-1" type="text" name="comment_content" id="comment_{{ question.pk }}" placeholder='댓글달기...' style="width: 80%;"/>                
+                <button class="blue-button s-btn post-button submit" onclick="onClickComment('{{ user.is_authenticated }}', '{{ question.pk }}', document.querySelector('#comment_{{ question.pk }}').value , document.getElementsByName('secret')[0].checked)">등록</button>
             </div>
             {% endif %}
         </div>
@@ -86,7 +107,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 //댓글
-    const onClickComment= async(is_authenticated, question_id, comment_content) => {  
+    const onClickComment= async(is_authenticated, question_id, comment_content,is_secret) => {  
         if (is_authenticated == 'False') {
             alert('로그인이 필요한 서비스입니다.');
             window.location.href='{% url "login:login" %}';
@@ -97,15 +118,14 @@
                 headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: JSON.stringify({ is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content})
+                body: JSON.stringify({ is_authenticated:is_authenticated, question_id:question_id, comment_content:comment_content, is_secret:is_secret })
             }); 
-        
-            const {question_id:id, comment_content:content, comment_id:c_id,now:now}= await res.json();        
-            commentHandleResponse(id, content, c_id, now);
+            const {question_id:id, comment_content:content, comment_id:c_id,secret:secret}= await res.json();        
+            commentHandleResponse(id, content, c_id, secret);
         };
     };
 
-    const commentHandleResponse=(question_id, comment_content, comment_id, now) => {
+    const commentHandleResponse=(question_id, comment_content, comment_id,secret) => {
         const element=document.querySelector(`.post_${question_id}`);
         element.innerHTML += `
         <div class="comment_${comment_id} comment-container">
@@ -115,7 +135,7 @@
                     <span class="comment-date">{{ now |date:"Y.m.d" }} </span>
                 </div>
                 <div>
-                    <button class="light-button s-btn update " onclick="EditComment('${comment_id}', '${comment_content}')">수정</button>
+                    <button class="light-button s-btn update " onclick="EditComment('${comment_id}', '${comment_content}','${secret}')">수정</button>
                     <button class="light-button s-btn delete post-button" onclick="onClickDelete('${comment_id}')">삭제</button>
                     <button class="light-button s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
                 </div>
@@ -125,12 +145,24 @@
         <div class="undercomment_list_${comment_id}"></div>
         <div class="undercomment-container undercomment_${comment_id}"></div>
         `;
+
+        if(secret){
+            const parent = document.querySelector(`.comment_${comment_id}`)
+            const inform_secret = parent.firstElementChild.firstElementChild
+            const newspan = document.createElement('i')
+            newspan.className = 'fas fa-lock fa-xs post-lock'
+            inform_secret.appendChild(newspan)
+        }
         const input_content = document.querySelector(`#comment_${question_id}`);
         input_content.value = null;
+        const newcomment_checked = document.getElementsByName('secret');
+        newcomment_checked[0].checked = false;
+
+
     };
     
     //댓글 수정
-    const EditComment = (comment_id,comment_content)=>{
+    const EditComment = (comment_id,comment_content,is_secret)=>{
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = ` 
             <div class=" d-flex justify-content-between">
@@ -138,13 +170,25 @@
                     <span class="post-author">{{request.user.nickname}}</span>
                     <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
                 </div>
-                <button class="blue-button s-btn post-button" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value)">저장</button>
+                <button class="blue-button s-btn post-button" onclick="onClickUpdate('${comment_id}', document.querySelector('#edit_comment').value,document.getElementsByName('edit_secret')[0].checked)">저장</button>
             </div>
+            비밀댓글
+            <input class="edit-comment-checked" type="checkbox" name="edit_secret" /> 
             <input class="edit-comment-input" type="text" id="edit_comment" value='${comment_content}' />
             `;
+
+        const comment_checked = document.getElementsByName("edit_secret");      
+        //python:true checkbox:True 로 표현됨
+        if(is_secret=='True'||is_secret=='true'){
+            comment_checked[0].checked = true;
+        }else{
+            comment_checked[0].checked = false;
+        }
+        
     };
 
-    const onClickUpdate= async(comment_id,comment_content) => { 
+    const onClickUpdate = async(comment_id,comment_content,edit_secret) => {
+        console.log('asdf')
         const allowance =  confirm('수정하시겠습니까?'); 
         if (allowance == true) {
             const url = './comment_update/';
@@ -153,14 +197,14 @@
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: JSON.stringify({comment_id:comment_id, comment_content:comment_content})
+                body: JSON.stringify({comment_id:comment_id, comment_content:comment_content,secret:edit_secret})
             }); 
-            const {comment_id:id, comment_content:content, nickname:nickname} = await res.json();        
-            UpdateHandleResponse(id,content,nickname);
+            const {comment_id:id, comment_content:content, nickname:nickname,secret:secret} = await res.json();        
+            UpdateHandleResponse(id,content,nickname,secret);
         };
     };
 
-    const UpdateHandleResponse = (comment_id,comment_content,nickname)=>{
+    const UpdateHandleResponse = (comment_id,comment_content,nickname,secret)=>{
         const element = document.querySelector(`.comment_${comment_id}`);
         element.innerHTML = `
         <div class=" d-flex justify-content-between">
@@ -169,13 +213,20 @@
                 <span class="comment-date">{{ now|date:"Y.m.d" }} </span>
             </div>
             <div>
-                <button class="light-button s-btn update " onclick="EditComment(${comment_id} ,'${comment_content}')">수정</button>
+                <button class="light-button s-btn update " onclick="EditComment(${comment_id} ,'${comment_content}','${secret}')">수정</button>
                 <button class="light-button s-btn post-button delete " onclick="onClickDelete(${comment_id} )">삭제</button>
                 <button class="light-button s-btn post-button" id='undercomment' onclick="undercommentPlus('${comment_id}')">댓글</button><br/>
             </div>
         </div>
         <p class="comment-content">${comment_content}</p>
         `;
+        if(secret){
+            const parent = document.querySelector(`.comment_${comment_id}`);
+            const inform_secret = parent.firstElementChild.firstElementChild;
+            const new_i = document.createElement('i');
+            new_i.className = "fas fa-lock fa-xs post-lock";
+            inform_secret.append(new_i)
+        }
     };
 
 
