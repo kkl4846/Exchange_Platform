@@ -14,6 +14,7 @@
             <div>
                 <span class="review-detail-title">{{review.title}}</span>
                 <span class="review-detail-date">{{review.away_year}} {{review.away_semester}}</span>
+                <span style="margin-left: 10px; font-size: 15px;">조회수 : {{ review.hits }}</span>
             </div>
             <div>
                 {% if IsReviewAuthor %}

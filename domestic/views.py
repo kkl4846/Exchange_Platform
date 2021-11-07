@@ -8,7 +8,7 @@ from config.functions import *
 from .models import *
 from .forms import *
 from foreign.models import *
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 URL_LOGIN = '/login/'
 
@@ -110,7 +110,27 @@ def question_detail(request, domestic_id, pk):
         'is_enrolled': is_enrolled(domestic, user),
         'now': now
     }
-    return render(request, template_name='domestic/question_detail.html', context=ctx)
+
+    response = render(
+        request, template_name='domestic/question_detail.html', context=ctx)
+
+    # 조회수 기능
+    expire_date = datetime.now()
+    expire_date += timedelta(days=1)
+    expire_date = expire_date.replace(
+        hour=0, minute=0, second=0, microsecond=0)
+    expire_date -= now
+    max_age = expire_date.total_seconds()
+
+    cookie_value = request.COOKIES.get('hitboard', '_')
+
+    if f'_{pk}_' not in cookie_value:
+        cookie_value += f'{pk}_'
+        response.set_cookie('hitboard', value=cookie_value,
+                            max_age=max_age, httponly=True)
+        question.hits += 1
+        question.save()
+    return response
 
 
 @login_required(login_url=URL_LOGIN)

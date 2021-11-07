@@ -23,6 +23,8 @@ class DQuestion(models.Model):
         to='Domestic', on_delete=models.CASCADE, null=True, blank=True)
     question_title = models.CharField(max_length=50)
     question_content = models.TextField()
+    hits = models.PositiveIntegerField(default=0, verbose_name='조회수')
+
     created_at = models.DateField(auto_now_add=True, blank=False)
     updated_at = models.DateField(auto_now=True)
 
@@ -41,6 +43,7 @@ class DComment(models.Model):
     def __str__(self):
         return self.comment_content
 
+
 class DUnderComment(models.Model):
     comment = models.ForeignKey('DComment', on_delete=models.CASCADE)
     comment_author = models.ForeignKey('login.User', on_delete=models.CASCADE)
@@ -48,7 +51,8 @@ class DUnderComment(models.Model):
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    
+
+
 class Credit(models.Model):
     credit_author = models.ForeignKey(
         to='login.User', on_delete=models.CASCADE)

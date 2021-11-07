@@ -9,7 +9,7 @@ from .models import *
 from .forms import *
 from config.functions import *
 from django.core.paginator import Paginator
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 URL_LOGIN = '/login/'
@@ -158,7 +158,27 @@ def review_detail(request, pk, foreign_id):
         'recomments': recomments,
         'now': now,
     }
-    return render(request, 'foreign/review_detail.html', ctx)
+
+    response = render(
+        request, template_name='foreign/review_detail.html', context=ctx)
+
+    # 조회수 기능
+    expire_date = datetime.now()
+    expire_date += timedelta(days=1)
+    expire_date = expire_date.replace(
+        hour=0, minute=0, second=0, microsecond=0)
+    expire_date -= now
+    max_age = expire_date.total_seconds()
+
+    cookie_value = request.COOKIES.get('hitboard', '_')
+
+    if f'_{pk}_' not in cookie_value:
+        cookie_value += f'{pk}_'
+        response.set_cookie('hitboard', value=cookie_value,
+                            max_age=max_age, httponly=True)
+        review.hits += 1
+        review.save()
+    return response
 
 
 @login_required(login_url=URL_LOGIN)
@@ -239,7 +259,27 @@ def question_detail(request, foreign_id, pk):
         'undercomments': undercomments,
         'now': now
     }
-    return render(request, 'foreign/question_detail.html', context=ctx)
+
+    response = render(
+        request, template_name='foreign/question_detail.html', context=ctx)
+
+    # 조회수 기능
+    expire_date = datetime.now()
+    expire_date += timedelta(days=1)
+    expire_date = expire_date.replace(
+        hour=0, minute=0, second=0, microsecond=0)
+    expire_date -= now
+    max_age = expire_date.total_seconds()
+
+    cookie_value = request.COOKIES.get('hitboard', '_')
+
+    if f'_{pk}_' not in cookie_value:
+        cookie_value += f'{pk}_'
+        response.set_cookie('hitboard', value=cookie_value,
+                            max_age=max_age, httponly=True)
+        question.hits += 1
+        question.save()
+    return response
 
 
 @login_required(login_url=URL_LOGIN)
