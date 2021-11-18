@@ -223,6 +223,20 @@ def myquestion(request):
 
 
 @login_required(login_url=URL_LOGIN)
+def myscraps(request):
+    user = request.user
+    scraps = Post.objects.filter(scrapers=user).order_by('-pk')
+    paginator1 = Paginator(scraps, 10)
+    page_number1 = request.GET.get('page1')
+    scrap_list = paginator1.get_page(page_number1)
+
+    ctx = {
+        'scrap_list': scrap_list,
+    }
+    return render(request, 'login/myscraps.html', context=ctx)
+
+
+@login_required(login_url=URL_LOGIN)
 def mycomment(request):
     user = request.user
     d_comments = DComment.objects.filter(comment_author=user).order_by('-pk')

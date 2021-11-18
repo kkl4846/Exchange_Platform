@@ -16,5 +16,6 @@ urlpatterns = [
     path('users/<str:uidb64>/<str:token>', views.Activate.as_view()),
     path('myquestion/', views.myquestion, name="myquestion"),
     path('mycomment/', views.mycomment, name="mycomment"),
+    path('myscraps/', views.myscraps, name="myscraps"),
     path('reset_password/', views.reset_password, name="reset_password"),
 ]

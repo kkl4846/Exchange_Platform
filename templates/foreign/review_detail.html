@@ -23,6 +23,11 @@
                         {% csrf_token %}
                         <button class="light-button  m-btn post-button" onclick="return confirm('정말 삭제하시겠습니까?')" type="submit" >삭제</button>
                     </form>
+                {% else %}
+                <form method="post" id="scrap">
+                    {% csrf_token %}
+                    <button class="light-button m-btn" onclick="onClickScrap({{ review.pk }})" type="submit">스크랩</button>
+                </form>
                 {% endif %}
             </div>
         </div>
@@ -330,5 +335,36 @@
         ajaxRecomment.remove();
         }
     };
+
+    // 스크랩 기능
+    const requestScraping = new XMLHttpRequest();
+
+        const onClickScrap = (content) => {
+            const url = './scrap/';
+            requestScraping.open('POST', url, true);
+            requestScraping.setRequestHeader(
+                'Content-Type',
+                'application/x-www-form-urlencoded'
+            );
+            requestScraping.send(JSON.stringify({content: content}));
+        };
+
+        const scrapHandleResponse = () => {
+            if (requestScraping.status < 400) {
+                alert('스크랩이 완료되었습니다!')
+                const element = document.querySelector('#scrap');
+                const originHTML = element.innerHTML;
+                    
+                element.innerHTML = `
+                    <button class="light-button m-btn" onclick="onClickScrap({{ review.pk }})" type="submit">스크랩 완료</button>
+                `
+            };
+        };
+
+        requestScraping.onreadystatechange = () => {
+            if (requestScraping.readyState === XMLHttpRequest.DONE) {
+                scrapHandleResponse();
+            };
+        };
 </script>
 {%endblock%}

@@ -37,6 +37,8 @@ class Post(models.Model):
         choices=CHOICES
     )
     hits = models.PositiveIntegerField(default=0, verbose_name='조회수')
+    scrapers = models.ManyToManyField(
+        "login.User", related_name="scraping", blank=True)
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)

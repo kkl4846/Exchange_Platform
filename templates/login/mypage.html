@@ -57,6 +57,10 @@
                 <h5>내가 답변을 남긴 질문</h5>
                 <a href="{% url 'login:mycomment' %}" class="blue-button mypage-btn3" style="margin-left: 183px;">보러가기</a>
             </div>
+            <div class="mypage-list d-flex align-items-center">
+                <h5>내가 스크랩한 글</h5>
+                <a href="{% url 'login:myscraps' %}" class="blue-button mypage-btn3" style="margin-left: 225px;">보러가기</a>
+            </div>
         </section>
     </div>
 {% endblock %}

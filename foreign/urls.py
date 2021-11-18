@@ -18,6 +18,8 @@ urlpatterns = [
          views.review_delete, name="review_delete"),
     path('<int:foreign_id>/review/detail/<int:pk>/',
          views.review_detail, name="review_detail"),
+    path('<int:foreign_id>/review/detail/<int:pk>/scrap/',
+         views.review_scraping, name="review_scraping"),
     path('<int:foreign_id>/review/update/<int:pk>/',
          views.review_update, name="review_update"),
 

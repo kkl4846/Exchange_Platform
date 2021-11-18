@@ -181,6 +181,24 @@ def review_detail(request, pk, foreign_id):
     return response
 
 
+# 스크랩 기능
+
+
+@csrf_exempt
+def review_scraping(request, pk, foreign_id):
+    req = json.loads(request.body)
+    content_id = int(req['content'])
+    content = get_object_or_404(Post, pk=content_id)
+    content.scrapers.add(request.user)
+    content.save()
+
+    response = {
+        'content': content.pk
+    }
+
+    return JsonResponse(response)  # jsonresponse를 보낼 땐 반드시 인자가 dictionary여야 함
+
+
 @login_required(login_url=URL_LOGIN)
 def review_create(request, foreign_id, post=None):
     foreign = get_object_or_404(Foreign, pk=foreign_id)
